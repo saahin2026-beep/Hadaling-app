@@ -266,7 +266,7 @@ export default function GeelWorld() {
             <div
               onClick={handleYaabTap}
               style={{
-                flex: 1, background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+                flex: 1, background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
                 borderRadius: 20, padding: 20,
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 gap: 8, cursor: 'pointer', position: 'relative', overflow: 'hidden', minHeight: 120,
