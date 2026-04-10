@@ -68,7 +68,7 @@ export default function ListenChooseExercise({ data, onComplete, dark = false, p
           border: premium ? '1.5px solid rgba(255,255,255,0.15)' : useDark ? '1.5px solid #334155' : '1.5px solid #90CAF9',
           borderBottom: premium ? '1.5px solid rgba(255,255,255,0.15)' : useDark ? '1.5px solid #334155' : '3px solid #42A5F5',
           marginBottom: 20, cursor: 'pointer',
-          boxShadow: useDark ? 'none' : '0 2px 12px rgba(33,150,243,0.1)',
+          boxShadow: premium ? '0 4px 20px rgba(0,0,0,0.1)' : (useDark ? 'none' : '0 2px 12px rgba(33,150,243,0.1)'),
           backdropFilter: premium ? 'blur(12px)' : 'none',
           transition: 'transform 0.15s',
           transform: isPlaying ? 'scale(0.98)' : 'scale(1)',
@@ -83,7 +83,7 @@ export default function ListenChooseExercise({ data, onComplete, dark = false, p
         }}>
           <SpeakerHigh size={26} weight="fill" color="white" />
         </div>
-        <p style={{ fontSize: 18, fontWeight: 800, color: useDark ? '#22D3EE' : '#1565C0', fontFamily: 'Nunito, sans-serif' }}>{data.prompt}</p>
+        <p style={{ fontSize: 18, fontWeight: 800, color: premium ? 'white' : (useDark ? '#22D3EE' : '#1565C0'), fontFamily: 'Nunito, sans-serif' }}>{data.prompt}</p>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

@@ -73,7 +73,7 @@ export default function FillGapExercise({ data, onComplete, practiceMode = false
                 <span key={i} style={{
                   fontSize: 18, fontWeight: i === data.blankIndex ? 800 : 700,
                   color: premium
-                    ? (i === data.blankIndex ? (filledWord ? '#059669' : '#0891B2') : '#333')
+                    ? (i === data.blankIndex ? (filledWord ? '#059669' : '#0891B2') : '#1E293B')
                     : (useDark
                       ? (i === data.blankIndex ? (filledWord ? '#6EE7B7' : '#22D3EE') : '#F1F5F9')
                       : (i === data.blankIndex ? (filledWord ? '#059669' : '#10B981') : '#333')),

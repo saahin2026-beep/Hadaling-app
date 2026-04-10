@@ -37,7 +37,7 @@ export default function OrderExercise({ data, onComplete, dark = false, premium 
         <Geel size={90} expression={isCorrect ? 'celebrating' : 'happy'} />
         <div style={{ marginTop: 8 }}>
           <SpeechBubble dark={useDark} premium={premium}>
-            <p style={{ fontSize: 13, color: premium ? '#666' : (useDark ? '#94A3B8' : '#757575'), fontFamily: 'Nunito, sans-serif' }}>Isku habee:</p>
+            <p style={{ fontSize: 13, color: premium ? '#1E293B' : (useDark ? '#94A3B8' : '#757575'), fontFamily: 'Nunito, sans-serif' }}>Isku habee:</p>
           </SpeechBubble>
         </div>
       </div>
@@ -56,7 +56,7 @@ export default function OrderExercise({ data, onComplete, dark = false, premium 
               ? (placedWords.length > 0 ? '2px solid #334155' : '2px dashed #334155')
               : (placedWords.length > 0 ? '2px solid #E0E0E0' : '2px dashed #E0E0E0'),
       }}>
-        {placedWords.length === 0 && <span style={{ fontSize: 13, fontStyle: 'italic', color: useDark ? '#64748B' : '#BDBDBD', fontFamily: 'Nunito, sans-serif' }}>Halkan ku dhig erayada...</span>}
+        {placedWords.length === 0 && <span style={{ fontSize: 13, fontStyle: 'italic', color: premium ? 'rgba(255,255,255,0.5)' : (useDark ? '#64748B' : '#BDBDBD'), fontFamily: 'Nunito, sans-serif' }}>Halkan ku dhig erayada...</span>}
         {placedWords.map((w, i) => (
           <button key={`${w}-${i}`} onClick={() => removeWord(w, i)} className="animate-pop-in" style={{
             padding: '8px 16px', borderRadius: 10,
@@ -73,9 +73,9 @@ export default function OrderExercise({ data, onComplete, dark = false, premium 
             padding: '10px 20px', borderRadius: 12,
             border: premium ? '1.5px solid rgba(255,255,255,0.15)' : useDark ? '1.5px solid #475569' : '2px solid #E0E0E0',
             background: premium ? 'rgba(255,255,255,0.12)' : useDark ? '#334155' : 'white',
-            color: useDark ? '#F1F5F9' : '#333',
+            color: premium ? 'white' : (useDark ? '#F1F5F9' : '#333'),
             fontWeight: 700, fontSize: 15, fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
-            boxShadow: useDark ? 'none' : '0 2px 4px rgba(0,0,0,0.04)',
+            boxShadow: premium ? '0 4px 12px rgba(0,0,0,0.1)' : (useDark ? 'none' : '0 2px 4px rgba(0,0,0,0.04)'),
           }}>{w}</button>
         ))}
       </div>

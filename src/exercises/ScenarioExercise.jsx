@@ -76,7 +76,7 @@ export default function ScenarioExercise({ data, onComplete, practiceMode = fals
             XAALAD
           </span>
         </div>
-        <p style={{ fontSize: 14, color: premium ? '#333' : (useDark ? '#F1F5F9' : '#333'), fontFamily: 'Nunito, sans-serif', lineHeight: 1.6 }}>
+        <p style={{ fontSize: 14, color: premium ? 'white' : (useDark ? '#F1F5F9' : '#333'), fontFamily: 'Nunito, sans-serif', lineHeight: 1.6 }}>
           {data.scenario}
         </p>
       </div>

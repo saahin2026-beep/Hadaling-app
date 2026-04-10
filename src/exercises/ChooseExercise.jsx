@@ -65,7 +65,7 @@ export default function ChooseExercise({ data, onComplete, practiceMode = false,
         <Geel size={90} expression={answered ? 'celebrating' : 'happy'} />
         <div style={{ marginTop: 8 }}>
           <SpeechBubble dark={useDark} premium={premium} color={!useDark && (answered || showCorrect) ? '#D1FAE5' : '#FFFFFF'}>
-            <p style={{ fontSize: 18, fontWeight: 800, color: premium ? (answered || showCorrect ? '#059669' : '#333') : (useDark ? '#F1F5F9' : (answered || showCorrect ? '#059669' : '#333')), fontFamily: 'Nunito, sans-serif' }}>
+            <p style={{ fontSize: 18, fontWeight: 800, color: premium ? '#1E293B' : (useDark ? '#F1F5F9' : (answered || showCorrect ? '#059669' : '#333')), fontFamily: 'Nunito, sans-serif' }}>
               {data.prompt}
             </p>
           </SpeechBubble>
