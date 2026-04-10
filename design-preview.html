@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baro Ingiriis - Design Polish Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Nunito', sans-serif; background: #1a1a2e; color: white; }
+
+  .preview-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #22D3EE, #0891B2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #94A3B8;
+    font-size: 16px;
+    margin-bottom: 48px;
+  }
+
+  .comparison-section {
+    margin-bottom: 64px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #F1F5F9;
+  }
+
+  .section-desc {
+    font-size: 14px;
+    color: #94A3B8;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .side-by-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .version-label {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    padding: 4px 12px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  .label-before {
+    background: rgba(239, 68, 68, 0.15);
+    color: #F87171;
+  }
+
+  .label-after {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+  }
+
+  .phone-frame {
+    width: 100%;
+    max-width: 375px;
+    margin: 0 auto;
+    border-radius: 32px;
+    overflow: hidden;
+    border: 3px solid #334155;
+    position: relative;
+  }
+
+  .phone-screen {
+    width: 100%;
+    min-height: 700px;
+    position: relative;
+  }
+
+  /* ═══ CHANGE 1: BACKGROUNDS ═══ */
+  .bg-before { background: #FBF7F0; }
+  .bg-after { background: #F0F4F8; }
+
+  /* ═══ HEADERS ═══ */
+  .header-before {
+    background: linear-gradient(180deg, #22D3EE 0%, #0891B2 40%, #0E7490 100%);
+    padding: 20px;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 4px 20px rgba(8,145,178,0.3);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-after {
+    background: linear-gradient(180deg, #22D3EE 0%, #06B6D4 30%, #0891B2 60%, #0E7490 100%);
+    padding: 20px;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 6px 28px rgba(8,145,178,0.35);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  .header-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .header-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    margin-top: 2px;
+  }
+
+  /* ═══ CARDS ═══ */
+  .cards-area {
+    padding: 16px;
+  }
+
+  /* Completed card */
+  .card-completed-before {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 2px solid #22C55E;
+  }
+
+  .card-completed-after {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 2px solid #22C55E;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  /* Current card */
+  .card-current-before {
+    background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: subtlePulseBefore 3s ease-in-out infinite;
+  }
+
+  @keyframes subtlePulseBefore {
+    0%, 100% { box-shadow: 0 2px 12px rgba(8,145,178,0.15); }
+    50% { box-shadow: 0 4px 20px rgba(8,145,178,0.25); }
+  }
+
+  .card-current-after {
+    background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: subtlePulseAfter 3s ease-in-out infinite;
+  }
+
+  @keyframes subtlePulseAfter {
+    0%, 100% { box-shadow: 0 4px 24px rgba(8,145,178,0.35), 0 0 0 1px rgba(8,145,178,0.1); }
+    50% { box-shadow: 0 8px 32px rgba(8,145,178,0.45), 0 0 0 1px rgba(8,145,178,0.2); }
+  }
+
+  /* Locked card */
+  .card-locked-before {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0.6;
+  }
+
+  .card-locked-after {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0.6;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    border: 1.5px solid rgba(0,0,0,0.04);
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 20px;
+  }
+
+  .card-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin-top: 3px;
+  }
+
+  .card-subtitle {
+    font-size: 13px;
+    margin-top: 2px;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-left: 6px;
+  }
+
+  .start-btn {
+    background: white;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #0891B2;
+    flex-shrink: 0;
+  }
+
+  /* ═══ BOTTOM NAV ═══ */
+  .nav-before {
+    background: linear-gradient(180deg, #FFFFFF, #FAFAFA);
+    box-shadow: 0 -2px 0 rgba(0,0,0,0.02), 0 -8px 24px rgba(0,0,0,0.06);
+    padding: 10px 0 14px;
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .nav-after {
+    background: #FFFFFF;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+    padding: 10px 0 14px;
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .nav-icon-wrap {
+    padding: 6px 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .nav-icon-active-before {
+    background: rgba(8,145,178,0.1);
+  }
+
+  .nav-icon-active-after {
+    background: rgba(8,145,178,0.15);
+    border-top: 2.5px solid #0891B2;
+    border-radius: 0 0 12px 12px;
+    padding-top: 4px;
+  }
+
+  .nav-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #BDBDBD;
+  }
+
+  .nav-label-active {
+    font-size: 11px;
+    font-weight: 800;
+    color: #0891B2;
+  }
+
+  /* ═══ BUTTON COMPARISON ═══ */
+  .btn-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  .btn-before {
+    background: linear-gradient(180deg, #22D3EE 0%, #0891B2 40%, #0E7490 100%);
+    border: none;
+    border-bottom: 4px solid #155E75;
+    box-shadow: 0 4px 12px rgba(8,145,178,0.3);
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    padding: 16px 32px;
+    border-radius: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    width: 200px;
+  }
+
+  .btn-after {
+    background: linear-gradient(180deg, #22D3EE 0%, #0891B2 40%, #0E7490 100%);
+    border: none;
+    border-bottom: 4px solid #155E75;
+    box-shadow: 0 4px 16px rgba(8,145,178,0.4);
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    padding: 16px 32px;
+    border-radius: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    width: 200px;
+  }
+
+  /* ═══ OPTION CARD COMPARISON ═══ */
+  .option-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  .option-before {
+    background: linear-gradient(180deg, #E3F2FD, #D0E8FD);
+    border: 1.5px solid #1E88E5;
+    border-bottom: 4px solid #1565C0;
+    border-radius: 16px;
+    padding: 16px 24px;
+    width: 200px;
+    text-align: center;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+    color: #1E293B;
+  }
+
+  .option-after {
+    background: linear-gradient(180deg, #E3F2FD, #D0E8FD);
+    border: 1.5px solid #1E88E5;
+    border-bottom: 4px solid #1565C0;
+    border-radius: 16px;
+    padding: 16px 24px;
+    width: 200px;
+    text-align: center;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+    color: #1E293B;
+    box-shadow: 0 0 0 3px rgba(8,145,178,0.12), 0 2px 8px rgba(30,136,229,0.15);
+  }
+
+  /* ═══ COLOR SWATCHES ═══ */
+  .swatch-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .swatch {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 4px;
+  }
+
+  .swatch span {
+    font-size: 9px;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    font-weight: 700;
+  }
+
+  .arrow {
+    font-size: 24px;
+    color: #64748B;
+    margin: 0 8px;
+  }
+
+  /* ═══ SUMMARY TABLE ═══ */
+  .change-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 14px;
+  }
+
+  .change-table th {
+    text-align: left;
+    padding: 12px 16px;
+    background: rgba(8,145,178,0.1);
+    color: #22D3EE;
+    font-weight: 700;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .change-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #1E293B;
+    color: #CBD5E1;
+  }
+
+  .change-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .mono {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px;
+    background: rgba(255,255,255,0.05);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .side-by-side { grid-template-columns: 1fr; }
+    .btn-row, .option-row { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-container">
+  <h1>Baro Ingiriis — Design Polish Preview</h1>
+  <p class="subtitle">7 changes to make the teal pop without changing primary colors</p>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHANGE 1: BACKGROUND COLOR -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="comparison-section">
+    <div class="section-title">1. Cool Background (Warm Beige → Cool Blue-Gray)</div>
+    <div class="section-desc">
+      The warm beige <span class="mono">#FBF7F0</span> fights the cool teal. Switching to <span class="mono">#F0F4F8</span> creates analogous harmony — cool bg + cool brand = teal pops naturally.
+    </div>
+    <div class="swatch-row">
+      <div class="swatch" style="background: #FBF7F0; border-color: #E0D5C5;">
+        <span style="color: #666;">#FBF7F0</span>
+      </div>
+      <span class="arrow">→</span>
+      <div class="swatch" style="background: #F0F4F8; border-color: #C5D0E0;">
+        <span style="color: #666;">#F0F4F8</span>
+      </div>
+      <span style="color: #64748B; font-size: 13px; margin-left: 12px;">Body: <span class="mono">#F7F8FA</span> → <span class="mono">#EEF2F7</span></span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHANGE 2 & 3: FULL HOME SCREEN COMPARISON -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="comparison-section">
+    <div class="section-title">2-5. Full Home Screen: Cards, Header, Nav</div>
+    <div class="section-desc">
+      Side-by-side: deeper card shadows, richer header gradient, elevated bottom nav with active indicator.
+    </div>
+
+    <div class="side-by-side">
+      <!-- BEFORE -->
+      <div>
+        <div class="version-label label-before">Current</div>
+        <div class="phone-frame">
+          <div class="phone-screen bg-before">
+            <!-- Header -->
+            <div class="header-before">
+              <div class="header-avatar">🐪</div>
+              <div>
+                <div class="header-title">Casharka</div>
+                <div class="header-sub">2 of 10 complete</div>
+              </div>
+            </div>
+
+            <!-- Cards -->
+            <div class="cards-area">
+              <!-- Completed -->
+              <div class="card-completed-before">
+                <div class="card-icon" style="background: #F0FDF4;">
+                  <span style="color: #22C55E; font-weight: 900;">✓</span>
+                </div>
+                <div class="card-text">
+                  <div style="display: flex; align-items: center;">
+                    <span class="card-label" style="color: #22C55E;">LESSON 1</span>
+                    <span class="badge" style="color: #22C55E; background: #DCFCE7;">Dhammaystay</span>
+                  </div>
+                  <div class="card-title" style="color: #1E293B;">Is-barasho fudud</div>
+                  <div class="card-subtitle" style="color: #64748B;">Simple introductions</div>
+                </div>
+                <span style="color: #CBD5E1; font-weight: bold;">›</span>
+              </div>
+
+              <!-- Completed 2 -->
+              <div class="card-completed-before">
+                <div class="card-icon" style="background: #F0FDF4;">
+                  <span style="color: #22C55E; font-weight: 900;">✓</span>
+                </div>
+                <div class="card-text">
+                  <div style="display: flex; align-items: center;">
+                    <span class="card-label" style="color: #22C55E;">LESSON 2</span>
+                    <span class="badge" style="color: #22C55E; background: #DCFCE7;">Dhammaystay</span>
+                  </div>
+                  <div class="card-title" style="color: #1E293B;">Weydiin xaalad fudud</div>
+                  <div class="card-subtitle" style="color: #64748B;">Simple questions</div>
+                </div>
+                <span style="color: #CBD5E1; font-weight: bold;">›</span>
+              </div>
+
+              <!-- Current -->
+              <div class="card-current-before">
+                <div class="card-icon" style="background: rgba(255,255,255,0.2);">👋</div>
+                <div class="card-text">
+                  <div style="display: flex; align-items: center;">
+                    <span class="card-label" style="color: rgba(255,255,255,0.8);">LESSON 3</span>
+                    <span class="badge" style="color: white; background: rgba(255,255,255,0.25);">Xiga</span>
+                  </div>
+                  <div class="card-title" style="color: white;">Salaan edeb leh</div>
+                  <div class="card-subtitle" style="color: rgba(255,255,255,0.8);">Polite greetings</div>
+                </div>
+                <div class="start-btn">BILOW</div>
+              </div>
+
+              <!-- Locked -->
+              <div class="card-locked-before">
+                <div class="card-icon" style="background: #F1F5F9;">
+                  <span style="color: #94A3B8;">🔒</span>
+                </div>
+                <div class="card-text">
+                  <span class="card-label" style="color: #94A3B8;">LESSON 4</span>
+                  <div class="card-title" style="color: #64748B;">Mahadsanid iyo jawaab</div>
+                  <div class="card-subtitle" style="color: #94A3B8;">Thanks and replies</div>
+                </div>
+              </div>
+
+              <!-- Locked 2 -->
+              <div class="card-locked-before">
+                <div class="card-icon" style="background: #F1F5F9;">
+                  <span style="color: #94A3B8;">🔒</span>
+                </div>
+                <div class="card-text">
+                  <span class="card-label" style="color: #94A3B8;">LESSON 5</span>
+                  <div class="card-title" style="color: #64748B;">Weydiin magac</div>
+                  <div class="card-subtitle" style="color: #94A3B8;">Asking names</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Nav -->
+            <div class="nav-before">
+              <div class="nav-item">
+                <div class="nav-icon-wrap"><span style="color: #BDBDBD;">🌍</span></div>
+                <span class="nav-label">Geel World</span>
+              </div>
+              <div class="nav-item">
+                <div class="nav-icon-wrap nav-icon-active-before"><span style="color: #0891B2;">📖</span></div>
+                <span class="nav-label-active">Casharo</span>
+              </div>
+              <div class="nav-item">
+                <div class="nav-icon-wrap"><span style="color: #BDBDBD;">📊</span></div>
+                <span class="nav-label">Xirfadaha</span>
+              </div>
+              <div class="nav-item">
+                <div class="nav-icon-wrap"><span style="color: #BDBDBD;">👤</span></div>
+                <span class="nav-label">Astaanta</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AFTER -->
+      <div>
+        <div class="version-label label-after">Improved</div>
+        <div class="phone-frame" style="border-color: #0891B2;">
+          <div class="phone-screen bg-after">
+            <!-- Header (richer gradient + shadow) -->
+            <div class="header-after">
+              <div class="header-avatar">🐪</div>
+              <div>
+                <div class="header-title">Casharka</div>
+                <div class="header-sub">2 of 10 complete</div>
+              </div>
+            </div>
+
+            <!-- Cards -->
+            <div class="cards-area">
+              <!-- Completed (with shadow) -->
+              <div class="card-completed-after">
+                <div class="card-icon" style="background: #F0FDF4;">
+                  <span style="color: #22C55E; font-weight: 900;">✓</span>
+                </div>
+                <div class="card-text">
+                  <div style="display: flex; align-items: center;">
+                    <span class="card-label" style="color: #22C55E;">LESSON 1</span>
+                    <span class="badge" style="color: #22C55E; background: #DCFCE7;">Dhammaystay</span>
+                  </div>
+                  <div class="card-title" style="color: #1E293B;">Is-barasho fudud</div>
+                  <div class="card-subtitle" style="color: #64748B;">Simple introductions</div>
+                </div>
+                <span style="color: #CBD5E1; font-weight: bold;">›</span>
+              </div>
+
+              <!-- Completed 2 -->
+              <div class="card-completed-after">
+                <div class="card-icon" style="background: #F0FDF4;">
+                  <span style="color: #22C55E; font-weight: 900;">✓</span>
+                </div>
+                <div class="card-text">
+                  <div style="display: flex; align-items: center;">
+                    <span class="card-label" style="color: #22C55E;">LESSON 2</span>
+                    <span class="badge" style="color: #22C55E; background: #DCFCE7;">Dhammaystay</span>
+                  </div>
+                  <div class="card-title" style="color: #1E293B;">Weydiin xaalad fudud</div>
+                  <div class="card-subtitle" style="color: #64748B;">Simple questions</div>
+                </div>
+                <span style="color: #CBD5E1; font-weight: bold;">›</span>
+              </div>
+
+              <!-- Current (stronger glow) -->
+              <div class="card-current-after">
+                <div class="card-icon" style="background: rgba(255,255,255,0.2);">👋</div>
+                <div class="card-text">
+                  <div style="display: flex; align-items: center;">
+                    <span class="card-label" style="color: rgba(255,255,255,0.8);">LESSON 3</span>
+                    <span class="badge" style="color: white; background: rgba(255,255,255,0.25);">Xiga</span>
+                  </div>
+                  <div class="card-title" style="color: white;">Salaan edeb leh</div>
+                  <div class="card-subtitle" style="color: rgba(255,255,255,0.8);">Polite greetings</div>
+                </div>
+                <div class="start-btn">BILOW</div>
+              </div>
+
+              <!-- Locked (with subtle border + shadow) -->
+              <div class="card-locked-after">
+                <div class="card-icon" style="background: #F1F5F9;">
+                  <span style="color: #94A3B8;">🔒</span>
+                </div>
+                <div class="card-text">
+                  <span class="card-label" style="color: #94A3B8;">LESSON 4</span>
+                  <div class="card-title" style="color: #64748B;">Mahadsanid iyo jawaab</div>
+                  <div class="card-subtitle" style="color: #94A3B8;">Thanks and replies</div>
+                </div>
+              </div>
+
+              <!-- Locked 2 -->
+              <div class="card-locked-after">
+                <div class="card-icon" style="background: #F1F5F9;">
+                  <span style="color: #94A3B8;">🔒</span>
+                </div>
+                <div class="card-text">
+                  <span class="card-label" style="color: #94A3B8;">LESSON 5</span>
+                  <div class="card-title" style="color: #64748B;">Weydiin magac</div>
+                  <div class="card-subtitle" style="color: #94A3B8;">Asking names</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Nav (elevated + indicator) -->
+            <div class="nav-after">
+              <div class="nav-item">
+                <div class="nav-icon-wrap"><span style="color: #BDBDBD;">🌍</span></div>
+                <span class="nav-label">Geel World</span>
+              </div>
+              <div class="nav-item">
+                <div class="nav-icon-wrap nav-icon-active-after"><span style="color: #0891B2;">📖</span></div>
+                <span class="nav-label-active">Casharo</span>
+              </div>
+              <div class="nav-item">
+                <div class="nav-icon-wrap"><span style="color: #BDBDBD;">📊</span></div>
+                <span class="nav-label">Xirfadaha</span>
+              </div>
+              <div class="nav-item">
+                <div class="nav-icon-wrap"><span style="color: #BDBDBD;">👤</span></div>
+                <span class="nav-label">Astaanta</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHANGE 5: BUTTON GLOW -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="comparison-section">
+    <div class="section-title">6. Button Glow Boost</div>
+    <div class="section-desc">
+      Stronger shadow makes CTAs more prominent and tappable. Same gradient, just more presence.
+    </div>
+    <div class="btn-row">
+      <div style="text-align: center;">
+        <div class="version-label label-before">Current</div><br>
+        <button class="btn-before">BILOW</button>
+        <div style="font-size: 11px; color: #64748B; margin-top: 8px;">shadow: <span class="mono">rgba(8,145,178,0.3)</span></div>
+      </div>
+      <div style="text-align: center;">
+        <div class="version-label label-after">Improved</div><br>
+        <button class="btn-after">BILOW</button>
+        <div style="font-size: 11px; color: #64748B; margin-top: 8px;">shadow: <span class="mono">rgba(8,145,178,0.4)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHANGE 6: OPTION CARD SELECTION GLOW -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="comparison-section">
+    <div class="section-title">7. Option Card Selection Glow</div>
+    <div class="section-desc">
+      Selected answer options get a subtle outer ring that reinforces the brand teal.
+    </div>
+    <div class="option-row">
+      <div style="text-align: center;">
+        <div class="version-label label-before">Current</div><br>
+        <div class="option-before">Hello / Salaam</div>
+        <div style="font-size: 11px; color: #64748B; margin-top: 8px;">border only</div>
+      </div>
+      <div style="text-align: center;">
+        <div class="version-label label-after">Improved</div><br>
+        <div class="option-after">Hello / Salaam</div>
+        <div style="font-size: 11px; color: #64748B; margin-top: 8px;">border + outer glow ring</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SUMMARY TABLE -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="comparison-section">
+    <div class="section-title">All 7 Changes at a Glance</div>
+    <table class="change-table">
+      <tr>
+        <th style="width: 30%;">What</th>
+        <th style="width: 35%;">Before</th>
+        <th style="width: 35%;">After</th>
+      </tr>
+      <tr>
+        <td>App background</td>
+        <td><span class="mono">#FBF7F0</span> warm beige</td>
+        <td><span class="mono">#F0F4F8</span> cool blue-gray</td>
+      </tr>
+      <tr>
+        <td>Body background</td>
+        <td><span class="mono">#F7F8FA</span></td>
+        <td><span class="mono">#EEF2F7</span></td>
+      </tr>
+      <tr>
+        <td>Header gradient</td>
+        <td>3-stop gradient</td>
+        <td>4-stop gradient (richer mid-tone)</td>
+      </tr>
+      <tr>
+        <td>Header shadow</td>
+        <td><span class="mono">0.3</span> opacity</td>
+        <td><span class="mono">0.35</span> opacity, larger spread</td>
+      </tr>
+      <tr>
+        <td>Completed cards</td>
+        <td>No shadow</td>
+        <td><span class="mono">0 2px 8px rgba(0,0,0,0.06)</span></td>
+      </tr>
+      <tr>
+        <td>Current lesson glow</td>
+        <td>Subtle pulse</td>
+        <td>Stronger pulse + outer ring</td>
+      </tr>
+      <tr>
+        <td>Locked cards</td>
+        <td>No shadow/border</td>
+        <td>Micro shadow + hairline border</td>
+      </tr>
+      <tr>
+        <td>Bottom nav</td>
+        <td>Gradient bg, weak shadow</td>
+        <td>Flat white, stronger shadow</td>
+      </tr>
+      <tr>
+        <td>Active tab</td>
+        <td>Teal bg pill</td>
+        <td>Teal bg pill + top border line</td>
+      </tr>
+      <tr>
+        <td>CTA button shadow</td>
+        <td><span class="mono">0.3</span> opacity</td>
+        <td><span class="mono">0.4</span> opacity</td>
+      </tr>
+      <tr>
+        <td>Selected option card</td>
+        <td>Border only</td>
+        <td>Border + outer glow ring</td>
+      </tr>
+      <tr>
+        <td>Background noise</td>
+        <td><span class="mono">0.015</span> opacity</td>
+        <td><span class="mono">0.025</span> opacity</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>

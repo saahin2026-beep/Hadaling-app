@@ -6,7 +6,10 @@
       "Bash(node --input-type=module -e \"import * as p from '@phosphor-icons/react'; const icons = ['Confetti','Sparkle','Egg','HandsClapping','Barbell','Hourglass','Smiley','Wrench','ArrowsClockwise','ThumbsUp','Eye','Rocket','Target','Lock','Check','Play','Heart','Brain','CheckCircle']; icons.forEach\\(n => console.log\\(n + ':', !!p[n]\\)\\);\" 2>&1)",
       "Bash(npx vercel:*)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(md5 /Users/saahin/Desktop/baro-ingiriisi/public/mascot/geel-happy.png)"
+      "Bash(md5 /Users/saahin/Desktop/baro-ingiriisi/public/mascot/geel-happy.png)",
+      "Bash(npm run:*)",
+      "Bash(node:*)",
+      "Bash(xargs kill:*)"
     ]
   }
 }

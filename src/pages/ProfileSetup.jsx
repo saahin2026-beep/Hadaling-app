@@ -6,8 +6,6 @@ import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
 import somaliCities from '../data/somaliCities';
 import Geel from '../components/Geel';
-import PrimaryButton from '../components/PrimaryButton';
-import ProgressDots from '../components/ProgressDots';
 
 const STEP_CONFIGS = [
   { key: 'username', icon: At, labelKey: 'profile.username_label', placeholderKey: 'profile.username_placeholder', questionKey: 'profile.username_question' },
@@ -24,6 +22,7 @@ export default function ProfileSetup() {
   const [formData, setFormData] = useState({ username: '', phone: '', birthday: '', city: '' });
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
+  const [focusedField, setFocusedField] = useState(false);
 
   const stepConfig = STEP_CONFIGS[currentStep];
   if (!stepConfig) { navigate('/home'); return null; }
@@ -52,7 +51,6 @@ export default function ProfileSetup() {
     if (currentStep < STEP_CONFIGS.length - 1) {
       navigate(`/profile-setup/${currentStep + 1}`);
     } else {
-      // Last step — save all to Supabase
       setSaving(true);
       try {
         const state = storage.get();
@@ -91,40 +89,66 @@ export default function ProfileSetup() {
   const StepIcon = stepConfig.icon;
 
   return (
-    <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', background: '#FBF7F0' }}>
-      <div style={{ padding: '20px 24px 0' }}>
-        <ProgressDots total={STEP_CONFIGS.length} current={currentStep} />
+    <div style={{
+      minHeight: '100dvh',
+      display: 'flex',
+      flexDirection: 'column',
+      background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      <style>{`
+        @keyframes shimmer { 0% { left: -100%; } 100% { left: 100%; } }
+      `}</style>
+
+      {/* Ambient lights */}
+      <div style={{ position: 'absolute', top: '-40px', right: '-60px', width: '180px', height: '180px', background: 'radial-gradient(circle, rgba(34,211,238,0.25) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: '15%', left: '-50px', width: '140px', height: '140px', background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
+
+      {/* Progress dots */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 8, padding: '20px 24px 0', position: 'relative', zIndex: 2 }}>
+        {Array.from({ length: STEP_CONFIGS.length }, (_, i) => (
+          <div key={i} style={{
+            width: i === currentStep ? 24 : 8, height: 8, borderRadius: 4,
+            background: i === currentStep ? 'linear-gradient(90deg, #22D3EE, #F59E0B)' : i < currentStep ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.2)',
+            transition: 'all 0.3s ease',
+            boxShadow: i === currentStep ? '0 0 12px rgba(34,211,238,0.5)' : 'none',
+          }} />
+        ))}
       </div>
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 24px 40px' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 24px 40px', position: 'relative', zIndex: 2 }}>
         {/* Geel */}
-        <Geel size={100} expression={currentStep === STEP_CONFIGS.length - 1 ? 'celebrating' : 'happy'} />
+        <div style={{ filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.2))' }}>
+          <Geel size={100} expression={currentStep === STEP_CONFIGS.length - 1 ? 'celebrating' : 'happy'} />
+        </div>
         <div style={{ height: 20 }} />
 
         {/* Icon badge */}
         <div style={{
-          width: 56, height: 56, borderRadius: '50%', background: '#ECFEFF',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          marginBottom: 16, boxShadow: '0 2px 8px rgba(8,145,178,0.15)',
+          width: 56, height: 56, borderRadius: '50%',
+          background: 'rgba(8,145,178,0.2)', border: '1px solid rgba(34,211,238,0.3)',
+          boxShadow: '0 4px 20px rgba(34,211,238,0.2)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16,
         }}>
-          <StepIcon size={26} weight="fill" color="#0891B2" />
+          <StepIcon size={26} weight="fill" color="white" />
         </div>
 
         {/* Question */}
-        <h2 style={{ fontSize: 24, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginBottom: 8 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginBottom: 8, textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
           {t(stepConfig.questionKey)}
         </h2>
-        <p style={{ fontSize: 13, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 24 }}>
+        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginBottom: 24 }}>
           {t(stepConfig.labelKey)}
         </p>
 
         {error && (
-          <div style={{ padding: '12px 16px', borderRadius: 10, background: '#FFEBEE', marginBottom: 16, width: '100%' }}>
-            <p style={{ fontSize: 13, fontWeight: 700, color: '#E53935', fontFamily: 'Nunito, sans-serif' }}>{error}</p>
+          <div style={{ padding: '12px 16px', borderRadius: 12, background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)', marginBottom: 16, width: '100%' }}>
+            <p style={{ fontSize: 13, fontWeight: 600, color: '#FCA5A5', fontFamily: 'Nunito, sans-serif' }}>{error}</p>
           </div>
         )}
 
-        {/* Input field — different per step */}
+        {/* Input field */}
         <div style={{ width: '100%', marginBottom: 24 }}>
           {stepConfig.key === 'city' ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 280, overflowY: 'auto' }}>
@@ -133,16 +157,17 @@ export default function ProfileSetup() {
                   key={city}
                   onClick={() => updateField(city)}
                   style={{
-                    width: '100%', padding: '14px 16px', borderRadius: 12, textAlign: 'left',
-                    border: formData.city === city ? '2px solid #0891B2' : '2px solid #E0E0E0',
-                    background: formData.city === city ? '#ECFEFF' : 'white',
-                    color: formData.city === city ? '#0E7490' : '#333',
+                    width: '100%', padding: '14px 16px', borderRadius: 14, textAlign: 'left',
+                    border: formData.city === city ? '1.5px solid rgba(34,211,238,0.5)' : '1.5px solid rgba(255,255,255,0.12)',
+                    background: formData.city === city ? 'rgba(34,211,238,0.15)' : 'rgba(255,255,255,0.08)',
+                    color: 'white',
                     fontSize: 15, fontWeight: formData.city === city ? 700 : 600,
                     fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
                     transition: 'all 0.2s',
+                    boxShadow: formData.city === city ? '0 0 20px rgba(34,211,238,0.15)' : 'none',
                   }}
                 >
-                  {formData.city === city && <MapPin size={16} weight="fill" color="#0891B2" style={{ marginRight: 8, verticalAlign: 'middle' }} />}
+                  {formData.city === city && <MapPin size={16} weight="fill" color="#22D3EE" style={{ marginRight: 8, verticalAlign: 'middle' }} />}
                   {city}
                 </button>
               ))}
@@ -155,24 +180,38 @@ export default function ProfileSetup() {
               max={new Date().toISOString().split('T')[0]}
               min="1940-01-01"
               style={{
-                width: '100%', padding: '16px', borderRadius: 14, border: '2px solid #E0E0E0',
-                fontSize: 16, fontFamily: 'Nunito, sans-serif', color: '#333',
-                outline: 'none', boxSizing: 'border-box', background: 'white',
+                width: '100%', padding: '16px', borderRadius: 14,
+                border: '1.5px solid rgba(255,255,255,0.12)',
+                fontSize: 16, fontFamily: 'Nunito, sans-serif', color: 'white',
+                outline: 'none', boxSizing: 'border-box',
+                background: 'rgba(255,255,255,0.08)',
               }}
             />
           ) : (
             <div style={{
-              display: 'flex', alignItems: 'center', gap: 12, padding: '16px',
-              borderRadius: 14, border: '2px solid #E0E0E0', background: 'white',
+              display: 'flex', alignItems: 'center', gap: 12, padding: '4px',
+              borderRadius: 14, background: 'rgba(255,255,255,0.08)',
+              border: focusedField ? '1.5px solid rgba(34,211,238,0.5)' : '1.5px solid rgba(255,255,255,0.12)',
+              boxShadow: focusedField ? '0 0 0 4px rgba(34,211,238,0.1)' : 'none',
+              transition: 'all 0.2s ease',
             }}>
-              <StepIcon size={20} weight="fill" color="#BDBDBD" />
+              <div style={{
+                width: 44, height: 44, borderRadius: 10,
+                background: 'rgba(255,255,255,0.1)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+              }}>
+                <StepIcon size={20} weight="fill" color="white" />
+              </div>
               <input
                 value={formData[stepConfig.key]}
                 onChange={(e) => updateField(e.target.value)}
+                onFocus={() => setFocusedField(true)}
+                onBlur={() => setFocusedField(false)}
                 placeholder={t(stepConfig.placeholderKey)}
                 style={{
                   flex: 1, background: 'none', border: 'none', outline: 'none',
-                  fontSize: 16, color: '#333', fontFamily: 'Nunito, sans-serif',
+                  fontSize: 16, color: 'white', fontFamily: 'Nunito, sans-serif', fontWeight: 600,
+                  padding: '12px 0',
                 }}
               />
             </div>
@@ -181,9 +220,30 @@ export default function ProfileSetup() {
 
         <div style={{ flex: 1 }} />
 
-        <PrimaryButton onClick={handleNext} disabled={saving}>
-          {saving ? t('profile.loading') : currentStep === STEP_CONFIGS.length - 1 ? t('profile.finish') : t('btn.continue')}
-        </PrimaryButton>
+        <button
+          onClick={handleNext}
+          disabled={saving}
+          style={{
+            width: '100%', padding: '16px', borderRadius: 14, border: 'none',
+            background: saving ? 'rgba(245,158,11,0.5)' : 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+            fontSize: 16, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif',
+            cursor: saving ? 'not-allowed' : 'pointer',
+            boxShadow: '0 8px 30px rgba(245,158,11,0.4)',
+            position: 'relative', overflow: 'hidden',
+            textTransform: 'uppercase', letterSpacing: '1px',
+          }}
+        >
+          {!saving && (
+            <div style={{
+              position: 'absolute', top: 0, left: '-100%', width: '100%', height: '100%',
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+              animation: 'shimmer 2s infinite', pointerEvents: 'none',
+            }} />
+          )}
+          <span style={{ position: 'relative', zIndex: 1 }}>
+            {saving ? t('profile.loading') : currentStep === STEP_CONFIGS.length - 1 ? t('profile.finish') : t('btn.continue')}
+          </span>
+        </button>
       </div>
     </div>
   );

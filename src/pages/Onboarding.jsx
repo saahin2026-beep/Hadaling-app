@@ -1,39 +1,335 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { storage } from '../utils/storage';
 import { useData } from '../utils/DataContext';
-import { House, Briefcase, GraduationCap, Trophy, Plant, Leaf, Tree } from '@phosphor-icons/react';
+import { House, Briefcase, GraduationCap, Trophy, Plant, Leaf, Tree, Check, X, ArrowRight, Shield, Sparkle } from '@phosphor-icons/react';
 import Geel from '../components/Geel';
-import PrimaryButton from '../components/PrimaryButton';
-import ProgressDots from '../components/ProgressDots';
-import OptionCard from '../components/OptionCard';
-import SpeechBubble from '../components/SpeechBubble';
-import FeedbackBanner from '../components/FeedbackBanner';
-
-const INTENT_ICONS = [House, Briefcase, GraduationCap, Trophy];
-const INTENT_COLORS = [
-  { iconColor: '#FB8C00', iconBg: '#FFF3E0' },
-  { iconColor: '#6D4C41', iconBg: '#EFEBE9' },
-  { iconColor: '#5C6BC0', iconBg: '#E8EAF6' },
-  { iconColor: '#F9A825', iconBg: '#FFF8E1' },
-];
-const COMFORT_ICONS = [Plant, Leaf, Tree];
-const COMFORT_COLORS = [
-  { iconColor: '#22D3EE', iconBg: '#ECFEFF' },
-  { iconColor: '#06B6D4', iconBg: '#ECFEFF' },
-  { iconColor: '#0E7490', iconBg: '#ECFEFF' },
-];
 
 // Hardcoded defaults (fallback if Supabase not loaded yet)
 const DEFAULTS = {
   screen0: { title: 'Hadaling', subtitle: 'Kalsooni ku baro, daqiiqado yar gudaheed', buttonText: 'BILOW →', footer: 'Hadaling — Ingiriis si fudud' },
-  screen1: { question: 'Maxaad Ingiriis u baranaysaa?', options: [{ text: 'Nolol maalmeed' }, { text: 'Shaqo' }, { text: 'Iskuul' }, { text: 'Kalsooni' }] },
+  screen1: { question: 'Maxaad Ingiriis u baranaysaa?', options: [{ text: 'Nolol maalmeed', icon: 'House' }, { text: 'Shaqo', icon: 'Briefcase' }, { text: 'Iskuul', icon: 'GraduationCap' }, { text: 'Kalsooni', icon: 'Trophy' }] },
   screen2: { question: 'Sidee ayaad Ingiriis u dareemaysaa hadda?', options: [{ text: 'Waan fahmaa wax yar' }, { text: 'Waan fahmaa caadi' }, { text: 'Waan rabaa inaan is hagaajiyo' }], helperText: 'Ma aha imtixaan.' },
   screen3: { label: 'Ingiriis', instruction: 'Dooro micnaha saxda ah:', prompt: "Hi, I'm Ahmed.", options: ['Salaan, magacaygu waa Ahmed', 'Nabad gelyo', 'Sidee tahay?'], correctIndex: 0 },
   screen4: { title: 'Aragtay?', line1: 'Tani waa sida casharradu u shaqeeyaan.', line2: 'Waa fudud, waadna awooddaa.', buttonText: 'SII WAD' },
   screen5: { title: 'Ma rabtaa inaad kaydiso horumarkaaga?', subtitle: 'Si aadan u lumin XP-gaaga iyo streak-gaaga', primaryButton: 'KAYDI HORUMARKA', secondaryButton: 'KU SII WAD HADDA' },
   screen6: { lessonTitle: 'Is-barasho fudud', lessonSubtitle: '(Simple introductions)', introLine: 'Casharkan waa mid fudud. Aan bilowno.', buttonText: 'BILOW CASHARKA' },
 };
+
+const COMFORT_ICONS = [Plant, Leaf, Tree];
+
+// Geel in glass container with sparkle badge
+function GlassGeelContainer({ size = 80 }) {
+  const geelSize = Math.round(size * 0.65);
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      marginBottom: 20,
+    }}>
+      <div style={{
+        width: size,
+        height: size,
+        background: 'rgba(255,255,255,0.15)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: '2px solid rgba(255,255,255,0.3)',
+        borderRadius: size * 0.25,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.2)',
+      }}>
+        <Geel size={geelSize} />
+        <div style={{
+          position: 'absolute',
+          top: 6,
+          right: 6,
+          width: 18,
+          height: 18,
+          background: 'linear-gradient(135deg, #FBBF24, #F59E0B)',
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 2px 8px rgba(245,158,11,0.5)',
+        }}>
+          <Sparkle size={10} weight="fill" color="white" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Shared styles
+const styles = {
+  page: {
+    minHeight: '100dvh',
+    background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  ambientTop: {
+    position: 'absolute',
+    top: '-50px',
+    right: '-80px',
+    width: '250px',
+    height: '250px',
+    background: 'radial-gradient(circle, rgba(34,211,238,0.25) 0%, transparent 70%)',
+    borderRadius: '50%',
+    pointerEvents: 'none',
+  },
+  ambientBottom: {
+    position: 'absolute',
+    bottom: '10%',
+    left: '-60px',
+    width: '200px',
+    height: '200px',
+    background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)',
+    borderRadius: '50%',
+    pointerEvents: 'none',
+  },
+  content: {
+    position: 'relative',
+    zIndex: 1,
+    minHeight: '100dvh',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+};
+
+// Premium Progress Dots
+function ProgressDots({ total, current }) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', gap: 8, padding: '20px 0' }}>
+      {Array.from({ length: total }, (_, i) => (
+        <div
+          key={i}
+          style={{
+            width: i === current ? 24 : 8,
+            height: 8,
+            borderRadius: 4,
+            background: i === current
+              ? 'linear-gradient(90deg, #22D3EE, #F59E0B)'
+              : i < current
+                ? 'rgba(255,255,255,0.5)'
+                : 'rgba(255,255,255,0.2)',
+            transition: 'all 0.3s ease',
+            boxShadow: i === current ? '0 0 12px rgba(34,211,238,0.5)' : 'none',
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// Glass Option Card
+function GlassOptionCard({ icon: Icon, text, selected, correct, onClick, disabled, number, glowColor }) {
+  const isCorrect = correct === true;
+  const isWrong = correct === false;
+
+  let bg = 'rgba(255,255,255,0.1)';
+  let border = 'rgba(255,255,255,0.2)';
+  let shadow = 'none';
+
+  if (selected && !isWrong) {
+    bg = 'rgba(255,255,255,0.2)';
+    border = 'rgba(255,255,255,0.4)';
+    shadow = '0 0 20px rgba(255,255,255,0.15)';
+  }
+  if (isCorrect) {
+    bg = 'rgba(16,185,129,0.25)';
+    border = 'rgba(52,211,153,0.5)';
+    shadow = '0 0 20px rgba(16,185,129,0.3)';
+  }
+  if (isWrong) {
+    bg = 'rgba(239,68,68,0.2)';
+    border = 'rgba(248,113,113,0.4)';
+    shadow = '0 0 20px rgba(239,68,68,0.2)';
+  }
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        width: '100%',
+        padding: '16px 18px',
+        background: bg,
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: `1.5px solid ${border}`,
+        borderRadius: 16,
+        cursor: disabled ? 'default' : 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 14,
+        transition: 'all 0.25s ease',
+        boxShadow: shadow,
+        transform: selected && !isWrong ? 'scale(1.02)' : 'scale(1)',
+        opacity: disabled && !selected && !isCorrect ? 0.5 : 1,
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Colored glow overlay */}
+      {glowColor && (
+        <div style={{
+          position: 'absolute',
+          top: '-15px',
+          left: '-15px',
+          width: '50px',
+          height: '50px',
+          background: `radial-gradient(circle, ${glowColor} 0%, transparent 70%)`,
+          pointerEvents: 'none',
+        }} />
+      )}
+      {Icon && (
+        <div style={{
+          width: 44,
+          height: 44,
+          borderRadius: 12,
+          background: glowColor ? glowColor.replace('0.3', '0.2') : 'rgba(255,255,255,0.15)',
+          border: `1px solid ${glowColor ? glowColor.replace('0.3', '0.3') : 'rgba(255,255,255,0.2)'}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          <Icon size={22} weight="fill" color="white" />
+        </div>
+      )}
+      {!Icon && number && (
+        <div style={{
+          width: 36,
+          height: 36,
+          borderRadius: 10,
+          background: isCorrect ? 'rgba(16,185,129,0.3)' : isWrong ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.15)',
+          border: '1px solid rgba(255,255,255,0.2)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          {isCorrect ? (
+            <Check size={18} weight="bold" color="#10B981" />
+          ) : isWrong ? (
+            <X size={18} weight="bold" color="#EF4444" />
+          ) : (
+            <span style={{ fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.8)', fontFamily: 'Nunito, sans-serif' }}>{number}</span>
+          )}
+        </div>
+      )}
+      <span style={{
+        fontSize: 16,
+        fontWeight: 700,
+        color: isCorrect ? '#6EE7B7' : isWrong ? '#FCA5A5' : 'white',
+        fontFamily: 'Nunito, sans-serif',
+        textAlign: 'left',
+        flex: 1,
+      }}>
+        {text}
+      </span>
+    </button>
+  );
+}
+
+// Primary CTA Button
+function PremiumButton({ onClick, children, variant = 'gold', disabled }) {
+  const isSecondary = variant === 'secondary';
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        width: '100%',
+        padding: '16px 24px',
+        background: isSecondary
+          ? 'rgba(255,255,255,0.1)'
+          : variant === 'gold'
+            ? 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)'
+            : 'linear-gradient(135deg, #0891B2 0%, #0E7490 100%)',
+        border: isSecondary ? '1px solid rgba(255,255,255,0.2)' : 'none',
+        borderRadius: 14,
+        cursor: disabled ? 'default' : 'pointer',
+        fontSize: 16,
+        fontWeight: 800,
+        color: 'white',
+        fontFamily: 'Nunito, sans-serif',
+        boxShadow: isSecondary ? 'none' : variant === 'gold' ? '0 8px 30px rgba(245,158,11,0.4)' : '0 8px 30px rgba(8,145,178,0.4)',
+        transition: 'all 0.2s ease',
+        position: 'relative',
+        overflow: 'hidden',
+        opacity: disabled ? 0.6 : 1,
+      }}
+    >
+      {!isSecondary && (
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: '-100%',
+          width: '100%',
+          height: '100%',
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+          animation: 'shimmer 2.5s infinite',
+          pointerEvents: 'none',
+        }} />
+      )}
+      <span style={{ position: 'relative', zIndex: 1 }}>{children}</span>
+    </button>
+  );
+}
+
+// Feedback Banner
+function FeedbackBanner({ type, visible, onContinue }) {
+  if (!visible) return null;
+
+  const isCorrect = type === 'correct';
+
+  return (
+    <div style={{
+      position: 'fixed',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      background: isCorrect
+        ? 'linear-gradient(135deg, #059669 0%, #047857 100%)'
+        : 'linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)',
+      padding: '20px 24px max(20px, env(safe-area-inset-bottom))',
+      borderRadius: '24px 24px 0 0',
+      boxShadow: '0 -4px 30px rgba(0,0,0,0.3)',
+      zIndex: 100,
+      animation: 'slideUp 0.3s ease-out',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
+        <div style={{
+          width: 44,
+          height: 44,
+          borderRadius: 12,
+          background: 'rgba(255,255,255,0.2)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          {isCorrect ? <Check size={24} weight="bold" color="white" /> : <X size={24} weight="bold" color="white" />}
+        </div>
+        <div>
+          <p style={{ fontSize: 20, fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', textShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
+            {isCorrect ? 'Aad baad u fiicantahay!' : 'Isku day mar kale'}
+          </p>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontFamily: 'Nunito, sans-serif' }}>
+            {isCorrect ? 'Keep going!' : 'Try again'}
+          </p>
+        </div>
+      </div>
+      <PremiumButton onClick={onContinue} variant={isCorrect ? 'gold' : 'secondary'}>
+        {isCorrect ? 'SII WAD →' : 'ISKU DAY'}
+      </PremiumButton>
+    </div>
+  );
+}
 
 export default function Onboarding() {
   const { step } = useParams();
@@ -49,98 +345,260 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="animate-slide-in" style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', animation: 'fadeSlideUp 0.4s ease-out both' }}>
-      {currentStep === 0 && <Screen0 goNext={goNext} c={getContent('screen0')} />}
-      {currentStep === 1 && <Screen1 goNext={goNext} c={getContent('screen1')} />}
-      {currentStep === 2 && <Screen2 goNext={goNext} c={getContent('screen2')} />}
-      {currentStep === 3 && <Screen3 goNext={goNext} c={getContent('screen3')} getRandomPhrase={getRandomPhrase} />}
-      {currentStep === 4 && <Screen4 goNext={goNext} c={getContent('screen4')} />}
-      {currentStep === 5 && <Screen5 goNext={goNext} c={getContent('screen5')} />}
-      {currentStep === 6 && <Screen6 goNext={goNext} c={getContent('screen6')} />}
-    </div>
-  );
-}
+    <div style={styles.page}>
+      {/* CSS Animations */}
+      <style>{`
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scaleIn {
+          from { opacity: 0; transform: scale(0.8); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        @keyframes shimmer {
+          0% { left: -100%; }
+          100% { left: 100%; }
+        }
+        @keyframes slideUp {
+          from { transform: translateY(100%); }
+          to { transform: translateY(0); }
+        }
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        @keyframes glow {
+          0%, 100% { box-shadow: 0 0 30px rgba(245,158,11,0.3); }
+          50% { box-shadow: 0 0 50px rgba(245,158,11,0.5); }
+        }
+      `}</style>
 
-function Screen0({ goNext, c }) {
-  return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px 40px', background: 'linear-gradient(180deg, #ECFEFF 0%, #FFFFFF 50%)' }}>
-      <div style={{ height: 70 }} />
-      <div style={{
-        width: 120, height: 120, borderRadius: 28,
-        background: 'linear-gradient(180deg, #22D3EE 0%, #0891B2 100%)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        boxShadow: '0 8px 24px rgba(8,145,178,0.3)',
-        animation: 'scaleIn 0.5s ease-out 0.2s both',
-        position: 'relative',
-      }}>
-        <svg width="80" height="70" viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 11 Q0 0 11 0 L79 0 Q90 0 90 11 L90 50 Q90 61 79 61 L30 61 L15 76 L18 61 L11 61 Q0 61 0 50 Z" fill="white"/>
-          <text x="45" y="44" fontFamily="Nunito, sans-serif" fontSize="38" fontWeight="900" fill="#0891B2" textAnchor="middle">H</text>
-        </svg>
-        <div style={{
-          position: 'absolute', top: 20, right: 18,
-          width: 18, height: 18, borderRadius: '50%',
-          background: 'linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%)',
-          boxShadow: '0 2px 6px rgba(245,158,11,0.4)',
-        }} />
+      {/* Ambient lights */}
+      <div style={styles.ambientTop} />
+      <div style={styles.ambientBottom} />
+
+      <div style={{ ...styles.content, animation: 'fadeSlideUp 0.5s ease-out' }}>
+        {currentStep === 0 && <Screen0 goNext={goNext} c={getContent('screen0')} />}
+        {currentStep === 1 && <Screen1 goNext={goNext} c={getContent('screen1')} />}
+        {currentStep === 2 && <Screen2 goNext={goNext} c={getContent('screen2')} />}
+        {currentStep === 3 && <Screen3 goNext={goNext} c={getContent('screen3')} getRandomPhrase={getRandomPhrase} />}
+        {currentStep === 4 && <Screen4 goNext={goNext} c={getContent('screen4')} />}
+        {currentStep === 5 && <Screen5 goNext={goNext} c={getContent('screen5')} />}
+        {currentStep === 6 && <Screen6 goNext={goNext} c={getContent('screen6')} />}
       </div>
-      <div style={{ height: 24 }} />
-      <h1 style={{ fontSize: 32, fontWeight: 900, color: '#0891B2', fontFamily: 'Nunito, sans-serif', textAlign: 'center' }}>{c.title}</h1>
-      <p style={{ fontSize: 15, color: '#64748B', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 8, lineHeight: 1.5 }}>{c.subtitle}</p>
-      <div style={{ flex: 1 }} />
-      <PrimaryButton onClick={goNext}>{c.buttonText}</PrimaryButton>
-      <p style={{ fontSize: 12, color: '#94A3B8', fontFamily: 'Nunito, sans-serif', marginTop: 16 }}>{c.footer}</p>
     </div>
   );
 }
 
+// SCREEN 0: Welcome/Splash
+function Screen0({ goNext, c }) {
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setShowContent(true), 300);
+  }, []);
+
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px 40px' }}>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+        <div style={{
+          opacity: showContent ? 1 : 0,
+          transform: showContent ? 'scale(1)' : 'scale(0.8)',
+          transition: 'all 0.6s ease-out',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}>
+          {/* App Icon */}
+          <div style={{
+            width: 140,
+            height: 140,
+            borderRadius: 36,
+            overflow: 'hidden',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.35), 0 0 0 3px rgba(255,255,255,0.2)',
+            animation: 'float 4s ease-in-out infinite',
+          }}>
+            <img
+              src="/branding/app-icon-1024.png"
+              alt="Hadaling"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </div>
+
+          <h1 style={{
+            fontSize: 'clamp(40px, 10vw, 52px)',
+            fontWeight: 900,
+            color: 'white',
+            fontFamily: 'Nunito, sans-serif',
+            textAlign: 'center',
+            marginTop: 28,
+            textShadow: '0 4px 20px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.1)',
+            letterSpacing: '-0.5px',
+          }}>
+            {c.title}
+          </h1>
+
+          <p style={{
+            fontSize: 'clamp(17px, 4.5vw, 20px)',
+            color: 'rgba(255,255,255,0.85)',
+            fontFamily: 'Nunito, sans-serif',
+            textAlign: 'center',
+            marginTop: 14,
+            lineHeight: 1.6,
+            maxWidth: 300,
+            fontWeight: 600,
+          }}>
+            {c.subtitle}
+          </p>
+        </div>
+      </div>
+
+      <div style={{
+        width: '100%',
+        opacity: showContent ? 1 : 0,
+        transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+        transition: 'all 0.6s ease-out 0.3s',
+      }}>
+        <PremiumButton onClick={goNext}>{c.buttonText}</PremiumButton>
+        <p style={{
+          fontSize: 12,
+          color: 'rgba(255,255,255,0.5)',
+          fontFamily: 'Nunito, sans-serif',
+          textAlign: 'center',
+          marginTop: 20,
+        }}>
+          {c.footer}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+const OPTION_GLOWS = [
+  'rgba(251,146,60,0.3)',   // Home - orange
+  'rgba(139,92,246,0.3)',   // Work - purple
+  'rgba(34,211,238,0.3)',   // School - cyan
+  'rgba(245,158,11,0.3)',   // Confidence - gold
+];
+
+const COMFORT_GLOWS = [
+  'rgba(16,185,129,0.3)',   // Plant - green
+  'rgba(34,211,238,0.3)',   // Leaf - cyan
+  'rgba(245,158,11,0.3)',   // Tree - gold
+];
+
+// SCREEN 1: Intent Question
 function Screen1({ goNext, c }) {
   const [selected, setSelected] = useState(null);
-  const handleTap = (value) => { setSelected(value); storage.update({ intent: value }); setTimeout(goNext, 500); };
+  const iconMap = { House, Briefcase, GraduationCap, Trophy };
+
+  const handleTap = (value) => {
+    setSelected(value);
+    storage.update({ intent: value });
+    setTimeout(goNext, 600);
+  };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '16px 24px 40px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 24px 40px' }}>
       <ProgressDots total={5} current={0} />
-      <div style={{ height: 24 }} />
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}><Geel size={90} /></div>
-      <h2 style={{ fontSize: 20, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginBottom: 20 }}>{c.question}</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {(c.options || []).map((opt, i) => (
-          <OptionCard key={i} icon={INTENT_ICONS[i]} iconColor={INTENT_COLORS[i]?.iconColor} iconBg={INTENT_COLORS[i]?.iconBg}
-            text={opt.text || opt} number={i + 1} selected={selected === (opt.text || opt)} correct={null}
-            onClick={() => handleTap(opt.text || opt)} />
-        ))}
+
+      <GlassGeelContainer size={80} />
+
+      <h2 style={{
+        fontSize: 'clamp(24px, 6vw, 28px)',
+        fontWeight: 900,
+        color: 'white',
+        fontFamily: 'Nunito, sans-serif',
+        textAlign: 'center',
+        marginBottom: 24,
+        textShadow: '0 3px 15px rgba(0,0,0,0.25)',
+        lineHeight: 1.3,
+      }}>
+        {c.question}
+      </h2>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {(c.options || []).map((opt, i) => {
+          const IconComponent = iconMap[['House', 'Briefcase', 'GraduationCap', 'Trophy'][i]];
+          return (
+            <GlassOptionCard
+              key={i}
+              icon={IconComponent}
+              text={opt.text || opt}
+              selected={selected === (opt.text || opt)}
+              onClick={() => handleTap(opt.text || opt)}
+              glowColor={OPTION_GLOWS[i]}
+            />
+          );
+        })}
       </div>
     </div>
   );
 }
 
+// SCREEN 2: Comfort Level
 function Screen2({ goNext, c }) {
   const [selected, setSelected] = useState(null);
-  const handleTap = (value) => { setSelected(value); storage.update({ comfort: value }); setTimeout(goNext, 500); };
+
+  const handleTap = (value) => {
+    setSelected(value);
+    storage.update({ comfort: value });
+    setTimeout(goNext, 600);
+  };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '16px 24px 40px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 24px 40px' }}>
       <ProgressDots total={5} current={1} />
-      <div style={{ height: 24 }} />
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}><Geel size={90} /></div>
-      <h2 style={{ fontSize: 20, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginBottom: 20 }}>{c.question}</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+
+      <GlassGeelContainer size={80} />
+
+      <h2 style={{
+        fontSize: 22,
+        fontWeight: 800,
+        color: 'white',
+        fontFamily: 'Nunito, sans-serif',
+        textAlign: 'center',
+        marginBottom: 24,
+      }}>
+        {c.question}
+      </h2>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {(c.options || []).map((opt, i) => (
-          <OptionCard key={i} icon={COMFORT_ICONS[i]} iconColor={COMFORT_COLORS[i]?.iconColor} iconBg={COMFORT_COLORS[i]?.iconBg}
-            text={opt.text || opt} number={i + 1} selected={selected === (opt.text || opt)} correct={null}
-            onClick={() => handleTap(opt.text || opt)} />
+          <GlassOptionCard
+            key={i}
+            icon={COMFORT_ICONS[i]}
+            text={opt.text || opt}
+            selected={selected === (opt.text || opt)}
+            onClick={() => handleTap(opt.text || opt)}
+            glowColor={COMFORT_GLOWS[i]}
+          />
         ))}
       </div>
-      <p style={{ fontSize: 13, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', textAlign: 'center', fontStyle: 'italic', marginTop: 16 }}>{c.helperText}</p>
+
+      <p style={{
+        fontSize: 13,
+        color: 'rgba(255,255,255,0.5)',
+        fontFamily: 'Nunito, sans-serif',
+        textAlign: 'center',
+        fontStyle: 'italic',
+        marginTop: 20,
+      }}>
+        {c.helperText}
+      </p>
     </div>
   );
 }
 
-function Screen3({ goNext, c, getRandomPhrase }) {
+// SCREEN 3: Mini Quiz
+function Screen3({ goNext, c }) {
   const [answered, setAnswered] = useState(false);
   const [wrongIndex, setWrongIndex] = useState(null);
-  const [bannerPhrase, setBannerPhrase] = useState(null);
   const [bannerType, setBannerType] = useState(null);
   const [bannerVisible, setBannerVisible] = useState(false);
 
@@ -149,88 +607,276 @@ function Screen3({ goNext, c, getRandomPhrase }) {
   const handleTap = (index) => {
     if (answered || bannerVisible) return;
     if (index === correctIdx) {
-      setAnswered(true); setBannerType('correct'); setBannerPhrase(getRandomPhrase('encouragement')); setBannerVisible(true);
+      setAnswered(true);
+      setBannerType('correct');
+      setBannerVisible(true);
     } else {
-      setWrongIndex(index); setBannerType('wrong'); setBannerPhrase(getRandomPhrase('feedback')); setBannerVisible(true);
+      setWrongIndex(index);
+      setBannerType('wrong');
+      setBannerVisible(true);
     }
   };
-  const getCorrectProp = (i) => { if (i === correctIdx && answered) return true; if (i === wrongIndex) return false; return null; };
+
+  const getCorrectProp = (i) => {
+    if (i === correctIdx && answered) return true;
+    if (i === wrongIndex) return false;
+    return null;
+  };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '16px 24px 160px 24px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 24px 180px' }}>
       <ProgressDots total={5} current={2} />
-      <div style={{ height: 8 }} />
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 12 }}>
-        <Geel size={100} expression={answered ? 'celebrating' : 'happy'} />
-        <div style={{ marginTop: 8 }}>
-          <SpeechBubble color={answered ? '#ECFEFF' : '#FFFFFF'}>
-            <p style={{ fontSize: 13, color: '#757575', fontFamily: 'Nunito, sans-serif', marginBottom: 2 }}>{c.label}</p>
-            <p style={{ fontSize: 18, fontWeight: 800, color: answered ? '#0E7490' : '#333', fontFamily: 'Nunito, sans-serif' }}>{c.prompt}</p>
-          </SpeechBubble>
+
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 20 }}>
+        <GlassGeelContainer size={90} />
+
+        {/* Speech bubble */}
+        <div style={{
+          marginTop: 12,
+          background: answered ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.15)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: answered ? '1px solid rgba(52,211,153,0.3)' : '1px solid rgba(255,255,255,0.2)',
+          borderRadius: 16,
+          padding: '14px 20px',
+          position: 'relative',
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: -8,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: 0,
+            height: 0,
+            borderLeft: '8px solid transparent',
+            borderRight: '8px solid transparent',
+            borderBottom: answered ? '8px solid rgba(16,185,129,0.2)' : '8px solid rgba(255,255,255,0.15)',
+          }} />
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginBottom: 4, fontWeight: 600 }}>{c.label}</p>
+          <p style={{ fontSize: 22, fontWeight: 900, color: answered ? '#6EE7B7' : 'white', fontFamily: 'Nunito, sans-serif', textShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>{c.prompt}</p>
         </div>
       </div>
-      <p style={{ fontSize: 15, fontWeight: 600, color: '#333', fontFamily: 'Nunito, sans-serif', marginBottom: 14 }}>{c.instruction}</p>
+
+      <p style={{
+        fontSize: 17,
+        fontWeight: 700,
+        color: 'rgba(255,255,255,0.9)',
+        fontFamily: 'Nunito, sans-serif',
+        marginBottom: 16,
+        textShadow: '0 1px 6px rgba(0,0,0,0.15)',
+      }}>
+        {c.instruction}
+      </p>
+
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {(c.options || []).map((opt, i) => (
-          <OptionCard key={i} text={opt} number={i + 1} selected={i === correctIdx && answered} correct={getCorrectProp(i)} onClick={() => handleTap(i)} disabled={answered || bannerVisible} />
+          <GlassOptionCard
+            key={i}
+            text={opt}
+            number={i + 1}
+            selected={i === correctIdx && answered}
+            correct={getCorrectProp(i)}
+            onClick={() => handleTap(i)}
+            disabled={answered || bannerVisible}
+          />
         ))}
       </div>
-      <FeedbackBanner type={bannerType === 'correct' ? 'correct' : 'wrong'} phrase={bannerPhrase} visible={bannerVisible}
-        onContinue={() => { if (bannerType === 'correct') goNext(); else { setWrongIndex(null); setBannerPhrase(null); setBannerType(null); setBannerVisible(false); } }} />
+
+      <FeedbackBanner
+        type={bannerType}
+        visible={bannerVisible}
+        onContinue={() => {
+          if (bannerType === 'correct') goNext();
+          else {
+            setWrongIndex(null);
+            setBannerType(null);
+            setBannerVisible(false);
+          }
+        }}
+      />
     </div>
   );
 }
 
+// SCREEN 4: Encouragement
 function Screen4({ goNext, c }) {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px 32px 40px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 32px 40px' }}>
       <ProgressDots total={5} current={3} />
-      <div style={{ flex: 1 }} />
-      <Geel size={140} expression="encouraging" />
-      <div style={{ height: 24 }} />
-      <h2 style={{ fontSize: 24, fontWeight: 900, color: '#333', fontFamily: 'Nunito, sans-serif', textAlign: 'center' }}>{c.title}</h2>
-      <p style={{ fontSize: 15, color: '#757575', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 8, lineHeight: 1.6 }}>{c.line1}</p>
-      <p style={{ fontSize: 15, color: '#757575', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 4 }}>{c.line2}</p>
-      <div style={{ flex: 1 }} />
-      <PrimaryButton onClick={goNext}>{c.buttonText}</PrimaryButton>
+
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{
+          filter: 'drop-shadow(0 12px 30px rgba(0,0,0,0.25))',
+          animation: 'float 3s ease-in-out infinite',
+        }}>
+          <Geel size={150} expression="celebrating" />
+        </div>
+
+        <h2 style={{
+          fontSize: 'clamp(30px, 7.5vw, 36px)',
+          fontWeight: 900,
+          color: 'white',
+          fontFamily: 'Nunito, sans-serif',
+          textAlign: 'center',
+          marginTop: 28,
+          textShadow: '0 4px 20px rgba(0,0,0,0.3)',
+          letterSpacing: '-0.3px',
+        }}>
+          {c.title}
+        </h2>
+
+        <p style={{
+          fontSize: 'clamp(17px, 4.5vw, 20px)',
+          color: 'rgba(255,255,255,0.85)',
+          fontFamily: 'Nunito, sans-serif',
+          textAlign: 'center',
+          marginTop: 14,
+          lineHeight: 1.7,
+          fontWeight: 600,
+        }}>
+          {c.line1}
+        </p>
+        <p style={{
+          fontSize: 'clamp(17px, 4.5vw, 20px)',
+          color: 'rgba(255,255,255,0.75)',
+          fontFamily: 'Nunito, sans-serif',
+          textAlign: 'center',
+          marginTop: 6,
+          fontWeight: 600,
+        }}>
+          {c.line2}
+        </p>
+      </div>
+
+      <PremiumButton onClick={goNext}>{c.buttonText}</PremiumButton>
     </div>
   );
 }
 
+// SCREEN 5: Save Progress Prompt
 function Screen5({ goNext, c }) {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px 24px 40px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px 40px' }}>
       <ProgressDots total={5} current={4} />
-      <div style={{ flex: 1 }} />
-      <Geel size={120} />
-      <div style={{ height: 24 }} />
-      <h2 style={{ fontSize: 20, fontWeight: 800, color: '#333', fontFamily: 'Nunito, sans-serif', textAlign: 'center' }}>{c.title}</h2>
-      <p style={{ fontSize: 14, color: '#757575', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 8 }}>{c.subtitle}</p>
-      <div style={{ height: 32 }} />
-      <PrimaryButton onClick={() => { storage.update({ guestMode: false }); goNext(); }}>{c.primaryButton}</PrimaryButton>
-      <div style={{ height: 10 }} />
-      <PrimaryButton variant="secondary" onClick={() => { storage.update({ guestMode: true }); goNext(); }}>{c.secondaryButton}</PrimaryButton>
-      <div style={{ flex: 1 }} />
+
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{
+          width: 100,
+          height: 100,
+          borderRadius: 30,
+          background: 'rgba(255,255,255,0.15)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid rgba(255,255,255,0.25)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 24,
+          boxShadow: '0 0 40px rgba(16,185,129,0.2)',
+        }}>
+          <Shield size={48} weight="fill" color="#10B981" />
+        </div>
+
+        <h2 style={{
+          fontSize: 'clamp(24px, 6vw, 28px)',
+          fontWeight: 900,
+          color: 'white',
+          fontFamily: 'Nunito, sans-serif',
+          textAlign: 'center',
+          textShadow: '0 3px 15px rgba(0,0,0,0.25)',
+          lineHeight: 1.3,
+        }}>
+          {c.title}
+        </h2>
+
+        <p style={{
+          fontSize: 'clamp(16px, 4vw, 18px)',
+          color: 'rgba(255,255,255,0.8)',
+          fontFamily: 'Nunito, sans-serif',
+          textAlign: 'center',
+          marginTop: 12,
+          lineHeight: 1.6,
+          fontWeight: 600,
+        }}>
+          {c.subtitle}
+        </p>
+      </div>
+
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <PremiumButton onClick={() => { storage.update({ guestMode: false }); goNext(); }} variant="cyan">
+          {c.primaryButton}
+        </PremiumButton>
+        <PremiumButton onClick={() => { storage.update({ guestMode: true }); goNext(); }} variant="secondary">
+          {c.secondaryButton}
+        </PremiumButton>
+      </div>
     </div>
   );
 }
 
+// SCREEN 6: Ready to Start
 function Screen6({ goNext, c }) {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px 24px 40px' }}>
-      <div style={{ flex: 1 }} />
-      <Geel size={140} expression="celebrating" />
-      <div style={{ height: 16 }} />
-      <div style={{ width: 52, height: 52, borderRadius: '50%', background: '#0891B2', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(8,145,178,0.3)' }}>
-        <span style={{ fontSize: 20, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>1</span>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px 40px' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{
+          filter: 'drop-shadow(0 12px 30px rgba(0,0,0,0.25))',
+          marginBottom: 20,
+        }}>
+          <Geel size={140} expression="excited" />
+        </div>
+
+        <div style={{
+          width: 56,
+          height: 56,
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #0891B2 0%, #0E7490 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 8px 30px rgba(8,145,178,0.5)',
+          border: '3px solid rgba(255,255,255,0.3)',
+        }}>
+          <span style={{ fontSize: 24, fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif' }}>1</span>
+        </div>
+
+        <h2 style={{
+          fontSize: 'clamp(28px, 7vw, 34px)',
+          fontWeight: 900,
+          color: 'white',
+          fontFamily: 'Nunito, sans-serif',
+          textAlign: 'center',
+          marginTop: 16,
+          textShadow: '0 3px 15px rgba(0,0,0,0.25)',
+        }}>
+          {c.lessonTitle}
+        </h2>
+
+        <p style={{
+          fontSize: 16,
+          color: 'rgba(255,255,255,0.65)',
+          fontFamily: 'Nunito, sans-serif',
+          textAlign: 'center',
+          marginTop: 6,
+          fontWeight: 600,
+        }}>
+          {c.lessonSubtitle}
+        </p>
+
+        <p style={{
+          fontSize: 'clamp(17px, 4.5vw, 20px)',
+          color: 'rgba(255,255,255,0.8)',
+          fontFamily: 'Nunito, sans-serif',
+          textAlign: 'center',
+          marginTop: 20,
+          lineHeight: 1.6,
+          fontWeight: 600,
+        }}>
+          {c.introLine}
+        </p>
       </div>
-      <div style={{ height: 12 }} />
-      <h2 style={{ fontSize: 24, fontWeight: 900, color: '#333', fontFamily: 'Nunito, sans-serif', textAlign: 'center' }}>{c.lessonTitle}</h2>
-      <p style={{ fontSize: 14, color: '#757575', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 4 }}>{c.lessonSubtitle}</p>
-      <div style={{ height: 16 }} />
-      <p style={{ fontSize: 15, color: '#757575', fontFamily: 'Nunito, sans-serif', textAlign: 'center' }}>{c.introLine}</p>
-      <div style={{ flex: 1 }} />
-      <PrimaryButton onClick={goNext}>{c.buttonText}</PrimaryButton>
+
+      <PremiumButton onClick={goNext}>{c.buttonText}</PremiumButton>
     </div>
   );
 }

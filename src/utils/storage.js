@@ -24,6 +24,8 @@ function defaultState() {
     userBirthday: '',
     userCity: '',
     practiceCompleted: {},
+    chunkStats: {},
+    weakChunks: [],
     dailyPractice: {
       date: null,
       progress: 0,

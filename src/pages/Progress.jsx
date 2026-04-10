@@ -4,6 +4,8 @@ import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
 import practiceFeatures from '../data/practiceFeatures';
 import Geel from '../components/Geel';
+import BottomNav from '../components/BottomNav';
+import IconContainer from '../components/IconContainer';
 
 const FEATURE_KEYS = Object.keys(practiceFeatures);
 
@@ -17,40 +19,96 @@ export default function Progress() {
   const lessonPct = Math.round((lessonsCompleted.length / 10) * 100);
 
   return (
-    <div style={{ background: '#FBF7F0', minHeight: '100dvh' }}>
-      {/* Green top bar */}
-      <div style={{ background: 'linear-gradient(180deg, #22D3EE 0%, #0891B2 40%, #0E7490 100%)', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 10, minHeight: 48, boxShadow: '0 4px 20px rgba(8,145,178,0.3)' }}>
-        <button onClick={() => navigate('/astaanta')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, display: 'flex', alignItems: 'center' }}>
-          <ArrowLeft size={22} weight="bold" color="white" />
+    <div style={{
+      background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
+      minHeight: '100dvh',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      {/* Ambient light blobs */}
+      <div style={{
+        position: 'absolute',
+        top: '8%',
+        right: '-40px',
+        width: '160px',
+        height: '160px',
+        background: 'radial-gradient(circle, rgba(34,211,238,0.2) 0%, transparent 70%)',
+        borderRadius: '50%',
+        pointerEvents: 'none'
+      }} />
+      <div style={{
+        position: 'absolute',
+        bottom: '25%',
+        left: '-50px',
+        width: '120px',
+        height: '120px',
+        background: 'radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)',
+        borderRadius: '50%',
+        pointerEvents: 'none'
+      }} />
+
+      {/* Header */}
+      <div style={{
+        padding: '14px 16px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        minHeight: 48,
+        position: 'relative',
+        zIndex: 2,
+      }}>
+        <button onClick={() => navigate(-1)} style={{
+          background: 'rgba(255,255,255,0.15)',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 8,
+          display: 'flex',
+          alignItems: 'center',
+          borderRadius: 10,
+        }}>
+          <ArrowLeft size={20} weight="bold" color="white" />
         </button>
         <span style={{ fontSize: 17, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
           {t('progress.title')}
         </span>
       </div>
 
-      <div style={{ padding: '20px 16px 40px' }}>
+      <div style={{ padding: '12px 16px 120px', position: 'relative', zIndex: 2 }}>
         {/* Geel */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginBottom: 20,
+          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))'
+        }}>
           <Geel size={100} expression={lessonPct > 50 ? 'celebrating' : 'happy'} />
         </div>
 
         {/* Stats grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 20 }}>
-          <StatCard icon={Star} iconColor="#FFCA28" iconBg="#FFF8E1" label={t('progress.total_xp')} value={xp} />
-          <StatCard icon={Fire} iconColor="#FF7043" iconBg="#FBE9E7" label={t('progress.current_streak')} value={`${streak} ${t('progress.days')}`} />
-          <StatCard icon={Trophy} iconColor="#AB47BC" iconBg="#F3E5F5" label={t('progress.longest_streak')} value={`${longestStreak} ${t('progress.days')}`} />
-          <StatCard icon={CheckCircle} iconColor="#0891B2" iconBg="#ECFEFF" label={t('progress.lessons_done')} value={`${lessonsCompleted.length}/10`} />
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
+          <StatCard icon={Star} glow="gold" label={t('progress.total_xp')} value={xp} />
+          <StatCard icon={Fire} glow="orange" label={t('progress.current_streak')} value={`${streak} ${t('progress.days')}`} />
+          <StatCard icon={Trophy} glow="purple" label={t('progress.longest_streak')} value={`${longestStreak} ${t('progress.days')}`} />
+          <StatCard icon={CheckCircle} glow="green" label={t('progress.lessons_done')} value={`${lessonsCompleted.length}/10`} />
         </div>
 
         {/* Growth Area */}
-        <p style={{ fontSize: 15, fontWeight: 700, color: '#1E293B', fontFamily: 'Nunito, sans-serif', marginBottom: 14, marginTop: 8 }}>
+        <p style={{
+          fontSize: 14,
+          fontWeight: 700,
+          color: 'rgba(255,255,255,0.7)',
+          fontFamily: 'Nunito, sans-serif',
+          marginBottom: 14,
+          textTransform: 'uppercase',
+          letterSpacing: '1px',
+        }}>
           {lang === 'en' ? 'Growth Area' : 'Horumarkaaga'}
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 24 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginBottom: 24 }}>
           <ProgressRing
             percentage={lessonPct}
             label={lang === 'en' ? 'Lessons' : 'Casharro'}
-            color="#0891B2"
+            color="#22D3EE"
           />
           {FEATURE_KEYS.map((key) => {
             const feature = practiceFeatures[key];
@@ -68,66 +126,102 @@ export default function Progress() {
           })}
         </div>
       </div>
+
+      <BottomNav active="xirfadaha" />
     </div>
   );
 }
 
-function StatCard({ icon: Icon, iconColor, iconBg, label, value }) {
+function StatCard({ icon: Icon, glow, label, value }) {
   return (
-    <div style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #FCFCFC 100%)', borderRadius: 16, padding: '16px 14px', border: '1px solid rgba(0,0,0,0.05)', borderBottom: '3px solid rgba(0,0,0,0.06)', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-      <div style={{ width: 44, height: 44, borderRadius: 12, background: iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 6px rgba(0,0,0,0.06), inset 0 -1px 2px rgba(0,0,0,0.04)' }}>
-        <Icon size={24} weight="fill" color={iconColor} />
-      </div>
-      <span style={{ fontSize: 20, fontWeight: 800, color: '#1E293B', fontFamily: 'Nunito, sans-serif' }}>{value}</span>
-      <span style={{ fontSize: 11, fontWeight: 600, color: '#64748B', fontFamily: 'Nunito, sans-serif', textAlign: 'center' }}>{label}</span>
+    <div style={{
+      background: 'rgba(255,255,255,0.12)',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
+      borderRadius: 16,
+      padding: '16px 14px',
+      border: '1px solid rgba(255,255,255,0.15)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 8
+    }}>
+      <IconContainer icon={Icon} glow={glow} size="lg" />
+      <span style={{ fontSize: 22, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{value}</span>
+      <span style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', textAlign: 'center' }}>{label}</span>
     </div>
   );
 }
 
 function ProgressRing({ percentage, label, color }) {
-  const radius = 38;
-  const stroke = 7;
+  const radius = 34;
+  const stroke = 6;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;
 
   return (
     <div style={{
-      background: 'linear-gradient(180deg, #FFFFFF 0%, #FCFCFC 100%)', borderRadius: 16, padding: '14px 8px 10px',
-      border: '1px solid rgba(0,0,0,0.05)', borderBottom: '3px solid rgba(0,0,0,0.06)', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column',
-      alignItems: 'center', gap: 6,
+      background: 'rgba(255,255,255,0.1)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+      borderRadius: 16,
+      padding: '14px 8px 12px',
+      border: '1px solid rgba(255,255,255,0.12)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 8,
     }}>
-      <div style={{ position: 'relative', width: 86, height: 86 }}>
-        <svg width="86" height="86" viewBox="0 0 86 86">
-          <defs>
-            <filter id={`glow-${color.replace('#','')}`} x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="2" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-          <circle cx="43" cy="43" r={radius} fill="none" stroke="#E2E8F0" strokeWidth={stroke} />
-          <circle cx="43" cy="43" r={radius} fill="none" stroke={color} strokeWidth={stroke}
+      <div style={{ position: 'relative', width: 76, height: 76 }}>
+        <svg width="76" height="76" viewBox="0 0 76 76">
+          <circle
+            cx="38"
+            cy="38"
+            r={radius}
+            fill="none"
+            stroke="rgba(255,255,255,0.12)"
+            strokeWidth={stroke}
+          />
+          <circle
+            cx="38"
+            cy="38"
+            r={radius}
+            fill="none"
+            stroke={color}
+            strokeWidth={stroke}
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={offset}
-            transform="rotate(-90 43 43)"
-            filter={`url(#glow-${color.replace('#','')})`}
-            style={{ transition: 'stroke-dashoffset 0.8s ease' }}
+            transform="rotate(-90 38 38)"
+            style={{
+              transition: 'stroke-dashoffset 0.8s ease',
+              filter: `drop-shadow(0 0 6px ${color}60)`
+            }}
           />
         </svg>
         <div style={{
-          position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}>
-          <span style={{ fontSize: 18, fontWeight: 800, color: '#1E293B', fontFamily: 'Nunito, sans-serif' }}>
+          <span style={{ fontSize: 16, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
             {percentage}%
           </span>
         </div>
       </div>
       <span style={{
-        fontSize: 11, fontWeight: 600, color: '#64748B', fontFamily: 'Nunito, sans-serif',
-        textAlign: 'center', lineHeight: 1.2,
+        fontSize: 10,
+        fontWeight: 600,
+        color: 'rgba(255,255,255,0.6)',
+        fontFamily: 'Nunito, sans-serif',
+        textAlign: 'center',
+        lineHeight: 1.2,
+        maxWidth: '100%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
       }}>
         {label}
       </span>

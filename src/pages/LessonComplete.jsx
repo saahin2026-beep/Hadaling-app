@@ -1,186 +1,304 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Star, Fire, CheckCircle, CurrencyCircleDollar } from '@phosphor-icons/react';
-import PhraseIcon from '../utils/PhraseIcon';
+import { Star, Fire, Trophy, CurrencyCircleDollar, ShareNetwork } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
 import { useData } from '../utils/DataContext';
 import { useLanguage } from '../utils/useLanguage';
 import Geel from '../components/Geel';
 import PrimaryButton from '../components/PrimaryButton';
-import Confetti from '../components/Confetti';
-import StreakMilestoneModal from '../components/StreakMilestoneModal';
+import IconContainer from '../components/IconContainer';
 import { recordLessonCompletion } from '../utils/streak';
+
+function Particle({ delay, duration, startX, color }) {
+  return (
+    <div style={{
+      position: 'absolute',
+      bottom: '-20px',
+      left: `${startX}%`,
+      width: color === 'gold' ? '8px' : '6px',
+      height: color === 'gold' ? '8px' : '6px',
+      background: color === 'gold'
+        ? 'linear-gradient(135deg, #F59E0B, #FBBF24)'
+        : 'linear-gradient(135deg, #22D3EE, #06B6D4)',
+      borderRadius: '50%',
+      opacity: 0,
+      animation: `floatUpCelebrate ${duration}s ease-out ${delay}s infinite`,
+      boxShadow: color === 'gold'
+        ? '0 0 10px rgba(245,158,11,0.5)'
+        : '0 0 8px rgba(34,211,238,0.4)',
+    }} />
+  );
+}
+
+function ConfettiPiece({ delay, startX, color, rotation }) {
+  return (
+    <div style={{
+      position: 'absolute',
+      top: '-10px',
+      left: `${startX}%`,
+      width: '10px',
+      height: '10px',
+      background: color,
+      opacity: 0,
+      transform: `rotate(${rotation}deg)`,
+      animation: `confettiFallCelebrate 3s ease-out ${delay}s infinite`,
+    }} />
+  );
+}
 
 export default function LessonComplete() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useLanguage();
-  const dahabEarned = location.state?.dahabEarned || 0;
+  const { t, lang } = useLanguage();
+  const dahabEarned = location.state?.dahabEarned || 5;
   const { lessonData, getRandomPhrase } = useData();
   const data = lessonData?.[id];
-  const [celebration] = useState(() => getRandomPhrase('celebration'));
+  const [celebration] = useState(() => getRandomPhrase?.('celebration') || { text: 'Mahadsanid!', emoji: 'star' });
   const state = storage.get();
-  const [countdown, setCountdown] = useState(5);
-  const [skipped, setSkipped] = useState(false);
-  const [streakMilestone, setStreakMilestone] = useState(null);
+  const [countdown, setCountdown] = useState(8);
+  const [showStats, setShowStats] = useState(false);
   const nextLessonId = Number(id) + 1;
   const nextLesson = lessonData?.[nextLessonId];
-  const nextChunkWord = nextLesson?.chunks?.[0]?.en || '';
 
   useEffect(() => {
     if (id) {
       storage.completeLesson(Number(id), dahabEarned);
-      const result = recordLessonCompletion();
-      if (result.milestone) {
-        storage.update({ dahab: (storage.get().dahab || 0) + result.milestone.dahab });
-        setStreakMilestone(result.milestone);
-      }
+      recordLessonCompletion();
     }
+    setTimeout(() => setShowStats(true), 400);
   }, [id]);
 
   useEffect(() => {
-    if (skipped || !nextLesson) return;
+    if (!nextLesson) return;
     if (countdown <= 0) {
       navigate(`/lesson/${nextLessonId}`);
       return;
     }
     const timer = setTimeout(() => setCountdown((c) => c - 1), 1000);
     return () => clearTimeout(timer);
-  }, [countdown, skipped, nextLesson]);
+  }, [countdown, nextLesson]);
 
   if (!data) { navigate('/home'); return null; }
 
+  const particles = Array.from({ length: 20 }, () => ({
+    delay: Math.random() * 3,
+    duration: 3 + Math.random() * 2,
+    startX: Math.random() * 100,
+    color: Math.random() > 0.5 ? 'gold' : 'cyan',
+  }));
+
+  const confetti = Array.from({ length: 30 }, () => ({
+    delay: Math.random() * 2,
+    startX: Math.random() * 100,
+    color: ['#F59E0B', '#22D3EE', '#10B981', '#EC4899', '#8B5CF6'][Math.floor(Math.random() * 5)],
+    rotation: Math.random() * 360,
+  }));
+
   return (
-    <div style={{ background: 'linear-gradient(180deg, #ECFEFF 0%, #CFFAFE 50%, #FFFFFF 100%)', minHeight: '100dvh', position: 'relative', overflow: 'hidden' }}>
-      <Confetti />
-      <div style={{ padding: '40px 24px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {/* Trophy badge with Geel */}
+    <div style={{
+      background: 'linear-gradient(180deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)',
+      minHeight: '100dvh',
+      position: 'relative',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      <style>{`
+        @keyframes floatUpCelebrate {
+          0% { opacity: 0; transform: translateY(0) scale(0.5); }
+          20% { opacity: 1; transform: translateY(-100px) scale(1); }
+          100% { opacity: 0; transform: translateY(-600px) scale(0.3); }
+        }
+        @keyframes confettiFallCelebrate {
+          0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+          100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+        }
+        @keyframes glowRing {
+          0%, 100% { box-shadow: 0 0 30px rgba(245,158,11,0.4); }
+          50% { box-shadow: 0 0 60px rgba(245,158,11,0.6); }
+        }
+      `}</style>
+
+      {/* Floating particles */}
+      {particles.map((p, i) => <Particle key={`p${i}`} {...p} />)}
+
+      {/* Confetti */}
+      {confetti.map((c, i) => <ConfettiPiece key={`c${i}`} {...c} />)}
+
+      {/* Ambient glows */}
+      <div style={{
+        position: 'absolute', top: '10%', left: '50%', transform: 'translateX(-50%)',
+        width: '300px', height: '300px',
+        background: 'radial-gradient(circle, rgba(245,158,11,0.2) 0%, transparent 70%)',
+        borderRadius: '50%', pointerEvents: 'none',
+        animation: 'pulse 3s ease-in-out infinite',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: '20%', left: '-50px',
+        width: '200px', height: '200px',
+        background: 'radial-gradient(circle, rgba(34,211,238,0.15) 0%, transparent 70%)',
+        borderRadius: '50%', pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: '30%', right: '-50px',
+        width: '180px', height: '180px',
+        background: 'radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%)',
+        borderRadius: '50%', pointerEvents: 'none',
+      }} />
+
+      {/* Main content */}
+      <div style={{
+        flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
+        padding: '40px 24px 32px', position: 'relative', zIndex: 1,
+      }}>
+        {/* Trophy ring with Geel */}
         <div style={{
-          width: 110, height: 110, borderRadius: '50%', background: '#FFF8E1',
-          border: '3px solid #FFC107', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 8px 24px rgba(255,193,7,0.3)',
+          width: 140, height: 140, borderRadius: '50%',
+          background: 'linear-gradient(135deg, rgba(245,158,11,0.2) 0%, rgba(251,191,36,0.1) 100%)',
+          border: '3px solid #F59E0B',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          animation: 'glowRing 2s ease-in-out infinite',
+          position: 'relative',
         }}>
-          <Geel size={75} expression="celebrating" />
+          <div style={{
+            position: 'absolute', inset: '8px', borderRadius: '50%',
+            border: '2px solid rgba(245,158,11,0.3)',
+          }} />
+          <Geel size={90} expression="celebrating" />
         </div>
 
-        <h1 style={{ fontSize: 24, fontWeight: 900, color: '#1E293B', fontFamily: 'Nunito, sans-serif', marginTop: 16, textAlign: 'center' }}>
-          {celebration.text} <PhraseIcon name={celebration.emoji} size={24} color="#FFC107" />
+        {/* Celebration text */}
+        <h1 style={{
+          fontSize: 28, fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif',
+          marginTop: 20, textAlign: 'center', textShadow: '0 2px 20px rgba(0,0,0,0.3)',
+        }}>
+          {celebration.text} ⭐
         </h1>
+        <p style={{
+          fontSize: 15, color: 'rgba(255,255,255,0.7)', fontFamily: 'Nunito, sans-serif', marginTop: 4,
+        }}>
+          {lang === 'en' ? `Lesson ${id} Complete` : `Casharka ${id} waa la dhammeeyey`}
+        </p>
 
-        {/* Stats row */}
-        <div style={{ display: 'flex', gap: 10, marginTop: 24, width: '100%' }}>
-          {/* XP */}
-          <div style={{ flex: 1, background: 'linear-gradient(180deg, #ECFEFF, #CFFAFE)', borderRadius: 16, borderBottom: '3px solid #A5F3FC', padding: '14px 10px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-            <Star size={28} weight="fill" color="#FFCA28" />
-            <p style={{ fontSize: 22, fontWeight: 800, color: '#0891B2', fontFamily: 'Nunito, sans-serif' }}>+10</p>
-            <p style={{ fontSize: 11, color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>{t('complete.xp_label')}</p>
+        {/* Stats cards */}
+        <div style={{
+          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12,
+          width: '100%', marginTop: 28,
+          opacity: showStats ? 1 : 0,
+          transform: showStats ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.6s ease-out',
+        }}>
+          <div style={{
+            background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
+            borderRadius: 16, padding: '18px 12px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center',
+          }}>
+            <IconContainer icon={Star} glow="gold" size="md" style={{ margin: '0 auto 8px' }} />
+            <p style={{ fontSize: 24, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>+10</p>
+            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif' }}>XP</p>
           </div>
-          {/* Dahab */}
-          <div style={{ flex: 1, background: 'linear-gradient(180deg, #FEF3C7, #FDE68A)', borderRadius: 16, borderBottom: '3px solid #D97706', padding: '14px 10px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-            <CurrencyCircleDollar size={26} weight="fill" color="#F59E0B" />
-            <p style={{ fontSize: 22, fontWeight: 800, color: '#92400E', fontFamily: 'Nunito, sans-serif' }}>+{dahabEarned}</p>
-            <p style={{ fontSize: 11, color: '#78350F', fontFamily: 'Nunito, sans-serif' }}>Dahab</p>
+
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(245,158,11,0.2) 0%, rgba(217,119,6,0.15) 100%)',
+            backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
+            borderRadius: 16, padding: '18px 12px', border: '1px solid rgba(245,158,11,0.3)',
+            textAlign: 'center', boxShadow: '0 0 30px rgba(245,158,11,0.15)',
+          }}>
+            <IconContainer icon={CurrencyCircleDollar} glow="gold" size="md" style={{ margin: '0 auto 8px' }} />
+            <p style={{ fontSize: 24, fontWeight: 800, color: '#F59E0B', fontFamily: 'Nunito, sans-serif' }}>+{dahabEarned}</p>
+            <p style={{ fontSize: 11, color: 'rgba(245,158,11,0.7)', fontFamily: 'Nunito, sans-serif' }}>Dahab</p>
           </div>
-          {/* Streak */}
-          <div style={{ flex: 1, background: 'linear-gradient(180deg, #E3F2FD, #BBDEFB)', borderRadius: 16, borderBottom: '3px solid #90CAF9', padding: '14px 10px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-            <Fire size={28} weight="fill" color="#FF7043" />
-            <p style={{ fontSize: 22, fontWeight: 800, color: '#1E88E5', fontFamily: 'Nunito, sans-serif' }}>{state.streak || 0}</p>
-            <p style={{ fontSize: 11, color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>{t('complete.streak_label')}</p>
+
+          <div style={{
+            background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
+            borderRadius: 16, padding: '18px 12px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center',
+          }}>
+            <IconContainer icon={Fire} glow="orange" size="md" style={{ margin: '0 auto 8px' }} />
+            <p style={{ fontSize: 24, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{state.streak || 1}</p>
+            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif' }}>{t('complete.streak') || 'Streak'}</p>
           </div>
         </div>
 
-        {/* Ability */}
-        <div style={{ background: '#F1F5F9', borderRadius: 14, padding: '14px 16px', marginTop: 20, width: '100%' }}>
-          <p style={{ fontSize: 12, color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>{t('complete.ability')}</p>
-          <p style={{ fontSize: 14, fontWeight: 600, color: '#0891B2', fontFamily: 'Nunito, sans-serif', marginTop: 4 }}>{data.ability}</p>
+        {/* Share card */}
+        <div style={{
+          width: '100%', marginTop: 24,
+          background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
+          borderRadius: 16, padding: '16px 20px', border: '1px solid rgba(255,255,255,0.1)',
+          display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer',
+          opacity: showStats ? 1 : 0,
+          transform: showStats ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.6s ease-out 0.2s',
+        }}>
+          <IconContainer icon={ShareNetwork} glow="purple" size="md" />
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: 14, fontWeight: 700, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
+              {lang === 'en' ? 'Share your progress' : 'La wadaag horumarkaaga'}
+            </p>
+            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif' }}>
+              {lang === 'en' ? 'Screenshot this moment!' : 'Sawir qaad!'}
+            </p>
+          </div>
         </div>
 
-        {/* Chunks */}
-        <div style={{ marginTop: 16, width: '100%' }}>
-          <p style={{ fontSize: 12, color: '#64748B', fontFamily: 'Nunito, sans-serif', marginBottom: 8 }}>{t('complete.learned')}</p>
-          {data.chunks.map((c, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#0891B2' }} />
-              <span style={{ fontSize: 14, fontWeight: 600, color: '#1E293B', fontFamily: 'Nunito, sans-serif' }}>{c.en}</span>
-            </div>
-          ))}
-        </div>
+        <div style={{ flex: 1, minHeight: 20 }} />
 
-        <div style={{ height: 24 }} />
-        {nextLesson ? (
-          <>
-            {/* Next lesson teaser */}
-            <div style={{
-              width: '100%',
-              background: 'linear-gradient(180deg, #F0FDFA, #CFFAFE)',
-              border: '1.5px dashed #A5F3FC',
-              borderRadius: 16,
-              padding: '14px 16px',
-              marginTop: 8,
-              marginBottom: 12,
-            }}>
-              <p style={{ fontSize: 11, color: '#0891B2', fontFamily: 'Nunito, sans-serif', marginBottom: 4, fontWeight: 700 }}>
-                Casharka xiga 👀
-              </p>
-              <p style={{ fontSize: 15, fontWeight: 800, color: '#0E7490', fontFamily: 'Nunito, sans-serif', marginBottom: 2 }}>
-                {nextLesson.titleSo}
-              </p>
-              <p style={{
-                fontSize: 14,
-                fontFamily: 'Nunito, sans-serif',
-                color: 'transparent',
-                textShadow: '0 0 10px #0891B2',
-                userSelect: 'none',
-              }}>
-                {nextChunkWord}...
-              </p>
-            </div>
+        {/* Next lesson countdown */}
+        {nextLesson && (
+          <div style={{
+            width: '100%', textAlign: 'center', marginBottom: 16,
+            opacity: showStats ? 1 : 0, transition: 'opacity 0.6s ease-out 0.4s',
+          }}>
+            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif' }}>
+              {lang === 'en' ? 'Next lesson in' : 'Casharka xiga'} {countdown}s
+            </p>
+            <p style={{ fontSize: 14, fontWeight: 600, color: 'rgba(255,255,255,0.7)', fontFamily: 'Nunito, sans-serif', marginTop: 4 }}>
+              {nextLesson.titleSo}
+            </p>
+          </div>
+        )}
 
-            {/* Auto-advance button with countdown */}
+        {/* CTA Buttons */}
+        <div style={{
+          width: '100%', display: 'flex', flexDirection: 'column', gap: 10,
+          opacity: showStats ? 1 : 0,
+          transform: showStats ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.6s ease-out 0.3s',
+        }}>
+          {nextLesson && (
             <button
               onClick={() => navigate(`/lesson/${nextLessonId}`)}
               style={{
-                width: '100%', padding: '16px 24px', borderRadius: 16, border: 'none',
-                background: 'linear-gradient(180deg, #22D3EE 0%, #0891B2 40%, #0E7490 100%)',
-                borderBottom: '4px solid #155E75',
-                boxShadow: '0 4px 12px rgba(8,145,178,0.3)',
-                fontSize: 15, fontWeight: 800, color: 'white',
-                fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
-                textTransform: 'uppercase', letterSpacing: 1,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+                width: '100%', padding: '16px',
+                background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+                border: 'none', borderRadius: 14, color: 'white',
+                fontSize: 16, fontWeight: 800, fontFamily: 'Nunito, sans-serif',
+                cursor: 'pointer', boxShadow: '0 8px 30px rgba(245,158,11,0.4)',
+                position: 'relative', overflow: 'hidden',
               }}
             >
-              <span>Bilow Casharka {nextLessonId}</span>
-              <span style={{
-                fontSize: 13, fontWeight: 700,
-                background: 'rgba(255,255,255,0.2)',
-                borderRadius: 20, padding: '2px 10px',
-              }}>
-                {countdown}s
-              </span>
+              <div style={{
+                position: 'absolute', top: 0, left: '-100%', width: '100%', height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+                animation: 'shimmer 2s infinite',
+              }} />
+              {lang === 'en' ? 'CONTINUE →' : 'SII WAD →'}
             </button>
+          )}
 
-            {/* Skip to home — small, secondary */}
-            <button
-              onClick={() => { setSkipped(true); navigate('/home'); }}
-              style={{
-                background: 'none', border: 'none', cursor: 'pointer',
-                fontSize: 13, color: '#94A3B8', fontFamily: 'Nunito, sans-serif',
-                marginTop: 10, textDecoration: 'underline', padding: '4px 0',
-              }}
-            >
-              Ku noqo guriga
-            </button>
-          </>
-        ) : (
-          <PrimaryButton onClick={() => navigate('/home')}>{t('complete.continue')}</PrimaryButton>
-        )}
+          <button
+            onClick={() => navigate('/home')}
+            style={{
+              width: '100%', padding: '14px',
+              background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255,255,255,0.15)', borderRadius: 14,
+              color: 'rgba(255,255,255,0.8)', fontSize: 15, fontWeight: 600,
+              fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
+            }}
+          >
+            {lang === 'en' ? 'Back to Home' : 'Ku noqo Bogga'}
+          </button>
+        </div>
       </div>
-
-      {streakMilestone && (
-        <StreakMilestoneModal milestone={streakMilestone} onClose={() => setStreakMilestone(null)} />
-      )}
     </div>
   );
 }

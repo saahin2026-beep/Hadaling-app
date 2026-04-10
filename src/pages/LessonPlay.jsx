@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { X, CurrencyCircleDollar } from '@phosphor-icons/react';
 import { useData } from '../utils/DataContext';
 import { calculateDahabLesson } from '../utils/speedScore';
+import { saveChunkStats } from '../utils/dailyMix';
 import ExerciseWrapper from '../components/ExerciseWrapper';
 import ProgressBar from '../components/ProgressBar';
 import ChooseExercise from '../exercises/ChooseExercise';
@@ -27,9 +28,11 @@ export default function LessonPlay() {
   const [currentExercise, setCurrentExercise] = useState(0);
   const [exerciseKey, setExerciseKey] = useState(0);
   const [sessionDahab, setSessionDahab] = useState(0);
+  const [chunkResults, setChunkResults] = useState([]);
 
   if (!data) { navigate('/home'); return null; }
 
+  const totalExercises = data.exercises.length;
   const exercise = data.exercises[currentExercise];
   const ExerciseComponent = EXERCISE_MAP[exercise.type];
   const enrichedData = { ...exercise, lessonId: Number(id) };
@@ -41,10 +44,19 @@ export default function LessonPlay() {
       setSessionDahab((prev) => prev + reward.total);
     }
 
-    if (currentExercise < 4) {
+    // Track chunk result
+    if (exercise.chunkId) {
+      setChunkResults(prev => [...prev, { chunkId: exercise.chunkId, correct: wasCorrect }]);
+    }
+
+    if (currentExercise < totalExercises - 1) {
       setCurrentExercise((p) => p + 1);
       setExerciseKey((p) => p + 1);
     } else {
+      // Save chunk stats on lesson complete
+      const finalResults = [...chunkResults, { chunkId: exercise.chunkId, correct: wasCorrect }];
+      saveChunkStats(finalResults);
+
       navigate(`/lesson/${id}/complete`, {
         state: { dahabEarned: sessionDahab + reward.total }
       });
@@ -58,9 +70,8 @@ export default function LessonPlay() {
           <X size={22} weight="bold" color="#94A3B8" />
         </button>
         <div style={{ flex: 1 }}>
-          <ProgressBar current={currentExercise + 1} total={5} dark={true} color="#0891B2" />
+          <ProgressBar current={currentExercise + 1} total={totalExercises} dark={true} color="#0891B2" />
         </div>
-        {/* Dahab counter — no timer in lessons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <CurrencyCircleDollar size={16} weight="fill" color="#F59E0B" />
           <span style={{
