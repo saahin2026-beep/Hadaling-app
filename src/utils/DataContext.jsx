@@ -10,10 +10,20 @@ import {
 } from '../data/phrases';
 
 const DataContext = createContext(null);
+const CACHE_VERSION = 'v2'; // Increment when curriculum changes
 
 function getInitialLessons() {
   try {
     const cached = localStorage.getItem('hadaling-data-cache');
+    const version = localStorage.getItem('hadaling-cache-version');
+
+    // If version mismatch, clear stale cache and use hardcoded
+    if (version !== CACHE_VERSION) {
+      localStorage.removeItem('hadaling-data-cache');
+      localStorage.setItem('hadaling-cache-version', CACHE_VERSION);
+      return { lessonData: hardcodedLessonData, lessonsList: hardcodedLessonsList };
+    }
+
     if (cached) {
       const parsed = JSON.parse(cached);
       if (parsed.lessonData && Object.keys(parsed.lessonData).length > 0) return parsed;

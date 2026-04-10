@@ -5,7 +5,8 @@ import SpeechBubble from '../components/SpeechBubble';
 import OptionCard from '../components/OptionCard';
 import FeedbackBanner from '../components/FeedbackBanner';
 
-export default function ChooseExercise({ data, onComplete, practiceMode = false, dark = false }) {
+export default function ChooseExercise({ data, onComplete, practiceMode = false, dark = false, premium = false }) {
+  const useDark = premium || dark;
   const { getRandomPhrase } = useData();
   const [answered, setAnswered] = useState(false);
   const [wrongIndex, setWrongIndex] = useState(null);
@@ -63,8 +64,8 @@ export default function ChooseExercise({ data, onComplete, practiceMode = false,
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 12 }}>
         <Geel size={90} expression={answered ? 'celebrating' : 'happy'} />
         <div style={{ marginTop: 8 }}>
-          <SpeechBubble dark={dark} color={!dark && (answered || showCorrect) ? '#D1FAE5' : '#FFFFFF'}>
-            <p style={{ fontSize: 18, fontWeight: 800, color: dark ? '#F1F5F9' : (answered || showCorrect ? '#059669' : '#333'), fontFamily: 'Nunito, sans-serif' }}>
+          <SpeechBubble dark={useDark} premium={premium} color={!useDark && (answered || showCorrect) ? '#D1FAE5' : '#FFFFFF'}>
+            <p style={{ fontSize: 18, fontWeight: 800, color: useDark ? '#F1F5F9' : (answered || showCorrect ? '#059669' : '#333'), fontFamily: 'Nunito, sans-serif' }}>
               {data.prompt}
             </p>
           </SpeechBubble>
@@ -80,7 +81,8 @@ export default function ChooseExercise({ data, onComplete, practiceMode = false,
             correct={getCorrectProp(i)}
             onClick={() => handleTap(i)}
             disabled={answered || bannerVisible || showCorrect}
-            dark={dark}
+            dark={useDark}
+            premium={premium}
           />
         ))}
       </div>
@@ -89,10 +91,10 @@ export default function ChooseExercise({ data, onComplete, practiceMode = false,
       {practiceMode && showCorrect && wrongIndex !== null && (
         <div style={{
           marginTop: 12, padding: '12px 16px', borderRadius: 12, textAlign: 'center',
-          background: dark ? 'rgba(16, 185, 129, 0.1)' : '#D1FAE5',
-          border: dark ? '1px solid rgba(16, 185, 129, 0.2)' : 'none',
+          background: useDark ? 'rgba(16, 185, 129, 0.1)' : '#D1FAE5',
+          border: useDark ? '1px solid rgba(16, 185, 129, 0.2)' : 'none',
         }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: dark ? '#6EE7B7' : '#059669', fontFamily: 'Nunito, sans-serif' }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: useDark ? '#6EE7B7' : '#059669', fontFamily: 'Nunito, sans-serif' }}>
             Jawaabta saxda: {data.options[data.correctIndex]}
           </p>
         </div>
@@ -103,7 +105,8 @@ export default function ChooseExercise({ data, onComplete, practiceMode = false,
           type={bannerType === 'correct' ? 'correct' : 'wrong'}
           phrase={bannerPhrase}
           visible={bannerVisible}
-          dark={dark}
+          dark={useDark}
+          premium={premium}
           autoAdvance={bannerType === 'correct'}
           onContinue={() => {
             if (bannerType === 'correct') onComplete(true);
