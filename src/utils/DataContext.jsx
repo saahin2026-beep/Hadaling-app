@@ -10,7 +10,7 @@ import {
 } from '../data/phrases';
 
 const DataContext = createContext(null);
-const CACHE_VERSION = 'v3'; // Increment when curriculum changes
+const CACHE_VERSION = 'v4'; // Increment when curriculum changes
 
 function getInitialLessons() {
   try {
@@ -53,11 +53,16 @@ export function DataProvider({ children }) {
   const [phrases, setPhrases] = useState(() => getInitialPhrases());
   const [onboardingContent, setOnboardingContent] = useState(null);
 
-  // Silent background sync — only sync phrases and onboarding from Supabase
-  // Lesson data uses hardcoded curriculum v2 (10 exercises per lesson)
-  // to prevent Supabase from overwriting with old 5-exercise data
+  // Silent background sync from Supabase
   useEffect(() => {
     async function syncFromSupabase() {
+      try {
+        const lessonsResult = await fetchLessons();
+        if (lessonsResult?.lessonData && Object.keys(lessonsResult.lessonData).length > 0) {
+          setLessonData(lessonsResult.lessonData);
+          setLessonsList(lessonsResult.lessonsList);
+        }
+      } catch {}
 
       try {
         const phrasesResult = await fetchPhrases();

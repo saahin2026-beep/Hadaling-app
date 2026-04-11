@@ -180,7 +180,7 @@ export default function DailyPractice() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             boxShadow: '0 12px 40px rgba(245,158,11,0.4), 0 0 0 4px rgba(255,255,255,0.9), 0 0 0 8px rgba(245,158,11,0.2)',
           }}>
-            <Geel size={75} expression="celebrating" />
+            <Geel size={75} expression="celebrating" circular />
           </div>
 
           <h1 style={{ fontSize: 24, fontWeight: 900, color: '#1E293B', fontFamily: 'Nunito, sans-serif', marginTop: 20, textAlign: 'center' }}>

@@ -73,7 +73,7 @@ export default function PracticeHub() {
             border: '1px solid rgba(255,255,255,0.2)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
-            <Geel size={28} />
+            <Geel size={28} circular />
           </div>
           <div>
             <p style={{ fontSize: 18, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>

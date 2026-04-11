@@ -73,7 +73,7 @@ export default function Home() {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <Geel size={32} />
+          <Geel size={32} circular />
         </div>
         <div>
           <p style={{

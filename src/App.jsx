@@ -1,35 +1,31 @@
 import { Routes, Route, Navigate, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { storage } from './utils/storage';
-import Onboarding from './pages/Onboarding';
+
+// Core pages — loaded immediately
 import Home from './pages/Home';
-import LessonIntro from './pages/LessonIntro';
-import LessonPlay from './pages/LessonPlay';
-import LessonComplete from './pages/LessonComplete';
-import Astaanta from './pages/Astaanta';
-import Progress from './pages/Progress';
-import PracticeHub from './pages/PracticeHub';
-import PracticeSession from './pages/PracticeSession';
-import About from './pages/About';
-import AuthGate from './pages/AuthGate';
-import SignupPage from './pages/SignupPage';
-import LoginPage from './pages/LoginPage';
-import ProfileSetup from './pages/ProfileSetup';
 import GeelWorld from './pages/GeelWorld';
-import DailyPractice from './pages/DailyPractice';
-import AdminPage from './admin/AdminPage';
+
+// Lazy-loaded pages — loaded on demand
+const Onboarding = lazy(() => import('./pages/Onboarding'));
+const LessonIntro = lazy(() => import('./pages/LessonIntro'));
+const LessonPlay = lazy(() => import('./pages/LessonPlay'));
+const LessonComplete = lazy(() => import('./pages/LessonComplete'));
+const Astaanta = lazy(() => import('./pages/Astaanta'));
+const Progress = lazy(() => import('./pages/Progress'));
+const PracticeHub = lazy(() => import('./pages/PracticeHub'));
+const PracticeSession = lazy(() => import('./pages/PracticeSession'));
+const DailyPractice = lazy(() => import('./pages/DailyPractice'));
+const About = lazy(() => import('./pages/About'));
+const AuthGate = lazy(() => import('./pages/AuthGate'));
+const SignupPage = lazy(() => import('./pages/SignupPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const ProfileSetup = lazy(() => import('./pages/ProfileSetup'));
+const UpgradePage = lazy(() => import('./pages/UpgradePage'));
+const AdminPage = lazy(() => import('./admin/AdminPage'));
 
 function LessonGuard({ children }) {
-  const { id } = useParams();
-  const lessonId = parseInt(id, 10);
-  const state = storage.get();
-
-  if (lessonId >= 4 && !state.authComplete) {
-    return <Navigate to="/auth-gate" replace />;
-  }
-  if (lessonId >= 4 && state.authComplete && !state.profileComplete) {
-    return <Navigate to="/profile-setup/0" replace />;
-  }
+  // Auth gate disabled for testing — all lessons accessible
   return children;
 }
 
@@ -39,28 +35,31 @@ export default function App() {
   const state = storage.get();
 
   return (
-    <Routes>
-      <Route path="/" element={
-        state.onboardingComplete ? <Navigate to="/home" replace /> : <Navigate to="/onboarding/0" replace />
-      } />
-      <Route path="/onboarding/:step" element={<Onboarding />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/lesson/:id" element={<LessonGuard><LessonIntro /></LessonGuard>} />
-      <Route path="/lesson/:id/play" element={<LessonGuard><LessonPlay /></LessonGuard>} />
-      <Route path="/lesson/:id/complete" element={<LessonComplete />} />
-      <Route path="/auth-gate" element={<AuthGate />} />
-      <Route path="/signup" element={<SignupPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/profile-setup/:step" element={<ProfileSetup />} />
-      <Route path="/astaanta" element={<Astaanta />} />
-      <Route path="/progress" element={<PracticeHub />} />
-      <Route path="/progress/stats" element={<Progress />} />
-      <Route path="/practice/daily" element={<DailyPractice />} />
-      <Route path="/practice/:featureKey" element={<PracticeSession />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/geel-world" element={<GeelWorld />} />
-      <Route path="/admin" element={<AdminPage />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <Suspense fallback={null}>
+      <Routes>
+        <Route path="/" element={
+          state.onboardingComplete ? <Navigate to="/home" replace /> : <Navigate to="/onboarding/0" replace />
+        } />
+        <Route path="/onboarding/:step" element={<Onboarding />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/lesson/:id" element={<LessonGuard><LessonIntro /></LessonGuard>} />
+        <Route path="/lesson/:id/play" element={<LessonGuard><LessonPlay /></LessonGuard>} />
+        <Route path="/lesson/:id/complete" element={<LessonComplete />} />
+        <Route path="/auth-gate" element={<AuthGate />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/profile-setup/:step" element={<ProfileSetup />} />
+        <Route path="/astaanta" element={<Astaanta />} />
+        <Route path="/progress" element={<PracticeHub />} />
+        <Route path="/progress/stats" element={<Progress />} />
+        <Route path="/practice/daily" element={<DailyPractice />} />
+        <Route path="/practice/:featureKey" element={<PracticeSession />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/geel-world" element={<GeelWorld />} />
+        <Route path="/upgrade" element={<UpgradePage />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Suspense>
   );
 }

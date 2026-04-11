@@ -165,7 +165,7 @@ export default function LessonComplete() {
             position: 'absolute', inset: '8px', borderRadius: '50%',
             border: '2px solid rgba(245,158,11,0.3)',
           }} />
-          <Geel size={90} expression="celebrating" />
+          <Geel size={90} expression="celebrating" circular />
         </div>
 
         {/* Celebration text */}

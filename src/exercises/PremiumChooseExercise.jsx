@@ -16,7 +16,7 @@ export default function PremiumChooseExercise({
   const [bannerType, setBannerType] = useState(null);
   const [bannerVisible, setBannerVisible] = useState(false);
 
-  const hasAudio = Boolean(data.chunkId && data.lessonId);
+  const hasAudio = Boolean(data.chunkId && data.lessonId && data.direction !== 'so-en');
   const audioSrc = hasAudio ? getChunkAudioPath(data.lessonId, data.chunkId) : null;
 
   const handleTap = (index) => {

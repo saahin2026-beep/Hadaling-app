@@ -9,6 +9,7 @@ import { useLanguage } from '../utils/useLanguage';
 import Geel from '../components/Geel';
 import BottomNav from '../components/BottomNav';
 import IconContainer from '../components/IconContainer';
+import ProfilePopup from '../components/ProfilePopup';
 
 export default function Astaanta() {
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ export default function Astaanta() {
           width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,255,255,0.25)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
         }}>
-          <Geel size={26} />
+          <Geel size={26} circular />
         </div>
         <span style={{ fontSize: 17, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
           {t('astaanta.title')}
@@ -108,101 +109,87 @@ export default function Astaanta() {
           </div>
         </div>
 
-        {/* Profile section — tappable */}
+        {/* Profile section — white card */}
         <div
           onClick={() => setShowProfile(true)}
           style={{
-            padding: '20px 16px 0',
+            margin: '20px 16px 0',
+            background: 'white',
+            borderRadius: 16,
+            padding: 16,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
             display: 'flex',
             alignItems: 'center',
             gap: 14,
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           <div style={{
-            width: 64,
-            height: 64,
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.15)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            border: '2px solid rgba(255,255,255,0.3)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'hidden',
+            width: 64, height: 64, borderRadius: '50%',
+            background: '#ECFEFF', border: '2px solid #0891B2',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
           }}>
-            <Geel size={50} />
+            <Geel size={50} circular />
           </div>
           <div style={{ flex: 1 }}>
-            <p style={{ fontSize: 18, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
+            <p style={{ fontSize: 18, fontWeight: 800, color: '#1E293B', fontFamily: 'Nunito, sans-serif' }}>
               {state.userName || (state.guestMode ? t('astaanta.guest') : t('astaanta.student'))}
             </p>
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginTop: 1 }}>
+            <p style={{ fontSize: 13, color: '#64748B', fontFamily: 'Nunito, sans-serif', marginTop: 1 }}>
               {state.authComplete ? (state.profileComplete ? '@' + (state.username || '') : t('astaanta.student_sub')) : t('astaanta.guest_sub')}
             </p>
           </div>
-          <CaretRight size={18} weight="bold" color="rgba(255,255,255,0.5)" />
+          <CaretRight size={18} weight="bold" color="#CBD5E1" />
         </div>
 
-        <div style={{ height: 1, background: 'rgba(255,255,255,0.1)', margin: '20px 16px 0' }} />
-
         {/* Menu */}
-        <div style={{ padding: '8px 16px 0' }}>
+        <div style={{ padding: '12px 16px 0' }}>
           <MenuItem icon={BookOpen} glow="cyan" label={t('astaanta.manage_courses')} sublabel={t('astaanta.manage_courses_sub')} onClick={() => navigate('/home')} />
           <MenuItem icon={ChartBar} glow="cyan" label={t('astaanta.progress')} sublabel={`${state.xp || 0} XP · ${state.lessonsCompleted?.length || 0}/10`} onClick={() => navigate('/progress/stats')} />
-          {/* Language toggle */}
+          {/* Language toggle — white card */}
           <div style={{
             width: '100%',
             display: 'flex',
             alignItems: 'center',
             gap: 14,
-            padding: '14px 4px',
-            borderBottom: '1px solid rgba(255,255,255,0.08)',
+            padding: 14,
+            background: 'white',
+            borderRadius: 14,
+            marginBottom: 10,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           }}>
-            <IconContainer icon={Globe} glow="neutral" size="md" />
+            <IconContainer icon={Globe} glow="neutral" size="md" variant="light" />
             <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 15, fontWeight: 700, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{t('astaanta.appearance')}</p>
-              <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif', marginTop: 1 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: '#1E293B', fontFamily: 'Nunito, sans-serif' }}>{t('astaanta.appearance')}</p>
+              <p style={{ fontSize: 12, color: '#64748B', fontFamily: 'Nunito, sans-serif', marginTop: 1 }}>
                 {lang === 'so' ? 'Soomaali' : 'English'}
               </p>
             </div>
             <div
               onClick={() => setLang(lang === 'so' ? 'en' : 'so')}
               style={{
-                width: 96,
-                height: 36,
-                borderRadius: 18,
-                background: 'rgba(255,255,255,0.1)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '3px',
-                position: 'relative',
-                transition: 'background 0.3s',
-                border: '1px solid rgba(255,255,255,0.15)',
+                width: 96, height: 36, borderRadius: 18,
+                background: '#E2E8F0', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', padding: '3px',
+                position: 'relative', transition: 'background 0.3s',
               }}
             >
               <div style={{
                 position: 'absolute',
                 left: lang === 'so' ? 3 : 'calc(100% - 49px)',
-                width: 46,
-                height: 30,
-                borderRadius: 15,
-                background: 'white',
+                width: 46, height: 30, borderRadius: 15,
+                background: '#0891B2',
                 transition: 'left 0.3s ease',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                <span style={{ fontSize: 10, fontWeight: 800, color: '#0891B2', fontFamily: 'Nunito, sans-serif' }}>
+                <span style={{ fontSize: 10, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
                   {lang === 'so' ? 'SO' : 'EN'}
                 </span>
               </div>
               <div style={{ flex: 1, display: 'flex', justifyContent: 'space-between', padding: '0 10px', zIndex: 0 }}>
-                <span style={{ fontSize: 10, fontWeight: 700, color: lang === 'so' ? 'transparent' : 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif' }}>SO</span>
-                <span style={{ fontSize: 10, fontWeight: 700, color: lang === 'en' ? 'transparent' : 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif' }}>EN</span>
+                <span style={{ fontSize: 10, fontWeight: 700, color: lang === 'so' ? 'transparent' : '#94A3B8', fontFamily: 'Nunito, sans-serif' }}>SO</span>
+                <span style={{ fontSize: 10, fontWeight: 700, color: lang === 'en' ? 'transparent' : '#94A3B8', fontFamily: 'Nunito, sans-serif' }}>EN</span>
               </div>
             </div>
           </div>
@@ -210,7 +197,7 @@ export default function Astaanta() {
           <MenuItem icon={ShieldCheck} glow="green" label={t('astaanta.security')} sublabel={state.guestMode ? t('astaanta.security_guest') : t('astaanta.security_verified')} onClick={() => setShowComingSoon(true)} />
           <MenuItem icon={Info} glow="neutral" label={t('astaanta.about')} sublabel={t('astaanta.about_sub')} onClick={() => navigate('/about')} />
 
-          <div style={{ height: 1, background: 'rgba(255,255,255,0.1)', margin: '8px 0' }} />
+          <div style={{ height: 10 }} />
 
           <MenuItem icon={Trash} glow="red" label={t('astaanta.reset')} sublabel={t('astaanta.reset_sub')} danger onClick={() => setShowResetConfirm(true)} />
           <MenuItem icon={SignOut} glow="red" label={t('astaanta.signout')} sublabel={t('astaanta.signout_sub')} danger onClick={() => setShowResetConfirm(true)} />
@@ -263,52 +250,9 @@ export default function Astaanta() {
         </Modal>
       )}
 
-      {/* Profile Detail Popup */}
+      {/* Profile Popup */}
       {showProfile && (
-        <Modal onClose={() => setShowProfile(false)}>
-          <div style={{ width: '100%' }}>
-            {/* Header */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 20 }}>
-              <div style={{
-                width: 80, height: 80, borderRadius: '50%', background: '#ECFEFF',
-                border: '3px solid #0891B2', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                overflow: 'hidden', boxShadow: '0 2px 8px rgba(8,145,178,0.2)',
-              }}>
-                <Geel size={60} />
-              </div>
-              <p style={{ fontSize: 20, fontWeight: 800, color: '#1E293B', fontFamily: 'Nunito, sans-serif', marginTop: 12 }}>
-                {state.userName || 'Martida'}
-              </p>
-              {state.username && (
-                <p style={{ fontSize: 14, color: '#0891B2', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>
-                  @{state.username}
-                </p>
-              )}
-            </div>
-
-            {/* Profile fields */}
-            <div style={{ width: '100%', borderRadius: 12, overflow: 'hidden', border: '1px solid #E2E8F0' }}>
-              <ProfileRow label={t('profile_popup.name')} value={state.userName || '—'} />
-              <ProfileRow label={t('profile_popup.username')} value={state.username ? '@' + state.username : '—'} />
-              <ProfileRow label={t('profile_popup.email')} value={state.userEmail || '—'} />
-              <ProfileRow label={t('profile_popup.phone')} value={state.userPhone || '—'} />
-              <ProfileRow label={t('profile_popup.birthday')} value={state.userBirthday || '—'} />
-              <ProfileRow label={t('profile_popup.city')} value={state.userCity || '—'} last />
-            </div>
-
-            {!state.authComplete && (
-              <p style={{ fontSize: 12, color: '#64748B', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 16 }}>
-                {t('profile_popup.guest_note')}
-              </p>
-            )}
-
-            <button onClick={() => setShowProfile(false)} style={{
-              width: '100%', padding: '14px 0', borderRadius: 14, border: 'none', background: '#0891B2',
-              fontSize: 15, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif',
-              cursor: 'pointer', marginTop: 20, textTransform: 'uppercase', letterSpacing: 0.5,
-            }}>{t('btn.close')}</button>
-          </div>
-        </Modal>
+        <ProfilePopup onClose={() => setShowProfile(false)} />
       )}
 
       <BottomNav active="astaanta" />
@@ -317,30 +261,39 @@ export default function Astaanta() {
 }
 
 function MenuItem({ icon: Icon, glow = 'neutral', label, sublabel, onClick, danger }) {
+  const cardStyle = danger ? {
+    background: '#FEF2F2',
+    border: '1px solid #FECACA',
+  } : {
+    background: 'white',
+    border: 'none',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+  };
+
   return (
     <button onClick={onClick} style={{
       width: '100%',
       display: 'flex',
       alignItems: 'center',
       gap: 14,
-      padding: '14px 4px',
-      background: 'none',
-      border: 'none',
-      borderBottom: '1px solid rgba(255,255,255,0.08)',
+      padding: 14,
+      borderRadius: 14,
+      marginBottom: 10,
       cursor: onClick ? 'pointer' : 'default',
       textAlign: 'left',
-      transition: 'background 0.15s',
+      transition: 'transform 0.15s, box-shadow 0.15s',
+      ...cardStyle,
     }}
-      onPointerDown={(e) => { if (onClick) e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; }}
-      onPointerUp={(e) => { e.currentTarget.style.background = 'none'; }}
-      onPointerLeave={(e) => { e.currentTarget.style.background = 'none'; }}
+      onPointerDown={(e) => { if (onClick) e.currentTarget.style.transform = 'scale(0.98)'; }}
+      onPointerUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+      onPointerLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
     >
-      <IconContainer icon={Icon} glow={glow} size="md" />
+      <IconContainer icon={Icon} glow={danger ? 'red' : glow} size="md" variant="light" />
       <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ fontSize: 15, fontWeight: 700, fontFamily: 'Nunito, sans-serif', color: danger ? '#F87171' : 'white' }}>{label}</p>
-        {sublabel && <p style={{ fontSize: 12, fontFamily: 'Nunito, sans-serif', marginTop: 1, color: danger ? '#FCA5A5' : 'rgba(255,255,255,0.5)' }}>{sublabel}</p>}
+        <p style={{ fontSize: 15, fontWeight: 700, fontFamily: 'Nunito, sans-serif', color: danger ? '#DC2626' : '#1E293B' }}>{label}</p>
+        {sublabel && <p style={{ fontSize: 12, fontFamily: 'Nunito, sans-serif', marginTop: 2, color: danger ? '#F87171' : '#64748B' }}>{sublabel}</p>}
       </div>
-      <CaretRight size={18} weight="bold" color={danger ? '#FCA5A5' : 'rgba(255,255,255,0.4)'} />
+      <CaretRight size={18} weight="bold" color={danger ? '#FECACA' : '#CBD5E1'} />
     </button>
   );
 }
