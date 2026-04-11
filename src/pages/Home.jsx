@@ -61,20 +61,12 @@ export default function Home() {
         position: 'relative',
         zIndex: 2,
       }}>
-        <div style={{
-          width: 52,
-          height: 52,
-          borderRadius: '50%',
+        <Geel size={52} circular style={{
           background: 'rgba(255,255,255,0.15)',
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)',
           border: '1px solid rgba(255,255,255,0.2)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <Geel size={32} circular />
-        </div>
+        }} />
         <div>
           <p style={{
             fontSize: 'clamp(18px, 4.5vw, 24px)',

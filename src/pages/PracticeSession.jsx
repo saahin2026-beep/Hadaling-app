@@ -56,14 +56,10 @@ export default function PracticeSession() {
       }}>
         <Confetti />
         <div style={{ padding: '60px 24px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 1 }}>
-          <div style={{
-            width: 110, height: 110, borderRadius: '50%',
+          <Geel size={110} expression="celebrating" circular style={{
             background: 'linear-gradient(180deg, #FDE68A 0%, #FCD34D 30%, #F59E0B 70%, #D97706 100%)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
             boxShadow: '0 12px 40px rgba(245,158,11,0.4), 0 0 0 4px rgba(255,255,255,0.9), 0 0 0 8px rgba(245,158,11,0.2)',
-          }}>
-            <Geel size={75} expression="celebrating" circular />
-          </div>
+          }} />
           <h1 style={{ fontSize: 24, fontWeight: 900, color: '#1E293B', fontFamily: 'Nunito, sans-serif', marginTop: 20, textAlign: 'center' }}>
             Hambalyo! <ConfettiIcon size={24} weight="fill" color="#FFC107" style={{ display: 'inline', verticalAlign: 'middle' }} />
           </h1>

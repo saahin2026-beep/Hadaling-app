@@ -66,15 +66,11 @@ export default function PracticeHub() {
         zIndex: 2,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-          <div style={{
-            width: 44, height: 44, borderRadius: '50%',
+          <Geel size={44} circular style={{
             background: 'rgba(255,255,255,0.15)',
             backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)',
             border: '1px solid rgba(255,255,255,0.2)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <Geel size={28} circular />
-          </div>
+          }} />
           <div>
             <p style={{ fontSize: 18, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
               {lang === 'en' ? 'Practice' : 'Xirfadaha'}

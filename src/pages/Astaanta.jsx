@@ -76,12 +76,7 @@ export default function Astaanta() {
         position: 'relative',
         zIndex: 2,
       }}>
-        <div style={{
-          width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,255,255,0.25)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
-        }}>
-          <Geel size={26} circular />
-        </div>
+        <Geel size={32} circular style={{ background: 'rgba(255,255,255,0.25)' }} />
         <span style={{ fontSize: 17, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
           {t('astaanta.title')}
         </span>
@@ -124,13 +119,7 @@ export default function Astaanta() {
             cursor: 'pointer',
           }}
         >
-          <div style={{
-            width: 64, height: 64, borderRadius: '50%',
-            background: '#ECFEFF', border: '2px solid #0891B2',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
-          }}>
-            <Geel size={50} circular />
-          </div>
+          <Geel size={64} circular style={{ border: '2px solid #0891B2', background: '#ECFEFF' }} />
           <div style={{ flex: 1 }}>
             <p style={{ fontSize: 18, fontWeight: 800, color: '#1E293B', fontFamily: 'Nunito, sans-serif' }}>
               {state.userName || (state.guestMode ? t('astaanta.guest') : t('astaanta.student'))}
