@@ -14,6 +14,13 @@
   --color-border: #E2E8F0;
 }
 
+/* ═══ iOS SAFARI VIEWPORT FIX ═══ */
+html {
+  height: 100%;
+  height: -webkit-fill-available;
+  overflow-x: hidden;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -28,6 +35,34 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior: none;
+  min-height: 100%;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+#root {
+  min-height: 100%;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+}
+
+.page-fixed {
+  height: 100dvh;
+  height: -webkit-fill-available;
+  max-height: 100dvh;
+  max-height: -webkit-fill-available;
+  overflow: hidden;
+  position: fixed;
+  inset: 0;
+}
+
+.page-scroll {
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 button, a, [role="button"] {

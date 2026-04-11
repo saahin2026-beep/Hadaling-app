@@ -28,9 +28,8 @@ export default function Astaanta() {
   };
 
   return (
-    <div style={{
+    <div className="page-fixed" style={{
       background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
-      minHeight: '100dvh',
       position: 'relative',
       overflow: 'hidden'
     }}>
@@ -82,7 +81,7 @@ export default function Astaanta() {
         </span>
       </div>
 
-      <div style={{ overflowY: 'auto', paddingBottom: 100, position: 'relative', zIndex: 2 }}>
+      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 100, position: 'relative', zIndex: 2 }}>
         {/* Banner */}
         <div style={{ padding: '16px 16px 0' }}>
           <div style={{

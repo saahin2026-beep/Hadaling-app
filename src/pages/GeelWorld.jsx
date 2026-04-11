@@ -66,9 +66,8 @@ export default function GeelWorld() {
   const greeting = hour < 12 ? 'SUBAX WANAAGSAN' : hour < 17 ? 'GALAB WANAAGSAN' : 'FIID WANAAGSAN';
 
   return (
-    <div style={{
+    <div className="page-scroll" style={{
       background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
-      minHeight: '100dvh',
       paddingBottom: 100,
       position: 'relative',
       overflow: 'hidden'

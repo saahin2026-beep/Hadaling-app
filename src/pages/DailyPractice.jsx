@@ -101,9 +101,9 @@ export default function DailyPractice() {
   // No lessons completed
   if (noLessons) {
     return (
-      <div style={{
+      <div className="page-fixed" style={{
         background: 'linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%)',
-        minHeight: '100dvh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 24,
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 24,
       }}>
         <Geel size={100} />
         <h2 style={{ color: '#1E293B', fontFamily: 'Nunito, sans-serif', fontSize: 20, fontWeight: 800, marginTop: 20, textAlign: 'center' }}>
@@ -126,7 +126,7 @@ export default function DailyPractice() {
 
   if (exercises.length === 0) {
     return (
-      <div style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%)', minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="page-fixed" style={{ background: 'linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <p style={{ color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>Loading...</p>
       </div>
     );
@@ -139,9 +139,9 @@ export default function DailyPractice() {
   if (showDahabAnimation && dahabResult) {
     const isJackpot = dahabResult.dahabTier === 'jackpot';
     return (
-      <div style={{
+      <div className="page-fixed" style={{
         background: 'linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%)',
-        minHeight: '100dvh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
         position: 'relative', overflow: 'hidden',
       }}>
         {isJackpot && <Confetti />}
@@ -168,9 +168,9 @@ export default function DailyPractice() {
   // Completion screen
   if (completed) {
     return (
-      <div style={{
+      <div className="page-fixed" style={{
         background: 'linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%)',
-        minHeight: '100dvh', position: 'relative', overflow: 'hidden',
+        position: 'relative', overflow: 'hidden',
       }}>
         <Confetti />
         <div style={{ padding: '60px 24px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 1 }}>

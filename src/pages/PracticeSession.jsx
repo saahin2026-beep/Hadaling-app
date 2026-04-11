@@ -50,9 +50,9 @@ export default function PracticeSession() {
 
   if (completed) {
     return (
-      <div style={{
+      <div className="page-fixed" style={{
         background: 'linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%)',
-        minHeight: '100dvh', position: 'relative', overflow: 'hidden',
+        position: 'relative', overflow: 'hidden',
       }}>
         <Confetti />
         <div style={{ padding: '60px 24px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 1 }}>

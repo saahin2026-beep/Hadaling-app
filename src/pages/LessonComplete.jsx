@@ -96,9 +96,8 @@ export default function LessonComplete() {
   }));
 
   return (
-    <div style={{
+    <div className="page-fixed" style={{
       background: 'linear-gradient(180deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)',
-      minHeight: '100dvh',
       position: 'relative',
       overflow: 'hidden',
       display: 'flex',

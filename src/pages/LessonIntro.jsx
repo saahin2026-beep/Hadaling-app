@@ -20,9 +20,8 @@ export default function LessonIntro() {
   if (!data) { navigate('/home'); return null; }
 
   return (
-    <div style={{
+    <div className="page-fixed" style={{
       background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
-      minHeight: '100dvh',
       position: 'relative',
       overflow: 'hidden',
       display: 'flex',
