@@ -10,7 +10,7 @@ import {
 } from '../data/phrases';
 
 const DataContext = createContext(null);
-const CACHE_VERSION = 'v4'; // Increment when curriculum changes
+const CACHE_VERSION = 'v5'; // Increment when curriculum changes
 
 function getInitialLessons() {
   try {
