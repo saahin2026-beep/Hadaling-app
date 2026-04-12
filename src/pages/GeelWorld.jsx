@@ -68,7 +68,7 @@ export default function GeelWorld() {
   return (
     <div className="page-scroll" style={{
       background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
-      paddingBottom: 'max(84px, calc(72px + env(safe-area-inset-bottom)))',
+      paddingBottom: 'max(100px, calc(80px + env(safe-area-inset-bottom)))',
       position: 'relative',
     }}>
       {/* Ambient light blobs */}

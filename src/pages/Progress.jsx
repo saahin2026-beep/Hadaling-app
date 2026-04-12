@@ -70,7 +70,7 @@ export default function Progress() {
         </span>
       </div>
 
-      <div style={{ padding: 'clamp(8px, 1.8vh, 14px) clamp(12px, 2.5vh, 20px) max(84px, calc(72px + env(safe-area-inset-bottom)))', position: 'relative', zIndex: 2 }}>
+      <div style={{ padding: 'clamp(8px, 1.8vh, 14px) clamp(12px, 2.5vh, 20px) max(24px, env(safe-area-inset-bottom))', position: 'relative', zIndex: 2 }}>
         {/* Geel */}
         <div style={{
           display: 'flex',

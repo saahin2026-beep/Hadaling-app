@@ -109,7 +109,7 @@ export default function LessonIntro() {
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(6px, 1.2vh, 10px)',
           boxShadow: '0 6px 24px rgba(245,158,11,0.4)', position: 'relative', overflow: 'hidden',
           animation: 'pulse 2s ease-in-out infinite', flexShrink: 0,
-          marginBottom: 'max(8px, env(safe-area-inset-bottom))',
+          marginBottom: 'max(24px, env(safe-area-inset-bottom))',
         }}>
           <div style={{ position: 'absolute', top: 0, left: '-100%', width: '100%', height: '100%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)', animation: 'shimmer 2s infinite', pointerEvents: 'none' }} />
           <Play size={18} weight="fill" color="white" />

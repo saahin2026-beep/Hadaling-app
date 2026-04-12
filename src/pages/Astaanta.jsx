@@ -81,7 +81,7 @@ export default function Astaanta() {
         </span>
       </div>
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingBottom: 'max(84px, calc(72px + env(safe-area-inset-bottom)))', position: 'relative', zIndex: 2, minHeight: 0 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingBottom: 'max(100px, calc(80px + env(safe-area-inset-bottom)))', position: 'relative', zIndex: 2, minHeight: 0 }}>
         {/* Banner */}
         <div style={{ padding: 'clamp(6px, 1.2vh, 10px) clamp(12px, 2.5vh, 20px) 0' }}>
           <div style={{

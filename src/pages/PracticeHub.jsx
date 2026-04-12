@@ -226,7 +226,7 @@ export default function PracticeHub() {
       </div>
 
       {/* Feature cards */}
-      <div style={{ flex: 1, padding: 'clamp(8px, 1.5vh, 14px) clamp(12px, 2.5vh, 20px) max(84px, calc(72px + env(safe-area-inset-bottom)))', position: 'relative', zIndex: 2, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: 1, padding: 'clamp(8px, 1.5vh, 14px) clamp(12px, 2.5vh, 20px) max(100px, calc(80px + env(safe-area-inset-bottom)))', position: 'relative', zIndex: 2, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
         <p style={{ fontSize: 'clamp(11px, 2.5vw, 13px)', fontWeight: 700, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(6px, 1vh, 10px)', textTransform: 'uppercase', letterSpacing: 0.5, flexShrink: 0 }}>
           {lang === 'en' ? 'Practice Activities' : 'Jimcsiyo ku celceli'}
         </p>

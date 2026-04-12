@@ -91,7 +91,7 @@ export default function Home() {
       <div style={{
         flex: 1,
         padding: 'clamp(12px, 3vw, 20px) clamp(14px, 3.5vw, 20px)',
-        paddingBottom: 'max(84px, calc(72px + env(safe-area-inset-bottom)))',
+        paddingBottom: 'max(100px, calc(80px + env(safe-area-inset-bottom)))',
         overflowY: 'auto',
         position: 'relative',
         zIndex: 2,
