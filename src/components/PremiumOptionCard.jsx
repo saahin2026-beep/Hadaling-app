@@ -10,7 +10,7 @@ export default function PremiumOptionCard({
 
   const getContainerStyles = () => {
     const base = {
-      width: '100%', minHeight: '80px', padding: '18px 22px', borderRadius: '20px',
+      width: '100%', minHeight: 'clamp(60px, 12vw, 80px)', padding: 'clamp(12px, 2.5vw, 18px) clamp(14px, 3vw, 22px)', borderRadius: '16px',
       display: 'flex', alignItems: 'center', gap: '18px',
       cursor: disabled ? 'default' : 'pointer', transition: 'all 0.2s ease',
       position: 'relative', overflow: 'hidden', fontFamily: 'Nunito, sans-serif',
@@ -23,7 +23,7 @@ export default function PremiumOptionCard({
   };
 
   const getBadgeStyles = () => {
-    const base = { width: '50px', height: '50px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif', position: 'relative', flexShrink: 0 };
+    const base = { width: 'clamp(38px, 9vw, 50px)', height: 'clamp(38px, 9vw, 50px)', borderRadius: 'clamp(12px, 3vw, 16px)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 'clamp(16px, 4vw, 20px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif', position: 'relative', flexShrink: 0 };
     if (isCorrect) return { ...base, background: 'linear-gradient(145deg, #34D399 0%, #10B981 50%, #059669 100%)', boxShadow: '0 6px 16px rgba(16,185,129,0.35), inset 0 1px 0 rgba(255,255,255,0.3)' };
     if (isWrong) return { ...base, background: 'linear-gradient(145deg, #F87171 0%, #EF4444 50%, #DC2626 100%)', boxShadow: '0 6px 16px rgba(239,68,68,0.35), inset 0 1px 0 rgba(255,255,255,0.3)' };
     return { ...base, background: 'linear-gradient(145deg, #0891B2 0%, #0E7490 50%, #064E5E 100%)', boxShadow: '0 6px 16px rgba(8,145,178,0.35), inset 0 1px 0 rgba(255,255,255,0.2)' };

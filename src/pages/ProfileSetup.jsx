@@ -89,8 +89,7 @@ export default function ProfileSetup() {
   const StepIcon = stepConfig.icon;
 
   return (
-    <div style={{
-      minHeight: '100dvh',
+    <div className="page-fixed" style={{
       display: 'flex',
       flexDirection: 'column',
       background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',

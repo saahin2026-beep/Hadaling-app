@@ -65,7 +65,6 @@ function GlassGeelContainer({ size = 80 }) {
 // Shared styles
 const styles = {
   page: {
-    minHeight: '100dvh',
     background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
     position: 'relative',
     overflow: 'hidden',
@@ -93,9 +92,13 @@ const styles = {
   content: {
     position: 'relative',
     zIndex: 1,
-    minHeight: '100dvh',
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    WebkitOverflowScrolling: 'touch',
+    minHeight: 0,
   },
 };
 
@@ -345,7 +348,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div style={styles.page}>
+    <div className="page-fixed" style={styles.page}>
       {/* CSS Animations */}
       <style>{`
         @keyframes fadeSlideUp {
@@ -404,7 +407,7 @@ function Screen0({ goNext, c }) {
   }, []);
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px 40px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 20px 20px' }}>
       <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
         <div style={{
           opacity: showContent ? 1 : 0,
@@ -504,7 +507,7 @@ function Screen1({ goNext, c }) {
   };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 24px 40px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 20px 20px' }}>
       <ProgressDots total={5} current={0} />
 
       <GlassGeelContainer size={80} />
@@ -552,7 +555,7 @@ function Screen2({ goNext, c }) {
   };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 24px 40px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 20px 20px' }}>
       <ProgressDots total={5} current={1} />
 
       <GlassGeelContainer size={80} />
@@ -624,7 +627,7 @@ function Screen3({ goNext, c }) {
   };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 24px 180px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 20px 20px' }}>
       <ProgressDots total={5} current={2} />
 
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 20 }}>
@@ -756,7 +759,7 @@ function Screen4({ goNext, c }) {
 // SCREEN 5: Save Progress Prompt
 function Screen5({ goNext, c }) {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px 40px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 20px 20px' }}>
       <ProgressDots total={5} current={4} />
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -817,7 +820,7 @@ function Screen5({ goNext, c }) {
 // SCREEN 6: Ready to Start
 function Screen6({ goNext, c }) {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px 40px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 20px 20px' }}>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{
           filter: 'drop-shadow(0 12px 30px rgba(0,0,0,0.25))',

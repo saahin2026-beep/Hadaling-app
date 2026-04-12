@@ -81,24 +81,24 @@ export default function Astaanta() {
         </span>
       </div>
 
-      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', paddingBottom: 100, position: 'relative', zIndex: 2 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingBottom: 'max(80px, calc(60px + env(safe-area-inset-bottom)))', position: 'relative', zIndex: 2, minHeight: 0 }}>
         {/* Banner */}
-        <div style={{ padding: '16px 16px 0' }}>
+        <div style={{ padding: '10px 16px 0' }}>
           <div style={{
             background: 'linear-gradient(135deg, #0891B2 0%, #22D3EE 100%)',
-            borderRadius: 16, padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 14,
+            borderRadius: 14, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 12,
             boxShadow: '0 2px 12px rgba(8,145,178,0.25)', position: 'relative', overflow: 'hidden',
           }}>
             <div style={{ position: 'absolute', right: -20, top: -20, width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }} />
             <div style={{
-              width: 48, height: 48, borderRadius: '50%', background: 'rgba(255,255,255,0.25)',
+              width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.25)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}>
-              <Crown size={24} weight="fill" color="white" />
+              <Crown size={20} weight="fill" color="white" />
             </div>
             <div style={{ flex: 1, zIndex: 1 }}>
-              <p style={{ fontSize: 15, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{t('astaanta.banner_title')}</p>
-              <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>{t('astaanta.banner_sub')}</p>
+              <p style={{ fontSize: 14, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{t('astaanta.banner_title')}</p>
+              <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.85)', fontFamily: 'Nunito, sans-serif', marginTop: 1 }}>{t('astaanta.banner_sub')}</p>
             </div>
           </div>
         </div>
@@ -107,31 +107,31 @@ export default function Astaanta() {
         <div
           onClick={() => setShowProfile(true)}
           style={{
-            margin: '20px 16px 0',
+            margin: '10px 16px 0',
             background: 'white',
-            borderRadius: 16,
-            padding: 16,
+            borderRadius: 14,
+            padding: 12,
             boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
             display: 'flex',
             alignItems: 'center',
-            gap: 14,
+            gap: 12,
             cursor: 'pointer',
           }}
         >
-          <Geel size={64} circular style={{ border: '2px solid #0891B2', background: '#ECFEFF' }} />
+          <Geel size={48} circular style={{ border: '2px solid #0891B2', background: '#ECFEFF' }} />
           <div style={{ flex: 1 }}>
-            <p style={{ fontSize: 18, fontWeight: 800, color: '#1E293B', fontFamily: 'Nunito, sans-serif' }}>
+            <p style={{ fontSize: 16, fontWeight: 800, color: '#1E293B', fontFamily: 'Nunito, sans-serif' }}>
               {state.userName || (state.guestMode ? t('astaanta.guest') : t('astaanta.student'))}
             </p>
-            <p style={{ fontSize: 13, color: '#64748B', fontFamily: 'Nunito, sans-serif', marginTop: 1 }}>
+            <p style={{ fontSize: 12, color: '#64748B', fontFamily: 'Nunito, sans-serif', marginTop: 1 }}>
               {state.authComplete ? (state.profileComplete ? '@' + (state.username || '') : t('astaanta.student_sub')) : t('astaanta.guest_sub')}
             </p>
           </div>
-          <CaretRight size={18} weight="bold" color="#CBD5E1" />
+          <CaretRight size={16} weight="bold" color="#CBD5E1" />
         </div>
 
         {/* Menu */}
-        <div style={{ padding: '12px 16px 0' }}>
+        <div style={{ padding: '8px 16px 0' }}>
           <MenuItem icon={BookOpen} glow="cyan" label={t('astaanta.manage_courses')} sublabel={t('astaanta.manage_courses_sub')} onClick={() => navigate('/home')} />
           <MenuItem icon={ChartBar} glow="cyan" label={t('astaanta.progress')} sublabel={`${state.xp || 0} XP · ${state.lessonsCompleted?.length || 0}/10`} onClick={() => navigate('/progress/stats')} />
           {/* Language toggle — white card */}
@@ -139,11 +139,11 @@ export default function Astaanta() {
             width: '100%',
             display: 'flex',
             alignItems: 'center',
-            gap: 14,
-            padding: 14,
+            gap: 12,
+            padding: '10px 12px',
             background: 'white',
-            borderRadius: 14,
-            marginBottom: 10,
+            borderRadius: 12,
+            marginBottom: 8,
             boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           }}>
             <IconContainer icon={Globe} glow="neutral" size="md" variant="light" />
@@ -185,14 +185,13 @@ export default function Astaanta() {
           <MenuItem icon={ShieldCheck} glow="green" label={t('astaanta.security')} sublabel={state.guestMode ? t('astaanta.security_guest') : t('astaanta.security_verified')} onClick={() => setShowComingSoon(true)} />
           <MenuItem icon={Info} glow="neutral" label={t('astaanta.about')} sublabel={t('astaanta.about_sub')} onClick={() => navigate('/about')} />
 
-          <div style={{ height: 10 }} />
+          <div style={{ height: 6 }} />
 
           <MenuItem icon={Trash} glow="red" label={t('astaanta.reset')} sublabel={t('astaanta.reset_sub')} danger onClick={() => setShowResetConfirm(true)} />
           <MenuItem icon={SignOut} glow="red" label={t('astaanta.signout')} sublabel={t('astaanta.signout_sub')} danger onClick={() => setShowResetConfirm(true)} />
         </div>
 
-        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 28 }}>Hadaling v1.0.0</p>
-        <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 4 }}>{t('astaanta.footer')} <Heart size={12} weight="fill" color="#E53935" style={{ display: 'inline', verticalAlign: 'middle' }} /></p>
+        <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 12 }}>Hadaling v1.0.0</p>
       </div>
 
       {/* Coming Soon Modal */}
@@ -263,10 +262,10 @@ function MenuItem({ icon: Icon, glow = 'neutral', label, sublabel, onClick, dang
       width: '100%',
       display: 'flex',
       alignItems: 'center',
-      gap: 14,
-      padding: 14,
-      borderRadius: 14,
-      marginBottom: 10,
+      gap: 12,
+      padding: '10px 12px',
+      borderRadius: 12,
+      marginBottom: 8,
       cursor: onClick ? 'pointer' : 'default',
       textAlign: 'left',
       transition: 'transform 0.15s, box-shadow 0.15s',

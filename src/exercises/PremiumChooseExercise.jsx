@@ -49,7 +49,7 @@ export default function PremiumChooseExercise({
         audioSrc={audioSrc}
       />
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '24px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
         {data.options.map((option, index) => (
           <PremiumOptionCard
             key={index}

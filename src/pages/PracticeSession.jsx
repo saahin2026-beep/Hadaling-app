@@ -55,8 +55,8 @@ export default function PracticeSession() {
         position: 'relative', overflow: 'hidden',
       }}>
         <Confetti />
-        <div style={{ padding: '60px 24px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 1 }}>
-          <Geel size={110} expression="celebrating" circular style={{
+        <div style={{ padding: 'clamp(16px, 4vh, 32px) 20px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 1, flex: 1, minHeight: 0 }}>
+          <Geel size={90} expression="celebrating" circular style={{
             background: 'linear-gradient(180deg, #FDE68A 0%, #FCD34D 30%, #F59E0B 70%, #D97706 100%)',
             boxShadow: '0 12px 40px rgba(245,158,11,0.4), 0 0 0 4px rgba(255,255,255,0.9), 0 0 0 8px rgba(245,158,11,0.2)',
           }} />
@@ -69,11 +69,11 @@ export default function PracticeSession() {
 
           <div style={{ display: 'flex', gap: 12, marginTop: 24, width: '100%' }}>
             <div style={{ flex: 1, background: 'linear-gradient(180deg, #FFFFFF, #ECFDF5)', border: '1.5px solid rgba(16,185,129,0.2)', borderRadius: 18, padding: '16px 10px', textAlign: 'center', boxShadow: '0 4px 16px rgba(16,185,129,0.1)' }}>
-              <p style={{ fontSize: 28, fontWeight: 800, color: '#059669', fontFamily: 'Nunito, sans-serif' }}>{correctCount}/{feature.exercises.length}</p>
+              <p style={{ fontSize: 'clamp(22px, 5vw, 28px)', fontWeight: 800, color: '#059669', fontFamily: 'Nunito, sans-serif' }}>{correctCount}/{feature.exercises.length}</p>
               <p style={{ fontSize: 11, fontWeight: 700, color: '#10B981', fontFamily: 'Nunito, sans-serif', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sax</p>
             </div>
             <div style={{ flex: 1, background: 'linear-gradient(180deg, #FFFFFF, #ECFEFF)', border: '1.5px solid rgba(8,145,178,0.2)', borderRadius: 18, padding: '16px 10px', textAlign: 'center', boxShadow: '0 4px 16px rgba(8,145,178,0.1)' }}>
-              <p style={{ fontSize: 28, fontWeight: 800, color: accuracyPct >= 70 ? '#0E7490' : '#D97706', fontFamily: 'Nunito, sans-serif' }}>{accuracyPct}%</p>
+              <p style={{ fontSize: 'clamp(22px, 5vw, 28px)', fontWeight: 800, color: accuracyPct >= 70 ? '#0E7490' : '#D97706', fontFamily: 'Nunito, sans-serif' }}>{accuracyPct}%</p>
               <p style={{ fontSize: 11, fontWeight: 700, color: '#0891B2', fontFamily: 'Nunito, sans-serif', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Saxnaan</p>
             </div>
           </div>

@@ -35,9 +35,8 @@ export default function PracticeHub() {
   };
 
   return (
-    <div className="page-scroll" style={{
+    <div className="page-fixed" style={{
       background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
-      position: 'relative',
     }}>
       {/* Ambient light blobs */}
       <div style={{
@@ -227,8 +226,8 @@ export default function PracticeHub() {
       </div>
 
       {/* Feature cards */}
-      <div style={{ padding: '16px 16px 100px', position: 'relative', zIndex: 2 }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+      <div style={{ flex: 1, padding: 'clamp(8px, 1.5vh, 14px) 16px max(80px, calc(60px + env(safe-area-inset-bottom)))', position: 'relative', zIndex: 2, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+        <p style={{ fontSize: 'clamp(11px, 2.5vw, 13px)', fontWeight: 700, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(6px, 1vh, 10px)', textTransform: 'uppercase', letterSpacing: 0.5, flexShrink: 0 }}>
           {lang === 'en' ? 'Practice Activities' : 'Jimcsiyo ku celceli'}
         </p>
 
@@ -243,18 +242,18 @@ export default function PracticeHub() {
               key={key}
               onClick={() => navigate(`/practice/${key}`)}
               style={{
-                width: '100%', display: 'flex', alignItems: 'center', gap: 14,
-                padding: '18px 16px',
+                width: '100%', display: 'flex', alignItems: 'center', gap: 10,
+                padding: 'clamp(10px, 1.8vh, 16px) clamp(10px, 2.5vw, 14px)',
                 background: 'rgba(255,255,255,0.1)',
                 backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
-                borderRadius: 16,
+                borderRadius: 'clamp(10px, 2vw, 14px)',
                 border: '1px solid rgba(255,255,255,0.12)',
-                marginBottom: 10, cursor: 'pointer', textAlign: 'left',
+                marginBottom: 'clamp(4px, 0.8vh, 8px)', cursor: 'pointer', textAlign: 'left',
                 transition: 'all 0.2s ease',
               }}
             >
               {isCompleted ? (
-                <IconContainer icon={CheckCircle} glow="green" size="lg" />
+                <IconContainer icon={CheckCircle} glow="green" size="md" />
               ) : (
                 <IconContainer icon={Icon} glow={
                   key === 'vocabulary' ? 'cyan' :
@@ -263,7 +262,7 @@ export default function PracticeHub() {
                   key === 'wordFormation' ? 'green' :
                   key === 'verbConjugation' ? 'orange' :
                   key === 'sentenceBuilder' ? 'pink' : 'cyan'
-                } size="lg" />
+                } size="md" />
               )}
 
               <div style={{ flex: 1, minWidth: 0 }}>

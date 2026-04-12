@@ -109,13 +109,13 @@ export default function GeelWorld() {
 
       {/* ═══ 1. HERO HEADER ═══ */}
       <div style={{
-        padding: '20px 20px 28px',
+        padding: '12px 16px 16px',
         position: 'relative',
         overflow: 'hidden',
         zIndex: 2,
       }}>
         {/* Stats pills */}
-        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'flex', gap: 6, justifyContent: 'center', position: 'relative', zIndex: 1 }}>
           <StatPill icon={<Fire size={14} weight="fill" color="white" />} gradient="linear-gradient(135deg, #F97316, #FB923C)" value={streak} />
           <StatPill icon={<Star size={14} weight="fill" color="white" />} gradient="linear-gradient(135deg, #FFCA28, #FFD54F)" value={xp} />
           <StatPill icon={<CurrencyCircleDollar size={14} weight="fill" color="white" />} gradient="linear-gradient(135deg, #F59E0B, #FBBF24)" value={dahab} />
@@ -123,12 +123,12 @@ export default function GeelWorld() {
         </div>
 
         {/* Greeting */}
-        <div style={{ textAlign: 'center', marginTop: 16, position: 'relative', zIndex: 1 }}>
-          <p style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.8)', fontFamily: 'Nunito, sans-serif', letterSpacing: 2, textTransform: 'uppercase' }}>
+        <div style={{ textAlign: 'center', marginTop: 8, position: 'relative', zIndex: 1 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.7)', fontFamily: 'Nunito, sans-serif', letterSpacing: 2, textTransform: 'uppercase' }}>
             {greeting}
           </p>
-          <p style={{ fontSize: 'clamp(22px, 5.5vw, 30px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', marginTop: 4, textShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
-            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>Welcome back! <HandWaving size={24} weight="fill" color="white" /></span>
+          <p style={{ fontSize: 'clamp(18px, 4.5vw, 24px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', marginTop: 2, textShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
+            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>Welcome back! <HandWaving size={20} weight="fill" color="white" /></span>
           </p>
         </div>
       </div>
@@ -167,20 +167,18 @@ export default function GeelWorld() {
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
           border: '1px solid rgba(255,255,255,0.15)',
-          borderRadius: 20,
-          padding: 20,
-          marginTop: -20,
+          borderRadius: 16,
+          padding: '14px 16px',
+          marginTop: -10,
           position: 'relative',
         }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, width: 120, height: 120, borderRadius: '24px 0 60px 0', background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%)', pointerEvents: 'none' }} />
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 1 }}>
             <div>
-              <IconContainer icon={ChatCircleDots} glow="cyan" size="md" style={{ marginBottom: 10 }} />
-              <p style={{ fontSize: 11, fontWeight: 800, color: '#22D3EE', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: 2 }}>
+              <p style={{ fontSize: 10, fontWeight: 800, color: '#22D3EE', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: 1.5 }}>
                 WORD OF THE DAY
               </p>
-              <p style={{ fontSize: 'clamp(26px, 6.5vw, 38px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>{dailyWord.en}</p>
-              <p style={{ fontSize: 'clamp(14px, 3.5vw, 18px)', fontWeight: 600, color: 'rgba(255,255,255,0.7)', fontFamily: 'Nunito, sans-serif' }}>{dailyWord.so}</p>
+              <p style={{ fontSize: 'clamp(22px, 5.5vw, 30px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>{dailyWord.en}</p>
+              <p style={{ fontSize: 'clamp(13px, 3vw, 16px)', fontWeight: 600, color: 'rgba(255,255,255,0.7)', fontFamily: 'Nunito, sans-serif' }}>{dailyWord.so}</p>
             </div>
             <button
               onClick={handlePlayWord}
@@ -202,7 +200,7 @@ export default function GeelWorld() {
         </div>
 
         {/* ═══ 3. QUICK STATS ROW ═══ */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginTop: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginTop: 10 }}>
           <MiniStatCard label="TODAY" value="0" sublabel="lessons" />
           <MiniStatCard label="GOAL" value="3" sublabel="weekly" />
           <MiniStatCard label="RANK" value="#42" sublabel="global" />
@@ -211,10 +209,10 @@ export default function GeelWorld() {
         {/* ═══ 4. TODAY'S MISSION — WHITE HERO CARD ═══ */}
         <div style={{
           background: 'white',
-          borderRadius: 20,
-          padding: '18px 20px',
-          marginTop: 16,
-          boxShadow: '0 10px 40px rgba(0,0,0,0.15), 0 2px 10px rgba(0,0,0,0.1)',
+          borderRadius: 16,
+          padding: '14px 16px',
+          marginTop: 10,
+          boxShadow: '0 8px 30px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08)',
           border: '2px solid rgba(255,255,255,0.9)',
           position: 'relative',
           overflow: 'hidden',
@@ -230,22 +228,19 @@ export default function GeelWorld() {
             pointerEvents: 'none',
           }} />
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, position: 'relative', zIndex: 1 }}>
-            <IconContainer icon={Target} glow="cyan" size="lg" variant="light" />
-            <div>
-              <p style={{ fontSize: 11, fontWeight: 700, color: '#0891B2', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: '1px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative', zIndex: 1 }}>
+            <IconContainer icon={Target} glow="cyan" size="md" variant="light" />
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 10, fontWeight: 700, color: '#0891B2', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 MAANTA / TODAY
               </p>
-              <p style={{ fontSize: 18, fontWeight: 800, color: '#1E293B', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>
+              <p style={{ fontSize: 16, fontWeight: 800, color: '#1E293B', fontFamily: 'Nunito, sans-serif', marginTop: 1 }}>
                 {currentLessonData?.titleSo || `Casharka ${currentLesson}`}
-              </p>
-              <p style={{ fontSize: 13, color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>
-                {currentLessonData?.titleEn || ''}
               </p>
             </div>
           </div>
 
-          <div style={{ marginTop: 12, height: 6, background: '#E2E8F0', borderRadius: 3, overflow: 'hidden', position: 'relative', zIndex: 1 }}>
+          <div style={{ marginTop: 8, height: 5, background: '#E2E8F0', borderRadius: 3, overflow: 'hidden', position: 'relative', zIndex: 1 }}>
             <div style={{
               height: '100%',
               width: `${progressPercent}%`,
@@ -254,12 +249,12 @@ export default function GeelWorld() {
               transition: 'width 0.5s ease',
             }} />
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, position: 'relative', zIndex: 1 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#0891B2', fontFamily: 'Nunito, sans-serif' }}>
-              {progressPercent}% complete
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, position: 'relative', zIndex: 1 }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: '#0891B2', fontFamily: 'Nunito, sans-serif' }}>
+              {progressPercent}%
             </span>
-            <span style={{ fontSize: 12, color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>
-              {lessonsCompleted.length}/10 lessons
+            <span style={{ fontSize: 11, color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>
+              {lessonsCompleted.length}/10
             </span>
           </div>
 
@@ -267,8 +262,8 @@ export default function GeelWorld() {
             onClick={() => navigate(`/lesson/${currentLesson}`)}
             style={{
               width: '100%',
-              marginTop: 14,
-              padding: '14px',
+              marginTop: 10,
+              padding: '12px',
               background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
               border: 'none',
               borderRadius: 12,
@@ -302,7 +297,7 @@ export default function GeelWorld() {
         </div>
 
         {/* ═══ 5. QUICK ACTIONS ═══ */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 10 }}>
           {/* Xirfadaha */}
           <button
             onClick={() => navigate('/progress')}
@@ -310,8 +305,8 @@ export default function GeelWorld() {
               background: 'rgba(255,255,255,0.12)',
               backdropFilter: 'blur(12px)',
               WebkitBackdropFilter: 'blur(12px)',
-              borderRadius: 20,
-              padding: '20px 16px',
+              borderRadius: 16,
+              padding: '14px 12px',
               border: '1px solid rgba(255,255,255,0.2)',
               boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
               textAlign: 'center',
@@ -362,9 +357,9 @@ export default function GeelWorld() {
               onClick={handleYaabTap}
               style={{
                 flex: 1, background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
-                borderRadius: 20, padding: 20,
+                borderRadius: 16, padding: 14,
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                gap: 8, cursor: 'pointer', position: 'relative', overflow: 'hidden', minHeight: 120,
+                gap: 6, cursor: 'pointer', position: 'relative', overflow: 'hidden', minHeight: 100,
                 boxShadow: '0 8px 32px rgba(245,158,11,0.3)',
               }}
             >
@@ -396,14 +391,14 @@ export default function GeelWorld() {
           style={{
             width: '100%',
             background: 'linear-gradient(135deg, #F59E0B 0%, #EA580C 100%)',
-            borderRadius: 16,
-            padding: '16px 20px',
+            borderRadius: 14,
+            padding: '12px 16px',
             border: 'none',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            gap: 14,
-            marginTop: 16,
+            gap: 12,
+            marginTop: 10,
             boxShadow: '0 8px 30px rgba(234,88,12,0.35)',
             position: 'relative',
             overflow: 'hidden',
@@ -560,14 +555,14 @@ function MiniStatCard({ label, value, sublabel }) {
       backdropFilter: 'blur(12px)',
       WebkitBackdropFilter: 'blur(12px)',
       border: '1px solid rgba(255,255,255,0.2)',
-      borderRadius: 16,
-      padding: '14px 10px',
+      borderRadius: 14,
+      padding: '10px 8px',
       boxShadow: '0 4px 20px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)',
       textAlign: 'center',
     }}>
-      <p style={{ fontSize: 10, fontWeight: 600, color: 'rgba(255,255,255,0.7)', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{label}</p>
-      <p style={{ fontSize: 28, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>{value}</p>
-      <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif' }}>{sublabel}</p>
+      <p style={{ fontSize: 9, fontWeight: 600, color: 'rgba(255,255,255,0.7)', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{label}</p>
+      <p style={{ fontSize: 22, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif', marginTop: 1 }}>{value}</p>
+      <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif' }}>{sublabel}</p>
     </div>
   );
 }

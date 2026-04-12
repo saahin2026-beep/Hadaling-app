@@ -14,10 +14,8 @@ export default function ExerciseLayout({
   const progressPercent = total > 0 ? (current / total) * 100 : 0;
 
   return (
-    <div style={{
-      minHeight: '100dvh',
+    <div className="page-fixed" style={{
       background: 'linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%)',
-      display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden',
     }}>
       <div style={{ position: 'absolute', top: '-80px', left: '50%', transform: 'translateX(-50%)', width: '400px', height: '250px', background: 'radial-gradient(ellipse, rgba(8,145,178,0.12) 0%, rgba(8,145,178,0.04) 40%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', top: '200px', right: '-60px', width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 60%)', pointerEvents: 'none' }} />
@@ -25,7 +23,7 @@ export default function ExerciseLayout({
       <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(8,145,178,0.03) 1px, transparent 1px)', backgroundSize: '24px 24px', pointerEvents: 'none' }} />
 
       {showProgress && (
-        <div style={{ padding: '16px 20px 20px', position: 'relative', zIndex: 2 }}>
+        <div style={{ padding: '12px 16px 12px', position: 'relative', zIndex: 2, flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <button onClick={handleClose} style={{
               width: '44px', height: '44px', background: 'rgba(255,255,255,0.9)',
@@ -79,7 +77,19 @@ export default function ExerciseLayout({
         </div>
       )}
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative', zIndex: 2, padding: '0 20px', paddingBottom: 'max(24px, env(safe-area-inset-bottom))' }}>
+      <div style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        zIndex: 2,
+        padding: '0 20px',
+        paddingBottom: 'max(24px, env(safe-area-inset-bottom))',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        WebkitOverflowScrolling: 'touch',
+        minHeight: 0,
+      }}>
         {children}
       </div>
     </div>

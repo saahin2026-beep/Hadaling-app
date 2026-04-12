@@ -18,8 +18,8 @@ export default function QuestionCard({
   };
 
   return (
-    <div style={{ padding: '8px 0 24px' }}>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+    <div style={{ padding: '4px 0 16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px',
           background: 'linear-gradient(135deg, rgba(8,145,178,0.1), rgba(34,211,238,0.15))',
@@ -41,7 +41,7 @@ export default function QuestionCard({
 
       <div style={{
         background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)',
-        border: '2px solid rgba(8,145,178,0.15)', borderRadius: '24px', padding: '28px 24px',
+        border: '2px solid rgba(8,145,178,0.15)', borderRadius: '20px', padding: 'clamp(16px, 3vw, 24px)',
         position: 'relative', overflow: 'hidden',
         boxShadow: '0 8px 32px rgba(8,145,178,0.1), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,1)',
       }}>
@@ -52,7 +52,7 @@ export default function QuestionCard({
         <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '200px', height: '80px', background: 'radial-gradient(ellipse, rgba(8,145,178,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
         <p style={{
-          fontSize: '32px', fontWeight: 800,
+          fontSize: 'clamp(22px, 5vw, 32px)', fontWeight: 800,
           background: 'linear-gradient(135deg, #0E7490 0%, #0891B2 50%, #22D3EE 100%)',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
           margin: 0, textAlign: 'center', lineHeight: 1.2, fontFamily: 'Nunito, sans-serif', position: 'relative',
