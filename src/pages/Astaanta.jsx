@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Trash, Warning, Bell, ChartBar,
+  Warning, Bell, ChartBar,
   ShieldCheck, Crown, SignOut, CaretRight, Globe, Heart
 } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
@@ -184,7 +184,6 @@ export default function Astaanta() {
           <MenuItem icon={ShieldCheck} glow="green" label={t('astaanta.security')} sublabel={state.guestMode ? t('astaanta.security_guest') : t('astaanta.security_verified')} onClick={() => setShowComingSoon(true)} />
           <div style={{ height: 'clamp(3px, 0.8vh, 6px)' }} />
 
-          <MenuItem icon={Trash} glow="red" label={t('astaanta.reset')} sublabel={t('astaanta.reset_sub')} danger onClick={() => setShowResetConfirm(true)} />
           <MenuItem icon={SignOut} glow="red" label={t('astaanta.signout')} sublabel={t('astaanta.signout_sub')} danger onClick={() => setShowResetConfirm(true)} />
         </div>
 
