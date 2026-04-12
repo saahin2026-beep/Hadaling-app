@@ -35,8 +35,9 @@ export default function PracticeHub() {
   };
 
   return (
-    <div className="page-fixed" style={{
+    <div className="page-scroll" style={{
       background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
+      position: 'relative',
     }}>
       {/* Ambient light blobs */}
       <div style={{
@@ -226,7 +227,7 @@ export default function PracticeHub() {
       </div>
 
       {/* Feature cards */}
-      <div style={{ flex: 1, padding: 'clamp(8px, 1.5vh, 14px) clamp(12px, 2.5vh, 20px) max(100px, calc(80px + env(safe-area-inset-bottom)))', position: 'relative', zIndex: 2, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: 'clamp(8px, 1.5vh, 14px) clamp(12px, 2.5vh, 20px) max(100px, calc(80px + env(safe-area-inset-bottom)))', position: 'relative', zIndex: 2 }}>
         <p style={{ fontSize: 'clamp(11px, 2.5vw, 13px)', fontWeight: 700, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(6px, 1vh, 10px)', textTransform: 'uppercase', letterSpacing: 0.5, flexShrink: 0 }}>
           {lang === 'en' ? 'Practice Activities' : 'Jimcsiyo ku celceli'}
         </p>
