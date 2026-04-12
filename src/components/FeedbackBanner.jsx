@@ -78,11 +78,11 @@ export default function FeedbackBanner({ type, phrase, onContinue, visible, dark
         backdropFilter: premium ? 'blur(20px)' : 'none',
         WebkitBackdropFilter: premium ? 'blur(20px)' : 'none',
         borderTop,
-        borderRadius: '28px 28px 0 0',
+        borderRadius: 'clamp(16px, 4vw, 28px) clamp(16px, 4vw, 28px) 0 0',
         padding: 'clamp(18px, 4.5vw, 28px) clamp(16px, 4vw, 24px) clamp(20px, 5vw, 32px)',
         boxShadow: bannerShadow,
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.5vw, 10px)', marginBottom: 'clamp(6px, 1.5vw, 10px)' }}>
           {isCorrect
             ? <CheckCircle size={32} weight="fill" color={premium ? 'white' : iconColor} />
             : <XCircle size={32} weight="fill" color={premium ? 'white' : iconColor} />}
@@ -94,7 +94,7 @@ export default function FeedbackBanner({ type, phrase, onContinue, visible, dark
           </span>
         </div>
         <p style={{
-          fontSize: 14, fontFamily: 'Nunito, sans-serif', marginBottom: 14, marginLeft: 42,
+          fontSize: 'clamp(13px, 3.2vw, 15px)', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(8px, 2vw, 14px)', marginLeft: 42,
           color: phraseColor,
         }}>
           <PhraseIcon name={phrase.emoji} size={16} color={phraseColor} /> {phrase.text}
@@ -103,7 +103,7 @@ export default function FeedbackBanner({ type, phrase, onContinue, visible, dark
           <div style={{
             width: '100%', height: 6, borderRadius: 3,
             background: premium ? 'rgba(255,255,255,0.2)' : (dark ? 'rgba(255,255,255,0.1)' : 'rgba(16,185,129,0.15)'),
-            overflow: 'hidden', marginTop: 8,
+            overflow: 'hidden', marginTop: 'clamp(6px, 1.5vw, 10px)',
           }}>
             <div style={{
               height: '100%', borderRadius: 3,
@@ -113,12 +113,12 @@ export default function FeedbackBanner({ type, phrase, onContinue, visible, dark
           </div>
         ) : (
           <button onClick={onContinue} style={{
-            width: '100%', padding: '16px 24px', borderRadius: premium ? 14 : 16,
+            width: '100%', padding: 'clamp(12px, 3vw, 20px) clamp(16px, 4vw, 28px)', borderRadius: premium ? 'clamp(10px, 2.5vw, 16px)' : 'clamp(10px, 2.5vw, 16px)',
             border: premium ? 'none' : 'none',
             background: btnBg,
             borderBottom: btnBorder,
             boxShadow: btnShadow,
-            fontSize: 15, fontWeight: 800, color: 'white',
+            fontSize: 'clamp(13px, 3.2vw, 15px)', fontWeight: 800, color: 'white',
             fontFamily: 'Nunito, sans-serif', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: 1,
             position: premium ? 'relative' : 'static',
             overflow: premium ? 'hidden' : 'visible',

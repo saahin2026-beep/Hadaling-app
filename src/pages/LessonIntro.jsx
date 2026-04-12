@@ -29,8 +29,8 @@ export default function LessonIntro() {
       <div style={{ position: 'absolute', bottom: '20%', left: '-50px', width: '160px', height: '160px', background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
 
       {/* Header */}
-      <div style={{ padding: 'clamp(8px, 2vh, 14px) 16px', display: 'flex', alignItems: 'center', gap: 10, position: 'relative', zIndex: 2, flexShrink: 0 }}>
-        <button onClick={() => navigate('/home')} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: 10, padding: 8, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ padding: 'clamp(8px, 2vh, 14px) clamp(12px, 2.5vh, 20px)', display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.2vh, 10px)', position: 'relative', zIndex: 2, flexShrink: 0 }}>
+        <button onClick={() => navigate('/home')} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: 'clamp(8px, 2vw, 12px)', padding: 'clamp(6px, 1.2vh, 10px)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <ArrowLeft size={18} weight="bold" color="white" />
         </button>
         <span style={{ fontSize: 'clamp(14px, 3.5vw, 16px)', fontWeight: 700, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
@@ -41,7 +41,7 @@ export default function LessonIntro() {
       {/* Content */}
       <div style={{
         flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
-        padding: '0 20px', position: 'relative', zIndex: 1,
+        padding: '0 clamp(12px, 2.5vh, 20px)', position: 'relative', zIndex: 1,
         opacity: showContent ? 1 : 0, transition: 'opacity 0.5s ease-out',
         gap: 'clamp(6px, 1.5vh, 14px)',
       }}>
@@ -69,7 +69,7 @@ export default function LessonIntro() {
           width: '100%', background: 'rgba(255,255,255,0.1)', borderRadius: 'clamp(10px, 2vw, 14px)',
           padding: 'clamp(10px, 2vh, 14px) clamp(12px, 3vw, 16px)', border: '1px solid rgba(255,255,255,0.15)', flexShrink: 0,
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.2vh, 10px)', marginBottom: 'clamp(3px, 0.8vh, 6px)' }}>
             <Target size={14} weight="fill" color="#F59E0B" />
             <span style={{ fontSize: 'clamp(10px, 2.5vw, 12px)', fontWeight: 600, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               {t('lesson.ability_intro')}
@@ -80,7 +80,7 @@ export default function LessonIntro() {
 
         {/* Chunks */}
         <div style={{ width: '100%', flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 'clamp(4px, 1vh, 8px)', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(3px, 0.8vh, 6px)', marginBottom: 'clamp(4px, 1vh, 8px)', flexShrink: 0 }}>
             <Lightning size={14} weight="fill" color="#F59E0B" />
             <span style={{ fontSize: 'clamp(12px, 3vw, 14px)', fontWeight: 700, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{t('lesson.chunks_title')}</span>
           </div>
@@ -89,7 +89,7 @@ export default function LessonIntro() {
               <div key={i} style={{
                 background: 'rgba(255,255,255,0.08)', borderRadius: 'clamp(8px, 2vw, 12px)',
                 padding: 'clamp(8px, 1.5vh, 12px) clamp(10px, 2.5vw, 14px)', border: '1px solid rgba(255,255,255,0.1)',
-                display: 'flex', alignItems: 'center', gap: 10,
+                display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.2vh, 10px)',
               }}>
                 <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22D3EE', flexShrink: 0, boxShadow: '0 0 6px rgba(34,211,238,0.5)' }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -105,8 +105,8 @@ export default function LessonIntro() {
         <button onClick={() => navigate(`/lesson/${id}/play`)} style={{
           width: '100%', padding: 'clamp(12px, 2.5vh, 16px)',
           background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
-          border: 'none', borderRadius: 12, cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+          border: 'none', borderRadius: 'clamp(8px, 2vw, 12px)', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(6px, 1.2vh, 10px)',
           boxShadow: '0 6px 24px rgba(245,158,11,0.4)', position: 'relative', overflow: 'hidden',
           animation: 'pulse 2s ease-in-out infinite', flexShrink: 0,
           marginBottom: 'max(8px, env(safe-area-inset-bottom))',

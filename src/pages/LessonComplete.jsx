@@ -52,7 +52,7 @@ export default function LessonComplete() {
       {/* Content — flex column, everything stretches to fill */}
       <div style={{
         flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        padding: 'clamp(12px, 3vh, 24px) 20px max(16px, env(safe-area-inset-bottom))',
+        padding: 'clamp(12px, 3vh, 24px) clamp(12px, 2.5vh, 20px) max(16px, env(safe-area-inset-bottom))',
         position: 'relative', zIndex: 1, gap: 'clamp(8px, 1.5vh, 16px)',
       }}>
         {/* Geel ring */}
@@ -89,7 +89,7 @@ export default function LessonComplete() {
         <div style={{
           width: '100%', background: 'rgba(255,255,255,0.06)', borderRadius: 'clamp(10px, 2vw, 14px)',
           padding: 'clamp(10px, 2vh, 16px) clamp(12px, 3vw, 20px)', border: '1px solid rgba(255,255,255,0.1)',
-          display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', flexShrink: 0,
+          display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.2vh, 10px)', cursor: 'pointer', flexShrink: 0,
           opacity: showStats ? 1 : 0, transition: 'opacity 0.6s ease-out 0.2s',
         }}>
           <IconContainer icon={ShareNetwork} glow="purple" size="sm" />
@@ -113,12 +113,12 @@ export default function LessonComplete() {
         )}
 
         {/* Buttons */}
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8, flexShrink: 0 }}>
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 'clamp(6px, 1.2vh, 10px)', flexShrink: 0 }}>
           {nextLesson && (
             <button onClick={() => navigate(`/lesson/${nextLessonId}`)} style={{
               width: '100%', padding: 'clamp(12px, 2.5vh, 16px)',
               background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
-              border: 'none', borderRadius: 12, color: 'white',
+              border: 'none', borderRadius: 'clamp(8px, 2vw, 12px)', color: 'white',
               fontSize: 'clamp(14px, 3.5vw, 16px)', fontWeight: 800, fontFamily: 'Nunito, sans-serif',
               cursor: 'pointer', boxShadow: '0 6px 24px rgba(245,158,11,0.4)',
               position: 'relative', overflow: 'hidden',
@@ -129,7 +129,7 @@ export default function LessonComplete() {
           )}
           <button onClick={() => navigate('/home')} style={{
             width: '100%', padding: 'clamp(10px, 2vh, 14px)',
-            background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 12,
+            background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 'clamp(8px, 2vw, 12px)',
             color: 'rgba(255,255,255,0.8)', fontSize: 'clamp(13px, 3vw, 15px)', fontWeight: 600, fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
           }}>
             {lang === 'en' ? 'Back to Home' : 'Ku noqo Bogga'}
@@ -144,7 +144,7 @@ function StatCard({ icon, glow, value, label, highlight }) {
   return (
     <div style={{
       background: highlight ? 'linear-gradient(135deg, rgba(245,158,11,0.2) 0%, rgba(217,119,6,0.15) 100%)' : 'rgba(255,255,255,0.08)',
-      borderRadius: 'clamp(10px, 2vw, 14px)', padding: 'clamp(10px, 2vh, 16px) 8px',
+      borderRadius: 'clamp(10px, 2vw, 14px)', padding: 'clamp(10px, 2vh, 16px) clamp(6px, 1.2vh, 10px)',
       border: highlight ? '1px solid rgba(245,158,11,0.3)' : '1px solid rgba(255,255,255,0.1)', textAlign: 'center',
     }}>
       <IconContainer icon={icon} glow={glow} size="sm" style={{ margin: '0 auto clamp(4px, 1vh, 8px)' }} />

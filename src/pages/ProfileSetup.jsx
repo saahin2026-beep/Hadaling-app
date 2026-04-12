@@ -105,10 +105,10 @@ export default function ProfileSetup() {
       <div style={{ position: 'absolute', bottom: '15%', left: '-50px', width: '140px', height: '140px', background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
 
       {/* Progress dots */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: 8, padding: '20px 24px 0', position: 'relative', zIndex: 2 }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 'clamp(6px, 1.2vh, 10px)', padding: 'clamp(12px, 2.5vh, 20px) clamp(16px, 3vh, 28px) 0', position: 'relative', zIndex: 2 }}>
         {Array.from({ length: STEP_CONFIGS.length }, (_, i) => (
           <div key={i} style={{
-            width: i === currentStep ? 24 : 8, height: 8, borderRadius: 4,
+            width: i === currentStep ? 24 : 8, height: 8, borderRadius: 'clamp(3px, 0.8vh, 6px)',
             background: i === currentStep ? 'linear-gradient(90deg, #22D3EE, #F59E0B)' : i < currentStep ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.2)',
             transition: 'all 0.3s ease',
             boxShadow: i === currentStep ? '0 0 12px rgba(34,211,238,0.5)' : 'none',
@@ -116,57 +116,57 @@ export default function ProfileSetup() {
         ))}
       </div>
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 24px 40px', position: 'relative', zIndex: 2 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 'clamp(12px, 2.5vh, 20px) clamp(16px, 3vh, 28px) max(16px, env(safe-area-inset-bottom))', position: 'relative', zIndex: 2 }}>
         {/* Geel */}
         <div style={{ filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.2))' }}>
           <Geel size={100} expression={currentStep === STEP_CONFIGS.length - 1 ? 'celebrating' : 'happy'} />
         </div>
-        <div style={{ height: 20 }} />
+        <div style={{ height: 'clamp(12px, 2.5vh, 20px)' }} />
 
         {/* Icon badge */}
         <div style={{
           width: 56, height: 56, borderRadius: '50%',
           background: 'rgba(8,145,178,0.2)', border: '1px solid rgba(34,211,238,0.3)',
           boxShadow: '0 4px 20px rgba(34,211,238,0.2)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'clamp(12px, 2.5vh, 20px)',
         }}>
           <StepIcon size={26} weight="fill" color="white" />
         </div>
 
         {/* Question */}
-        <h2 style={{ fontSize: 24, fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginBottom: 8, textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
+        <h2 style={{ fontSize: 'clamp(18px, 5vw, 24px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginBottom: 'clamp(6px, 1.2vh, 10px)', textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
           {t(stepConfig.questionKey)}
         </h2>
-        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginBottom: 24 }}>
+        <p style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(16px, 3vh, 28px)' }}>
           {t(stepConfig.labelKey)}
         </p>
 
         {error && (
-          <div style={{ padding: '12px 16px', borderRadius: 12, background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)', marginBottom: 16, width: '100%' }}>
-            <p style={{ fontSize: 13, fontWeight: 600, color: '#FCA5A5', fontFamily: 'Nunito, sans-serif' }}>{error}</p>
+          <div style={{ padding: 'clamp(8px, 1.8vh, 14px) clamp(12px, 2.5vh, 20px)', borderRadius: 'clamp(8px, 2vw, 12px)', background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)', marginBottom: 'clamp(12px, 2.5vh, 20px)', width: '100%' }}>
+            <p style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', fontWeight: 600, color: '#FCA5A5', fontFamily: 'Nunito, sans-serif' }}>{error}</p>
           </div>
         )}
 
         {/* Input field */}
-        <div style={{ width: '100%', marginBottom: 24 }}>
+        <div style={{ width: '100%', marginBottom: 'clamp(16px, 3vh, 28px)' }}>
           {stepConfig.key === 'city' ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 280, overflowY: 'auto' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(6px, 1.2vh, 10px)', maxHeight: 280, overflowY: 'auto' }}>
               {somaliCities.map((city) => (
                 <button
                   key={city}
                   onClick={() => updateField(city)}
                   style={{
-                    width: '100%', padding: '14px 16px', borderRadius: 14, textAlign: 'left',
+                    width: '100%', padding: 'clamp(8px, 1.8vh, 14px) clamp(12px, 2.5vh, 20px)', borderRadius: 'clamp(10px, 2.5vw, 16px)', textAlign: 'left',
                     border: formData.city === city ? '1.5px solid rgba(34,211,238,0.5)' : '1.5px solid rgba(255,255,255,0.12)',
                     background: formData.city === city ? 'rgba(34,211,238,0.15)' : 'rgba(255,255,255,0.08)',
                     color: 'white',
-                    fontSize: 15, fontWeight: formData.city === city ? 700 : 600,
+                    fontSize: 'clamp(13px, 3.2vw, 15px)', fontWeight: formData.city === city ? 700 : 600,
                     fontFamily: 'Nunito, sans-serif', cursor: 'pointer',
                     transition: 'all 0.2s',
                     boxShadow: formData.city === city ? '0 0 20px rgba(34,211,238,0.15)' : 'none',
                   }}
                 >
-                  {formData.city === city && <MapPin size={16} weight="fill" color="#22D3EE" style={{ marginRight: 8, verticalAlign: 'middle' }} />}
+                  {formData.city === city && <MapPin size={16} weight="fill" color="#22D3EE" style={{ marginRight: 'clamp(6px, 1.2vh, 10px)', verticalAlign: 'middle' }} />}
                   {city}
                 </button>
               ))}
@@ -179,23 +179,23 @@ export default function ProfileSetup() {
               max={new Date().toISOString().split('T')[0]}
               min="1940-01-01"
               style={{
-                width: '100%', padding: '16px', borderRadius: 14,
+                width: '100%', padding: 'clamp(12px, 2.5vh, 20px)', borderRadius: 'clamp(10px, 2.5vw, 16px)',
                 border: '1.5px solid rgba(255,255,255,0.12)',
-                fontSize: 16, fontFamily: 'Nunito, sans-serif', color: 'white',
+                fontSize: 'clamp(14px, 3.8vw, 17px)', fontFamily: 'Nunito, sans-serif', color: 'white',
                 outline: 'none', boxSizing: 'border-box',
                 background: 'rgba(255,255,255,0.08)',
               }}
             />
           ) : (
             <div style={{
-              display: 'flex', alignItems: 'center', gap: 12, padding: '4px',
-              borderRadius: 14, background: 'rgba(255,255,255,0.08)',
+              display: 'flex', alignItems: 'center', gap: 'clamp(8px, 1.8vh, 14px)', padding: 'clamp(3px, 0.8vh, 6px)',
+              borderRadius: 'clamp(10px, 2.5vw, 16px)', background: 'rgba(255,255,255,0.08)',
               border: focusedField ? '1.5px solid rgba(34,211,238,0.5)' : '1.5px solid rgba(255,255,255,0.12)',
               boxShadow: focusedField ? '0 0 0 4px rgba(34,211,238,0.1)' : 'none',
               transition: 'all 0.2s ease',
             }}>
               <div style={{
-                width: 44, height: 44, borderRadius: 10,
+                width: 44, height: 44, borderRadius: 'clamp(8px, 2vw, 12px)',
                 background: 'rgba(255,255,255,0.1)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
               }}>
@@ -209,8 +209,8 @@ export default function ProfileSetup() {
                 placeholder={t(stepConfig.placeholderKey)}
                 style={{
                   flex: 1, background: 'none', border: 'none', outline: 'none',
-                  fontSize: 16, color: 'white', fontFamily: 'Nunito, sans-serif', fontWeight: 600,
-                  padding: '12px 0',
+                  fontSize: 'clamp(14px, 3.8vw, 17px)', color: 'white', fontFamily: 'Nunito, sans-serif', fontWeight: 600,
+                  padding: 'clamp(8px, 1.8vh, 14px) 0',
                 }}
               />
             </div>
@@ -223,9 +223,9 @@ export default function ProfileSetup() {
           onClick={handleNext}
           disabled={saving}
           style={{
-            width: '100%', padding: '16px', borderRadius: 14, border: 'none',
+            width: '100%', padding: 'clamp(12px, 2.5vh, 20px)', borderRadius: 'clamp(10px, 2.5vw, 16px)', border: 'none',
             background: saving ? 'rgba(245,158,11,0.5)' : 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
-            fontSize: 16, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif',
+            fontSize: 'clamp(14px, 3.8vw, 17px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif',
             cursor: saving ? 'not-allowed' : 'pointer',
             boxShadow: '0 8px 30px rgba(245,158,11,0.4)',
             position: 'relative', overflow: 'hidden',

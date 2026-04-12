@@ -25,7 +25,7 @@ function GlassGeelContainer({ size = 80 }) {
     <div style={{
       display: 'flex',
       justifyContent: 'center',
-      marginBottom: 20,
+      marginBottom: 'clamp(12px, 2.5vh, 20px)',
     }}>
       <div style={{
         width: size,
@@ -105,7 +105,7 @@ const styles = {
 // Premium Progress Dots
 function ProgressDots({ total, current }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', gap: 8, padding: '20px 0' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', gap: 'clamp(6px, 1.2vh, 10px)', padding: 'clamp(12px, 2.5vh, 20px) 0' }}>
       {Array.from({ length: total }, (_, i) => (
         <div
           key={i}
@@ -158,16 +158,16 @@ function GlassOptionCard({ icon: Icon, text, selected, correct, onClick, disable
       disabled={disabled}
       style={{
         width: '100%',
-        padding: '16px 18px',
+        padding: 'clamp(12px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px)',
         background: bg,
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
         border: `1.5px solid ${border}`,
-        borderRadius: 16,
+        borderRadius: 'clamp(10px, 2.5vw, 16px)',
         cursor: disabled ? 'default' : 'pointer',
         display: 'flex',
         alignItems: 'center',
-        gap: 14,
+        gap: 'clamp(8px, 1.8vh, 14px)',
         transition: 'all 0.25s ease',
         boxShadow: shadow,
         transform: selected && !isWrong ? 'scale(1.02)' : 'scale(1)',
@@ -192,7 +192,7 @@ function GlassOptionCard({ icon: Icon, text, selected, correct, onClick, disable
         <div style={{
           width: 44,
           height: 44,
-          borderRadius: 12,
+          borderRadius: 'clamp(8px, 2vw, 12px)',
           background: glowColor ? glowColor.replace('0.3', '0.2') : 'rgba(255,255,255,0.15)',
           border: `1px solid ${glowColor ? glowColor.replace('0.3', '0.3') : 'rgba(255,255,255,0.2)'}`,
           display: 'flex',
@@ -207,7 +207,7 @@ function GlassOptionCard({ icon: Icon, text, selected, correct, onClick, disable
         <div style={{
           width: 36,
           height: 36,
-          borderRadius: 10,
+          borderRadius: 'clamp(8px, 2vw, 12px)',
           background: isCorrect ? 'rgba(16,185,129,0.3)' : isWrong ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.15)',
           border: '1px solid rgba(255,255,255,0.2)',
           display: 'flex',
@@ -220,12 +220,12 @@ function GlassOptionCard({ icon: Icon, text, selected, correct, onClick, disable
           ) : isWrong ? (
             <X size={18} weight="bold" color="#EF4444" />
           ) : (
-            <span style={{ fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.8)', fontFamily: 'Nunito, sans-serif' }}>{number}</span>
+            <span style={{ fontSize: 'clamp(13px, 3.2vw, 15px)', fontWeight: 700, color: 'rgba(255,255,255,0.8)', fontFamily: 'Nunito, sans-serif' }}>{number}</span>
           )}
         </div>
       )}
       <span style={{
-        fontSize: 16,
+        fontSize: 'clamp(14px, 3.8vw, 17px)',
         fontWeight: 700,
         color: isCorrect ? '#6EE7B7' : isWrong ? '#FCA5A5' : 'white',
         fontFamily: 'Nunito, sans-serif',
@@ -248,16 +248,16 @@ function PremiumButton({ onClick, children, variant = 'gold', disabled }) {
       disabled={disabled}
       style={{
         width: '100%',
-        padding: '16px 24px',
+        padding: 'clamp(12px, 2.5vh, 20px) clamp(16px, 3vh, 28px)',
         background: isSecondary
           ? 'rgba(255,255,255,0.1)'
           : variant === 'gold'
             ? 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)'
             : 'linear-gradient(135deg, #0891B2 0%, #0E7490 100%)',
         border: isSecondary ? '1px solid rgba(255,255,255,0.2)' : 'none',
-        borderRadius: 14,
+        borderRadius: 'clamp(10px, 2.5vw, 16px)',
         cursor: disabled ? 'default' : 'pointer',
-        fontSize: 16,
+        fontSize: 'clamp(14px, 3.8vw, 17px)',
         fontWeight: 800,
         color: 'white',
         fontFamily: 'Nunito, sans-serif',
@@ -300,17 +300,17 @@ function FeedbackBanner({ type, visible, onContinue }) {
       background: isCorrect
         ? 'linear-gradient(135deg, #059669 0%, #047857 100%)'
         : 'linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)',
-      padding: '20px 24px max(20px, env(safe-area-inset-bottom))',
-      borderRadius: '24px 24px 0 0',
+      padding: 'clamp(12px, 2.5vh, 20px) clamp(16px, 3vh, 28px) max(20px, env(safe-area-inset-bottom))',
+      borderRadius: 'clamp(16px, 3vh, 28px) clamp(16px, 3vh, 28px) 0 0',
       boxShadow: '0 -4px 30px rgba(0,0,0,0.3)',
       zIndex: 100,
       animation: 'slideUp 0.3s ease-out',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 1.8vh, 14px)', marginBottom: 'clamp(12px, 2.5vh, 20px)' }}>
         <div style={{
           width: 44,
           height: 44,
-          borderRadius: 12,
+          borderRadius: 'clamp(8px, 2vw, 12px)',
           background: 'rgba(255,255,255,0.2)',
           display: 'flex',
           alignItems: 'center',
@@ -319,10 +319,10 @@ function FeedbackBanner({ type, visible, onContinue }) {
           {isCorrect ? <Check size={24} weight="bold" color="white" /> : <X size={24} weight="bold" color="white" />}
         </div>
         <div>
-          <p style={{ fontSize: 20, fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', textShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
+          <p style={{ fontSize: 'clamp(16px, 4.2vw, 20px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', textShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
             {isCorrect ? 'Aad baad u fiicantahay!' : 'Isku day mar kale'}
           </p>
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontFamily: 'Nunito, sans-serif' }}>
+          <p style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', color: 'rgba(255,255,255,0.8)', fontFamily: 'Nunito, sans-serif' }}>
             {isCorrect ? 'Keep going!' : 'Try again'}
           </p>
         </div>
@@ -407,7 +407,7 @@ function Screen0({ goNext, c }) {
   }, []);
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 20px 20px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 clamp(12px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px)' }}>
       <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
         <div style={{
           opacity: showContent ? 1 : 0,
@@ -421,7 +421,7 @@ function Screen0({ goNext, c }) {
           <div style={{
             width: 140,
             height: 140,
-            borderRadius: 36,
+            borderRadius: 'clamp(24px, 5vw, 36px)',
             overflow: 'hidden',
             boxShadow: '0 20px 60px rgba(0,0,0,0.35), 0 0 0 3px rgba(255,255,255,0.2)',
             animation: 'float 4s ease-in-out infinite',
@@ -439,7 +439,7 @@ function Screen0({ goNext, c }) {
             color: 'white',
             fontFamily: 'Nunito, sans-serif',
             textAlign: 'center',
-            marginTop: 28,
+            marginTop: 'clamp(16px, 3vh, 28px)',
             textShadow: '0 4px 20px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.1)',
             letterSpacing: '-0.5px',
           }}>
@@ -451,7 +451,7 @@ function Screen0({ goNext, c }) {
             color: 'rgba(255,255,255,0.85)',
             fontFamily: 'Nunito, sans-serif',
             textAlign: 'center',
-            marginTop: 14,
+            marginTop: 'clamp(8px, 1.8vh, 14px)',
             lineHeight: 1.6,
             maxWidth: 300,
             fontWeight: 600,
@@ -469,11 +469,11 @@ function Screen0({ goNext, c }) {
       }}>
         <PremiumButton onClick={goNext}>{c.buttonText}</PremiumButton>
         <p style={{
-          fontSize: 12,
+          fontSize: 'clamp(11px, 2.8vw, 13px)',
           color: 'rgba(255,255,255,0.5)',
           fontFamily: 'Nunito, sans-serif',
           textAlign: 'center',
-          marginTop: 20,
+          marginTop: 'clamp(12px, 2.5vh, 20px)',
         }}>
           {c.footer}
         </p>
@@ -507,7 +507,7 @@ function Screen1({ goNext, c }) {
   };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 20px 20px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 clamp(12px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px)' }}>
       <ProgressDots total={5} current={0} />
 
       <GlassGeelContainer size={80} />
@@ -518,14 +518,14 @@ function Screen1({ goNext, c }) {
         color: 'white',
         fontFamily: 'Nunito, sans-serif',
         textAlign: 'center',
-        marginBottom: 24,
+        marginBottom: 'clamp(16px, 3vh, 28px)',
         textShadow: '0 3px 15px rgba(0,0,0,0.25)',
         lineHeight: 1.3,
       }}>
         {c.question}
       </h2>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(8px, 1.8vh, 14px)' }}>
         {(c.options || []).map((opt, i) => {
           const IconComponent = iconMap[['House', 'Briefcase', 'GraduationCap', 'Trophy'][i]];
           return (
@@ -555,23 +555,23 @@ function Screen2({ goNext, c }) {
   };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 20px 20px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 clamp(12px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px)' }}>
       <ProgressDots total={5} current={1} />
 
       <GlassGeelContainer size={80} />
 
       <h2 style={{
-        fontSize: 22,
+        fontSize: 'clamp(18px, 5vw, 24px)',
         fontWeight: 800,
         color: 'white',
         fontFamily: 'Nunito, sans-serif',
         textAlign: 'center',
-        marginBottom: 24,
+        marginBottom: 'clamp(16px, 3vh, 28px)',
       }}>
         {c.question}
       </h2>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(8px, 1.8vh, 14px)' }}>
         {(c.options || []).map((opt, i) => (
           <GlassOptionCard
             key={i}
@@ -585,12 +585,12 @@ function Screen2({ goNext, c }) {
       </div>
 
       <p style={{
-        fontSize: 13,
+        fontSize: 'clamp(11px, 2.8vw, 13px)',
         color: 'rgba(255,255,255,0.5)',
         fontFamily: 'Nunito, sans-serif',
         textAlign: 'center',
         fontStyle: 'italic',
-        marginTop: 20,
+        marginTop: 'clamp(12px, 2.5vh, 20px)',
       }}>
         {c.helperText}
       </p>
@@ -627,21 +627,21 @@ function Screen3({ goNext, c }) {
   };
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 20px 20px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 clamp(12px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px)' }}>
       <ProgressDots total={5} current={2} />
 
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 20 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 'clamp(12px, 2.5vh, 20px)' }}>
         <GlassGeelContainer size={90} />
 
         {/* Speech bubble */}
         <div style={{
-          marginTop: 12,
+          marginTop: 'clamp(8px, 1.8vh, 14px)',
           background: answered ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.15)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
           border: answered ? '1px solid rgba(52,211,153,0.3)' : '1px solid rgba(255,255,255,0.2)',
-          borderRadius: 16,
-          padding: '14px 20px',
+          borderRadius: 'clamp(10px, 2.5vw, 16px)',
+          padding: 'clamp(8px, 1.8vh, 14px) clamp(12px, 2.5vh, 20px)',
           position: 'relative',
         }}>
           <div style={{
@@ -655,23 +655,23 @@ function Screen3({ goNext, c }) {
             borderRight: '8px solid transparent',
             borderBottom: answered ? '8px solid rgba(16,185,129,0.2)' : '8px solid rgba(255,255,255,0.15)',
           }} />
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginBottom: 4, fontWeight: 600 }}>{c.label}</p>
-          <p style={{ fontSize: 22, fontWeight: 900, color: answered ? '#6EE7B7' : 'white', fontFamily: 'Nunito, sans-serif', textShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>{c.prompt}</p>
+          <p style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(3px, 0.8vh, 6px)', fontWeight: 600 }}>{c.label}</p>
+          <p style={{ fontSize: 'clamp(18px, 5vw, 24px)', fontWeight: 900, color: answered ? '#6EE7B7' : 'white', fontFamily: 'Nunito, sans-serif', textShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>{c.prompt}</p>
         </div>
       </div>
 
       <p style={{
-        fontSize: 17,
+        fontSize: 'clamp(14px, 3.8vw, 17px)',
         fontWeight: 700,
         color: 'rgba(255,255,255,0.9)',
         fontFamily: 'Nunito, sans-serif',
-        marginBottom: 16,
+        marginBottom: 'clamp(12px, 2.5vh, 20px)',
         textShadow: '0 1px 6px rgba(0,0,0,0.15)',
       }}>
         {c.instruction}
       </p>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(6px, 1.2vh, 10px)' }}>
         {(c.options || []).map((opt, i) => (
           <GlassOptionCard
             key={i}
@@ -704,7 +704,7 @@ function Screen3({ goNext, c }) {
 // SCREEN 4: Encouragement
 function Screen4({ goNext, c }) {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 32px 40px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 clamp(16px, 3vh, 28px) max(16px, env(safe-area-inset-bottom))' }}>
       <ProgressDots total={5} current={3} />
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -721,7 +721,7 @@ function Screen4({ goNext, c }) {
           color: 'white',
           fontFamily: 'Nunito, sans-serif',
           textAlign: 'center',
-          marginTop: 28,
+          marginTop: 'clamp(16px, 3vh, 28px)',
           textShadow: '0 4px 20px rgba(0,0,0,0.3)',
           letterSpacing: '-0.3px',
         }}>
@@ -733,7 +733,7 @@ function Screen4({ goNext, c }) {
           color: 'rgba(255,255,255,0.85)',
           fontFamily: 'Nunito, sans-serif',
           textAlign: 'center',
-          marginTop: 14,
+          marginTop: 'clamp(8px, 1.8vh, 14px)',
           lineHeight: 1.7,
           fontWeight: 600,
         }}>
@@ -744,7 +744,7 @@ function Screen4({ goNext, c }) {
           color: 'rgba(255,255,255,0.75)',
           fontFamily: 'Nunito, sans-serif',
           textAlign: 'center',
-          marginTop: 6,
+          marginTop: 'clamp(3px, 0.8vh, 6px)',
           fontWeight: 600,
         }}>
           {c.line2}
@@ -759,14 +759,14 @@ function Screen4({ goNext, c }) {
 // SCREEN 5: Save Progress Prompt
 function Screen5({ goNext, c }) {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 20px 20px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 clamp(12px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px)' }}>
       <ProgressDots total={5} current={4} />
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{
           width: 100,
           height: 100,
-          borderRadius: 30,
+          borderRadius: 'clamp(20px, 5vw, 30px)',
           background: 'rgba(255,255,255,0.15)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
@@ -774,7 +774,7 @@ function Screen5({ goNext, c }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginBottom: 24,
+          marginBottom: 'clamp(16px, 3vh, 28px)',
           boxShadow: '0 0 40px rgba(16,185,129,0.2)',
         }}>
           <Shield size={48} weight="fill" color="#10B981" />
@@ -797,7 +797,7 @@ function Screen5({ goNext, c }) {
           color: 'rgba(255,255,255,0.8)',
           fontFamily: 'Nunito, sans-serif',
           textAlign: 'center',
-          marginTop: 12,
+          marginTop: 'clamp(8px, 1.8vh, 14px)',
           lineHeight: 1.6,
           fontWeight: 600,
         }}>
@@ -805,7 +805,7 @@ function Screen5({ goNext, c }) {
         </p>
       </div>
 
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 'clamp(8px, 1.8vh, 14px)' }}>
         <PremiumButton onClick={() => { storage.update({ guestMode: false }); goNext(); }} variant="cyan">
           {c.primaryButton}
         </PremiumButton>
@@ -820,11 +820,11 @@ function Screen5({ goNext, c }) {
 // SCREEN 6: Ready to Start
 function Screen6({ goNext, c }) {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 20px 20px' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 clamp(12px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px)' }}>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{
           filter: 'drop-shadow(0 12px 30px rgba(0,0,0,0.25))',
-          marginBottom: 20,
+          marginBottom: 'clamp(12px, 2.5vh, 20px)',
         }}>
           <Geel size={140} expression="excited" />
         </div>
@@ -840,7 +840,7 @@ function Screen6({ goNext, c }) {
           boxShadow: '0 8px 30px rgba(8,145,178,0.5)',
           border: '3px solid rgba(255,255,255,0.3)',
         }}>
-          <span style={{ fontSize: 24, fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif' }}>1</span>
+          <span style={{ fontSize: 'clamp(18px, 5vw, 24px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif' }}>1</span>
         </div>
 
         <h2 style={{
@@ -849,18 +849,18 @@ function Screen6({ goNext, c }) {
           color: 'white',
           fontFamily: 'Nunito, sans-serif',
           textAlign: 'center',
-          marginTop: 16,
+          marginTop: 'clamp(12px, 2.5vh, 20px)',
           textShadow: '0 3px 15px rgba(0,0,0,0.25)',
         }}>
           {c.lessonTitle}
         </h2>
 
         <p style={{
-          fontSize: 16,
+          fontSize: 'clamp(14px, 3.8vw, 17px)',
           color: 'rgba(255,255,255,0.65)',
           fontFamily: 'Nunito, sans-serif',
           textAlign: 'center',
-          marginTop: 6,
+          marginTop: 'clamp(3px, 0.8vh, 6px)',
           fontWeight: 600,
         }}>
           {c.lessonSubtitle}
@@ -871,7 +871,7 @@ function Screen6({ goNext, c }) {
           color: 'rgba(255,255,255,0.8)',
           fontFamily: 'Nunito, sans-serif',
           textAlign: 'center',
-          marginTop: 20,
+          marginTop: 'clamp(12px, 2.5vh, 20px)',
           lineHeight: 1.6,
           fontWeight: 600,
         }}>

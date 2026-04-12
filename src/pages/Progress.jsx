@@ -4,7 +4,6 @@ import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
 import practiceFeatures from '../data/practiceFeatures';
 import Geel from '../components/Geel';
-import BottomNav from '../components/BottomNav';
 import IconContainer from '../components/IconContainer';
 
 const FEATURE_KEYS = Object.keys(practiceFeatures);
@@ -47,10 +46,10 @@ export default function Progress() {
 
       {/* Header */}
       <div style={{
-        padding: '14px 16px',
+        padding: 'clamp(8px, 1.8vh, 14px) clamp(12px, 2.5vh, 20px)',
         display: 'flex',
         alignItems: 'center',
-        gap: 10,
+        gap: 'clamp(6px, 1.2vh, 10px)',
         minHeight: 48,
         position: 'relative',
         zIndex: 2,
@@ -59,31 +58,31 @@ export default function Progress() {
           background: 'rgba(255,255,255,0.15)',
           border: 'none',
           cursor: 'pointer',
-          padding: 8,
+          padding: 'clamp(6px, 1.2vh, 10px)',
           display: 'flex',
           alignItems: 'center',
-          borderRadius: 10,
+          borderRadius: 'clamp(8px, 2vw, 12px)',
         }}>
           <ArrowLeft size={20} weight="bold" color="white" />
         </button>
-        <span style={{ fontSize: 17, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
+        <span style={{ fontSize: 'clamp(14px, 3.8vw, 17px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
           {t('progress.title')}
         </span>
       </div>
 
-      <div style={{ padding: '12px 16px 120px', position: 'relative', zIndex: 2 }}>
+      <div style={{ padding: 'clamp(8px, 1.8vh, 14px) clamp(12px, 2.5vh, 20px) max(84px, calc(72px + env(safe-area-inset-bottom)))', position: 'relative', zIndex: 2 }}>
         {/* Geel */}
         <div style={{
           display: 'flex',
           justifyContent: 'center',
-          marginBottom: 20,
+          marginBottom: 'clamp(16px, 2.5vh, 20px)',
           filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))'
         }}>
           <Geel size={100} expression={lessonPct > 50 ? 'celebrating' : 'happy'} />
         </div>
 
         {/* Stats grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(6px, 1.2vh, 10px)', marginBottom: 'clamp(16px, 3vh, 28px)' }}>
           <StatCard icon={Star} glow="gold" label={t('progress.total_xp')} value={xp} />
           <StatCard icon={Fire} glow="orange" label={t('progress.current_streak')} value={`${streak} ${t('progress.days')}`} />
           <StatCard icon={Trophy} glow="purple" label={t('progress.longest_streak')} value={`${longestStreak} ${t('progress.days')}`} />
@@ -92,17 +91,17 @@ export default function Progress() {
 
         {/* Growth Area */}
         <p style={{
-          fontSize: 14,
+          fontSize: 'clamp(13px, 3.2vw, 15px)',
           fontWeight: 700,
           color: 'rgba(255,255,255,0.7)',
           fontFamily: 'Nunito, sans-serif',
-          marginBottom: 14,
+          marginBottom: 'clamp(8px, 1.8vh, 14px)',
           textTransform: 'uppercase',
           letterSpacing: '1px',
         }}>
           {lang === 'en' ? 'Growth Area' : 'Horumarkaaga'}
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginBottom: 24 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'clamp(6px, 1.2vh, 10px)', marginBottom: 'clamp(16px, 3vh, 28px)' }}>
           <ProgressRing
             percentage={lessonPct}
             label={lang === 'en' ? 'Lessons' : 'Casharro'}
@@ -125,7 +124,6 @@ export default function Progress() {
         </div>
       </div>
 
-      <BottomNav active="xirfadaha" />
     </div>
   );
 }
@@ -136,17 +134,17 @@ function StatCard({ icon: Icon, glow, label, value }) {
       background: 'rgba(255,255,255,0.12)',
       backdropFilter: 'blur(12px)',
       WebkitBackdropFilter: 'blur(12px)',
-      borderRadius: 16,
-      padding: '16px 14px',
+      borderRadius: 'clamp(10px, 2.5vw, 16px)',
+      padding: 'clamp(12px, 2.5vh, 20px) clamp(8px, 1.8vh, 14px)',
       border: '1px solid rgba(255,255,255,0.15)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: 8
+      gap: 'clamp(6px, 1.2vh, 10px)'
     }}>
       <IconContainer icon={Icon} glow={glow} size="lg" />
-      <span style={{ fontSize: 22, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{value}</span>
-      <span style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', textAlign: 'center' }}>{label}</span>
+      <span style={{ fontSize: 'clamp(18px, 5vw, 24px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{value}</span>
+      <span style={{ fontSize: 'clamp(9px, 2.2vw, 11px)', fontWeight: 600, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', textAlign: 'center' }}>{label}</span>
     </div>
   );
 }
@@ -162,13 +160,13 @@ function ProgressRing({ percentage, label, color }) {
       background: 'rgba(255,255,255,0.1)',
       backdropFilter: 'blur(10px)',
       WebkitBackdropFilter: 'blur(10px)',
-      borderRadius: 16,
-      padding: '14px 8px 12px',
+      borderRadius: 'clamp(10px, 2.5vw, 16px)',
+      padding: 'clamp(8px, 1.8vh, 14px) clamp(6px, 1.2vh, 10px) clamp(8px, 1.8vh, 14px)',
       border: '1px solid rgba(255,255,255,0.12)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: 8,
+      gap: 'clamp(6px, 1.2vh, 10px)',
     }}>
       <div style={{ position: 'relative', width: 76, height: 76 }}>
         <svg width="76" height="76" viewBox="0 0 76 76">
@@ -204,13 +202,13 @@ function ProgressRing({ percentage, label, color }) {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <span style={{ fontSize: 16, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
+          <span style={{ fontSize: 'clamp(14px, 3.8vw, 17px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
             {percentage}%
           </span>
         </div>
       </div>
       <span style={{
-        fontSize: 10,
+        fontSize: 'clamp(9px, 2.2vw, 11px)',
         fontWeight: 600,
         color: 'rgba(255,255,255,0.6)',
         fontFamily: 'Nunito, sans-serif',

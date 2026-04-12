@@ -41,17 +41,17 @@ export default function LoginPage() {
       <div style={{ position: 'absolute', bottom: '10%', left: '-60px', width: '180px', height: '180px', background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
 
       {/* Header */}
-      <div style={{ padding: 'clamp(8px, 2vh, 14px) 16px', position: 'relative', zIndex: 2, flexShrink: 0 }}>
-        <button onClick={() => navigate('/auth-gate')} style={{ background: 'rgba(255,255,255,0.12)', border: 'none', borderRadius: 12, padding: '8px 14px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+      <div style={{ padding: 'clamp(8px, 2vh, 14px) clamp(12px, 2.5vh, 20px)', position: 'relative', zIndex: 2, flexShrink: 0 }}>
+        <button onClick={() => navigate('/auth-gate')} style={{ background: 'rgba(255,255,255,0.12)', border: 'none', borderRadius: 'clamp(8px, 2vw, 12px)', padding: 'clamp(6px, 1.2vh, 10px) clamp(8px, 1.8vh, 14px)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 'clamp(3px, 0.8vh, 6px)' }}>
           <ArrowLeft size={16} weight="bold" color="white" />
-          <span style={{ fontSize: 13, fontWeight: 600, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{t('btn.back')}</span>
+          <span style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', fontWeight: 600, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{t('btn.back')}</span>
         </button>
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 24px', position: 'relative', zIndex: 1, minHeight: 0 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 clamp(16px, 3vh, 28px)', position: 'relative', zIndex: 1, minHeight: 0 }}>
 
-        <h1 style={{ fontSize: 'clamp(22px, 5vw, 28px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginBottom: 4 }}>
+        <h1 style={{ fontSize: 'clamp(22px, 5vw, 28px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginBottom: 'clamp(3px, 0.8vh, 6px)' }}>
           {t('login.title')}
         </h1>
         <p style={{ fontSize: 'clamp(12px, 3vw, 14px)', color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginBottom: 'clamp(12px, 3vh, 24px)' }}>
@@ -61,11 +61,11 @@ export default function LoginPage() {
         {/* Form Card */}
         <div style={{
           width: '100%', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-          borderRadius: 20, padding: 'clamp(16px, 3vh, 24px) clamp(16px, 4vw, 22px)', border: '1px solid rgba(255,255,255,0.15)',
+          borderRadius: 'clamp(14px, 3vw, 20px)', padding: 'clamp(16px, 3vh, 24px) clamp(16px, 4vw, 22px)', border: '1px solid rgba(255,255,255,0.15)',
         }}>
           {error && (
-            <div style={{ padding: '10px 14px', borderRadius: 10, background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)', marginBottom: 14 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: '#FCA5A5', fontFamily: 'Nunito, sans-serif' }}>{error}</p>
+            <div style={{ padding: 'clamp(6px, 1.2vh, 10px) clamp(8px, 1.8vh, 14px)', borderRadius: 'clamp(8px, 2vw, 12px)', background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)', marginBottom: 'clamp(8px, 1.8vh, 14px)' }}>
+              <p style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', fontWeight: 600, color: '#FCA5A5', fontFamily: 'Nunito, sans-serif' }}>{error}</p>
             </div>
           )}
 
@@ -79,15 +79,15 @@ export default function LoginPage() {
           <div style={{ ...inputWrap, ...(focusedField === 'password' ? focusStyle : {}) }}>
             <div style={iconWrap}><Lock size={16} weight="fill" color="white" /></div>
             <input type={showPassword ? 'text' : 'password'} value={form.password} onChange={(e) => update('password', e.target.value)} onFocus={() => setFocusedField('password')} onBlur={() => setFocusedField(null)} placeholder={t('signup.password_placeholder')} style={inputStyle} />
-            <button onClick={() => setShowPassword(!showPassword)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
+            <button onClick={() => setShowPassword(!showPassword)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 'clamp(3px, 0.8vh, 6px)' }}>
               {showPassword ? <EyeSlash size={16} color="rgba(255,255,255,0.5)" /> : <Eye size={16} color="rgba(255,255,255,0.5)" />}
             </button>
           </div>
 
           <button onClick={handleLogin} disabled={loading} style={{
-            width: '100%', padding: 'clamp(12px, 2.5vh, 16px)', marginTop: 4,
+            width: '100%', padding: 'clamp(12px, 2.5vh, 16px)', marginTop: 'clamp(3px, 0.8vh, 6px)',
             background: loading ? 'rgba(245,158,11,0.5)' : 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
-            border: 'none', borderRadius: 12, fontSize: 'clamp(14px, 3.5vw, 16px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif',
+            border: 'none', borderRadius: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(14px, 3.5vw, 16px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif',
             cursor: loading ? 'not-allowed' : 'pointer', boxShadow: '0 6px 24px rgba(245,158,11,0.35)',
             position: 'relative', overflow: 'hidden', textTransform: 'uppercase', letterSpacing: '0.5px',
           }}>
@@ -105,8 +105,8 @@ export default function LoginPage() {
   );
 }
 
-const labelStyle = { fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif', marginBottom: 6, display: 'block', letterSpacing: '0.5px', textTransform: 'uppercase' };
-const inputWrap = { display: 'flex', alignItems: 'center', gap: 10, padding: '3px', borderRadius: 12, background: 'rgba(255,255,255,0.08)', border: '1.5px solid rgba(255,255,255,0.12)', marginBottom: 12, transition: 'all 0.2s ease' };
-const iconWrap = { width: 38, height: 38, borderRadius: 9, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 };
-const inputStyle = { flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: 14, color: 'white', fontFamily: 'Nunito, sans-serif', fontWeight: 600, padding: '10px 0' };
+const labelStyle = { fontSize: 'clamp(9px, 2.2vw, 11px)', fontWeight: 700, color: 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(3px, 0.8vh, 6px)', display: 'block', letterSpacing: '0.5px', textTransform: 'uppercase' };
+const inputWrap = { display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.2vh, 10px)', padding: '3px', borderRadius: 'clamp(8px, 2vw, 12px)', background: 'rgba(255,255,255,0.08)', border: '1.5px solid rgba(255,255,255,0.12)', marginBottom: 'clamp(8px, 1.8vh, 14px)', transition: 'all 0.2s ease' };
+const iconWrap = { width: 38, height: 38, borderRadius: 'clamp(7px, 1.5vw, 9px)', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 };
+const inputStyle = { flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: 'clamp(13px, 3.2vw, 15px)', color: 'white', fontFamily: 'Nunito, sans-serif', fontWeight: 600, padding: 'clamp(6px, 1.2vh, 10px) 0' };
 const focusStyle = { borderColor: 'rgba(34,211,238,0.5)', boxShadow: '0 0 0 3px rgba(34,211,238,0.1)' };

@@ -1,9 +1,9 @@
 const SIZES = {
-  xs: { container: 32, icon: 16, radius: 8 },
-  sm: { container: 38, icon: 18, radius: 10 },
-  md: { container: 46, icon: 22, radius: 12 },
-  lg: { container: 54, icon: 26, radius: 14 },
-  xl: { container: 64, icon: 30, radius: 16 },
+  xs: { container: 'clamp(24px, 6vw, 32px)', icon: 16, radius: 'clamp(6px, 1.5vw, 10px)' },
+  sm: { container: 'clamp(30px, 7vw, 38px)', icon: 18, radius: 'clamp(8px, 2vw, 12px)' },
+  md: { container: 'clamp(36px, 8.5vw, 46px)', icon: 22, radius: 'clamp(8px, 2vw, 12px)' },
+  lg: { container: 'clamp(44px, 10vw, 54px)', icon: 26, radius: 'clamp(10px, 2.5vw, 16px)' },
+  xl: { container: 'clamp(52px, 12vw, 64px)', icon: 30, radius: 'clamp(10px, 2.5vw, 16px)' },
 };
 
 const GLOWS = {

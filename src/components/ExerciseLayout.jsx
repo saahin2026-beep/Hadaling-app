@@ -23,12 +23,12 @@ export default function ExerciseLayout({
       <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(8,145,178,0.03) 1px, transparent 1px)', backgroundSize: '24px 24px', pointerEvents: 'none' }} />
 
       {showProgress && (
-        <div style={{ padding: '12px 16px 12px', position: 'relative', zIndex: 2, flexShrink: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div style={{ padding: 'clamp(8px, 2vw, 14px) clamp(12px, 3vw, 20px) clamp(8px, 2vw, 14px)', position: 'relative', zIndex: 2, flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px, 3vw, 20px)' }}>
             <button onClick={handleClose} style={{
               width: '44px', height: '44px', background: 'rgba(255,255,255,0.9)',
               backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
-              border: '1px solid rgba(8,145,178,0.1)', borderRadius: '14px',
+              border: '1px solid rgba(8,145,178,0.1)', borderRadius: 'clamp(10px, 2.5vw, 16px)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
               boxShadow: '0 4px 16px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)',
             }}>
@@ -37,7 +37,7 @@ export default function ExerciseLayout({
 
             <div style={{ flex: 1, position: 'relative' }}>
               <div style={{
-                height: '14px', background: 'linear-gradient(180deg, #E2E8F0, #CBD5E1)',
+                height: 'clamp(10px, 2.5vw, 16px)', background: 'linear-gradient(180deg, #E2E8F0, #CBD5E1)',
                 borderRadius: '7px', overflow: 'hidden',
                 boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.08), 0 1px 0 rgba(255,255,255,0.8)',
               }}>
@@ -57,21 +57,21 @@ export default function ExerciseLayout({
                 borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 boxShadow: '0 4px 12px rgba(8,145,178,0.4), 0 0 0 3px white',
               }}>
-                <span style={{ fontSize: '10px', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{current}</span>
+                <span style={{ fontSize: 'clamp(8px, 2.2vw, 11px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{current}</span>
               </div>
             </div>
 
             <div style={{
-              display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px',
+              display: 'flex', alignItems: 'center', gap: 'clamp(3px, 0.8vw, 6px)', padding: 'clamp(6px, 1.5vw, 10px) clamp(8px, 2vw, 14px)',
               background: 'linear-gradient(180deg, #FFFFFF, #FEF2F2)',
-              border: '1.5px solid rgba(239,68,68,0.2)', borderRadius: '24px',
+              border: '1.5px solid rgba(239,68,68,0.2)', borderRadius: 'clamp(16px, 4vw, 28px)',
               boxShadow: '0 4px 12px rgba(239,68,68,0.1), inset 0 1px 0 rgba(255,255,255,0.9)',
             }}>
               <svg width="20" height="20" viewBox="0 0 20 20">
                 <defs><linearGradient id="heartGradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="#F87171" /><stop offset="100%" stopColor="#DC2626" /></linearGradient></defs>
                 <path d="M10 17s-6.5-4-6.5-8.5A4 4 0 0110 5a4 4 0 016.5 3.5c0 4.5-6.5 8.5-6.5 8.5z" fill="url(#heartGradient)" />
               </svg>
-              <span style={{ fontSize: '15px', fontWeight: 800, color: '#DC2626', fontFamily: 'Nunito, sans-serif' }}>{hearts}</span>
+              <span style={{ fontSize: 'clamp(13px, 3.2vw, 15px)', fontWeight: 800, color: '#DC2626', fontFamily: 'Nunito, sans-serif' }}>{hearts}</span>
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@ export default function ExerciseLayout({
         flexDirection: 'column',
         position: 'relative',
         zIndex: 2,
-        padding: '0 20px',
+        padding: '0 clamp(12px, 3vw, 20px)',
         paddingBottom: 'max(24px, env(safe-area-inset-bottom))',
         overflowY: 'auto',
         overflowX: 'hidden',

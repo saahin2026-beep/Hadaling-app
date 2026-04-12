@@ -4,8 +4,8 @@ export default function SpeechBubble({ children, color = '#FFFFFF', dark = false
     <div style={{ position: 'relative', display: 'inline-block' }}>
       <div style={{
         background: bgColor,
-        borderRadius: 20,
-        padding: '16px 20px',
+        borderRadius: 'clamp(14px, 3vw, 20px)',
+        padding: 'clamp(12px, 3vw, 20px) clamp(12px, 3vw, 20px)',
         border: premium ? 'none' : (dark ? '1.5px solid #334155' : '1.5px solid rgba(0,0,0,0.05)'),
         boxShadow: premium ? '0 8px 32px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.1)' : (dark ? 'none' : '0 2px 0 rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.06)'),
         maxWidth: 260,

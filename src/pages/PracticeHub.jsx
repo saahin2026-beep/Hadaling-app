@@ -58,21 +58,21 @@ export default function PracticeHub() {
 
       {/* Header */}
       <div style={{
-        padding: '16px 20px 24px',
+        padding: 'clamp(12px, 2.5vh, 20px) clamp(16px, 2.5vh, 20px) clamp(16px, 3vh, 28px)',
         position: 'relative',
         zIndex: 2,
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.2vh, 10px)', marginBottom: 'clamp(8px, 1.8vh, 14px)' }}>
           <Geel size={44} circular style={{
             background: 'rgba(255,255,255,0.15)',
             backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)',
             border: '1px solid rgba(255,255,255,0.2)',
           }} />
           <div>
-            <p style={{ fontSize: 18, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
+            <p style={{ fontSize: 'clamp(16px, 4.2vw, 20px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
               {lang === 'en' ? 'Practice' : 'Xirfadaha'}
             </p>
-            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', fontFamily: 'Nunito, sans-serif' }}>
+            <p style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', color: 'rgba(255,255,255,0.7)', fontFamily: 'Nunito, sans-serif' }}>
               {lang === 'en' ? 'Build your skills' : 'Kor u qaad xirfadahaaga'}
             </p>
           </div>
@@ -83,13 +83,13 @@ export default function PracticeHub() {
           background: 'rgba(255,255,255,0.1)',
           backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)',
           border: '1px solid rgba(255,255,255,0.15)',
-          borderRadius: 12, padding: '12px 14px'
+          borderRadius: 'clamp(8px, 2vw, 12px)', padding: 'clamp(8px, 1.8vh, 14px) clamp(8px, 1.8vh, 14px)'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-            <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', fontFamily: 'Nunito, sans-serif' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'clamp(3px, 0.8vh, 6px)' }}>
+            <span style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', color: 'rgba(255,255,255,0.7)', fontFamily: 'Nunito, sans-serif' }}>
               {lang === 'en' ? 'Overall Progress' : 'Horumarkaaga guud'}
             </span>
-            <span style={{ fontSize: 14, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
+            <span style={{ fontSize: 'clamp(13px, 3.2vw, 15px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
               {Object.keys(completedFeatures).filter((k) => completedFeatures[k]).length}/{FEATURE_KEYS.length}
             </span>
           </div>
@@ -104,14 +104,14 @@ export default function PracticeHub() {
       </div>
 
       {/* Daily Mix Card — WHITE for contrast */}
-      <div style={{ padding: '0 16px', position: 'relative', zIndex: 2 }}>
+      <div style={{ padding: '0 clamp(12px, 2.5vh, 20px)', position: 'relative', zIndex: 2 }}>
         {!isDailyCompleted ? (
           <button
             onClick={() => navigate('/practice/daily')}
             style={{
               width: '100%',
               background: 'white',
-              borderRadius: 20,
+              borderRadius: 'clamp(14px, 3vw, 20px)',
               border: 'none',
               padding: 0,
               cursor: 'pointer',
@@ -128,32 +128,32 @@ export default function PracticeHub() {
               pointerEvents: 'none',
             }} />
 
-            <div style={{ padding: '20px 18px 16px', position: 'relative', zIndex: 1 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+            <div style={{ padding: 'clamp(16px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px)', position: 'relative', zIndex: 1 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'clamp(8px, 1.8vh, 14px)' }}>
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.2vh, 10px)', marginBottom: 'clamp(3px, 0.8vh, 6px)' }}>
                     <Calendar size={22} weight="fill" color="#0891B2" />
-                    <span style={{ fontSize: 18, fontWeight: 800, color: '#1E293B', fontFamily: 'Nunito, sans-serif' }}>
+                    <span style={{ fontSize: 'clamp(16px, 4.2vw, 20px)', fontWeight: 800, color: '#1E293B', fontFamily: 'Nunito, sans-serif' }}>
                       {lang === 'en' ? 'Daily Mix' : 'Jimicsiga Maanta'}
                     </span>
                   </div>
-                  <p style={{ fontSize: 13, color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>
+                  <p style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>
                     {lang === 'en' ? '12 exercises \u2022 All skills' : '12 su\'aalo \u2022 Dhammaan xirfadaha'}
                   </p>
                 </div>
                 {dailyStreak > 0 && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: '#FFF7ED', padding: '6px 10px', borderRadius: 10 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(3px, 0.8vh, 6px)', background: '#FFF7ED', padding: 'clamp(3px, 0.8vh, 6px) clamp(6px, 1.2vh, 10px)', borderRadius: 'clamp(8px, 2vw, 12px)' }}>
                     <Fire size={16} weight="fill" color="#EA580C" />
-                    <span style={{ fontSize: 13, fontWeight: 800, color: '#EA580C', fontFamily: 'Nunito, sans-serif' }}>{dailyStreak}</span>
+                    <span style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', fontWeight: 800, color: '#EA580C', fontFamily: 'Nunito, sans-serif' }}>{dailyStreak}</span>
                   </div>
                 )}
               </div>
 
               {dailyProgress > 0 && (
-                <div style={{ marginBottom: 12 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                    <span style={{ fontSize: 11, color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>{dailyProgress}/12</span>
-                    <span style={{ fontSize: 11, color: '#0891B2', fontWeight: 700, fontFamily: 'Nunito, sans-serif' }}>{Math.round((dailyProgress / 12) * 100)}%</span>
+                <div style={{ marginBottom: 'clamp(8px, 1.8vh, 14px)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'clamp(3px, 0.8vh, 6px)' }}>
+                    <span style={{ fontSize: 'clamp(9px, 2.2vw, 11px)', color: '#64748B', fontFamily: 'Nunito, sans-serif' }}>{dailyProgress}/12</span>
+                    <span style={{ fontSize: 'clamp(9px, 2.2vw, 11px)', color: '#0891B2', fontWeight: 700, fontFamily: 'Nunito, sans-serif' }}>{Math.round((dailyProgress / 12) * 100)}%</span>
                   </div>
                   <div style={{ height: 6, borderRadius: 3, background: '#E0F2FE', overflow: 'hidden' }}>
                     <div style={{ height: '100%', borderRadius: 3, background: 'linear-gradient(90deg, #0891B2, #22D3EE)', width: `${(dailyProgress / 12) * 100}%`, transition: 'width 0.4s ease' }} />
@@ -162,11 +162,11 @@ export default function PracticeHub() {
               )}
 
               {/* Skill tags */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: dailyProgress > 0 ? 0 : 12 }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'clamp(3px, 0.8vh, 6px)', marginTop: dailyProgress > 0 ? 0 : 'clamp(8px, 1.8vh, 14px)' }}>
                 {['vocab', 'plurals', 'opposites', 'word form', 'conjugation', 'sentence'].map(skill => (
                   <span key={skill} style={{
-                    padding: '4px 10px', background: '#E0F2FE', borderRadius: 20,
-                    fontSize: 11, fontWeight: 600, color: '#0891B2', fontFamily: 'Nunito, sans-serif',
+                    padding: 'clamp(3px, 0.8vh, 6px) clamp(6px, 1.2vh, 10px)', background: '#E0F2FE', borderRadius: 'clamp(14px, 3vw, 20px)',
+                    fontSize: 'clamp(9px, 2.2vw, 11px)', fontWeight: 600, color: '#0891B2', fontFamily: 'Nunito, sans-serif',
                   }}>
                     {skill} x2
                   </span>
@@ -176,7 +176,7 @@ export default function PracticeHub() {
 
             {/* Start button */}
             <div style={{
-              padding: '14px 18px',
+              padding: 'clamp(8px, 1.8vh, 14px) clamp(12px, 2.5vh, 20px)',
               background: 'linear-gradient(135deg, #0891B2 0%, #0E7490 100%)',
               display: 'flex', justifyContent: 'center', alignItems: 'center',
               position: 'relative', overflow: 'hidden',
@@ -187,7 +187,7 @@ export default function PracticeHub() {
                 backgroundSize: '200% 100%',
                 animation: 'shimmer 3s linear infinite',
               }} />
-              <span style={{ fontSize: 15, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: 1, position: 'relative', zIndex: 1 }}>
+              <span style={{ fontSize: 'clamp(13px, 3.2vw, 15px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif', textTransform: 'uppercase', letterSpacing: 1, position: 'relative', zIndex: 1 }}>
                 {dailyProgress > 0 ? (lang === 'en' ? 'CONTINUE' : 'SII WAD') : (lang === 'en' ? 'START' : 'BILOW')}
               </span>
             </div>
@@ -197,27 +197,27 @@ export default function PracticeHub() {
             background: 'rgba(255,255,255,0.12)',
             backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
             border: '1px solid rgba(255,255,255,0.15)',
-            borderRadius: 20, padding: 18,
+            borderRadius: 'clamp(14px, 3vw, 20px)', padding: 'clamp(12px, 2.5vh, 20px)',
           }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'clamp(6px, 1.2vh, 10px)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.2vh, 10px)' }}>
                 <CheckCircle size={24} weight="fill" color="#10B981" />
-                <span style={{ fontSize: 18, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
+                <span style={{ fontSize: 'clamp(16px, 4.2vw, 20px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
                   {lang === 'en' ? 'Daily Complete!' : 'Maanta Waa Dhammaatay!'}
                 </span>
               </div>
               {dailyStreak > 0 && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(255,255,255,0.15)', padding: '6px 10px', borderRadius: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(3px, 0.8vh, 6px)', background: 'rgba(255,255,255,0.15)', padding: 'clamp(3px, 0.8vh, 6px) clamp(6px, 1.2vh, 10px)', borderRadius: 'clamp(8px, 2vw, 12px)' }}>
                   <Fire size={16} weight="fill" color="#F97316" />
-                  <span style={{ fontSize: 13, fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{dailyStreak}</span>
+                  <span style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{dailyStreak}</span>
                 </div>
               )}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: 14, fontWeight: 700, color: 'rgba(255,255,255,0.8)', fontFamily: 'Nunito, sans-serif' }}>
+              <span style={{ fontSize: 'clamp(13px, 3.2vw, 15px)', fontWeight: 700, color: 'rgba(255,255,255,0.8)', fontFamily: 'Nunito, sans-serif' }}>
                 {dailyState.correctCount}/12 {lang === 'en' ? 'correct' : 'sax'} {'\u2022'} +{dailyState.dahabEarned || 0} Dahab
               </span>
-              <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif' }}>
+              <span style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif' }}>
                 {lang === 'en' ? 'Resets in' : 'Dib u bilowga'} {getTimeUntilReset()}
               </span>
             </div>
@@ -226,7 +226,7 @@ export default function PracticeHub() {
       </div>
 
       {/* Feature cards */}
-      <div style={{ flex: 1, padding: 'clamp(8px, 1.5vh, 14px) 16px max(80px, calc(60px + env(safe-area-inset-bottom)))', position: 'relative', zIndex: 2, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: 1, padding: 'clamp(8px, 1.5vh, 14px) clamp(12px, 2.5vh, 20px) max(84px, calc(72px + env(safe-area-inset-bottom)))', position: 'relative', zIndex: 2, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
         <p style={{ fontSize: 'clamp(11px, 2.5vw, 13px)', fontWeight: 700, color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(6px, 1vh, 10px)', textTransform: 'uppercase', letterSpacing: 0.5, flexShrink: 0 }}>
           {lang === 'en' ? 'Practice Activities' : 'Jimcsiyo ku celceli'}
         </p>
@@ -266,22 +266,22 @@ export default function PracticeHub() {
               )}
 
               <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontSize: 15, fontWeight: 700, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
+                <p style={{ fontSize: 'clamp(13px, 3.2vw, 15px)', fontWeight: 700, color: 'white', fontFamily: 'Nunito, sans-serif' }}>
                   {lang === 'en' ? feature.titleEn : feature.title}
                 </p>
-                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif', marginTop: 2 }}>
+                <p style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', color: 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif', marginTop: 'clamp(3px, 0.8vh, 6px)' }}>
                   {lang === 'en' ? feature.descriptionEn : feature.description}
                 </p>
                 {progress > 0 && !isCompleted && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.2vh, 10px)', marginTop: 'clamp(3px, 0.8vh, 6px)' }}>
                     <div style={{ flex: 1, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.15)', overflow: 'hidden' }}>
                       <div style={{ height: '100%', borderRadius: 2, background: feature.color, width: `${(progress / feature.exercises.length) * 100}%` }} />
                     </div>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: feature.color, fontFamily: 'Nunito, sans-serif' }}>{progress}/{feature.exercises.length}</span>
+                    <span style={{ fontSize: 'clamp(9px, 2.2vw, 11px)', fontWeight: 700, color: feature.color, fontFamily: 'Nunito, sans-serif' }}>{progress}/{feature.exercises.length}</span>
                   </div>
                 )}
                 {isCompleted && (
-                  <p style={{ fontSize: 11, fontWeight: 700, color: '#6EE7B7', fontFamily: 'Nunito, sans-serif', marginTop: 4 }}>
+                  <p style={{ fontSize: 'clamp(9px, 2.2vw, 11px)', fontWeight: 700, color: '#6EE7B7', fontFamily: 'Nunito, sans-serif', marginTop: 'clamp(3px, 0.8vh, 6px)' }}>
                     {lang === 'en' ? 'Completed!' : 'Waa la dhammaystiray!'}
                   </p>
                 )}

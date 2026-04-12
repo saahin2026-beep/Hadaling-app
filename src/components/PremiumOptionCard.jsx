@@ -10,8 +10,8 @@ export default function PremiumOptionCard({
 
   const getContainerStyles = () => {
     const base = {
-      width: '100%', minHeight: 'clamp(60px, 12vw, 80px)', padding: 'clamp(12px, 2.5vw, 18px) clamp(14px, 3vw, 22px)', borderRadius: '16px',
-      display: 'flex', alignItems: 'center', gap: '18px',
+      width: '100%', minHeight: 'clamp(60px, 12vw, 80px)', padding: 'clamp(12px, 2.5vw, 18px) clamp(14px, 3vw, 22px)', borderRadius: 'clamp(10px, 2.5vw, 16px)',
+      display: 'flex', alignItems: 'center', gap: 'clamp(12px, 3vw, 20px)',
       cursor: disabled ? 'default' : 'pointer', transition: 'all 0.2s ease',
       position: 'relative', overflow: 'hidden', fontFamily: 'Nunito, sans-serif',
       border: '2px solid', outline: 'none',
@@ -35,13 +35,13 @@ export default function PremiumOptionCard({
     <button onClick={onClick} disabled={disabled} style={getContainerStyles()}>
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: isCorrect ? 'linear-gradient(90deg, transparent, rgba(16,185,129,0.3), transparent)' : isWrong ? 'linear-gradient(90deg, transparent, rgba(239,68,68,0.3), transparent)' : 'linear-gradient(90deg, transparent, rgba(8,145,178,0.1), transparent)' }} />
       <div style={getBadgeStyles()}>
-        <div style={{ position: 'absolute', top: '4px', left: '6px', width: '8px', height: '8px', background: 'rgba(255,255,255,0.3)', borderRadius: '50%' }} />
+        <div style={{ position: 'absolute', top: 'clamp(3px, 0.8vw, 6px)', left: 'clamp(3px, 0.8vw, 6px)', width: 'clamp(6px, 1.5vw, 10px)', height: 'clamp(6px, 1.5vw, 10px)', background: 'rgba(255,255,255,0.3)', borderRadius: '50%' }} />
         {isCorrect ? <CheckCircle size={28} weight="fill" color="white" /> : isWrong ? <XCircle size={28} weight="fill" color="white" /> : number}
       </div>
-      <span style={{ flex: 1, fontSize: '19px', fontWeight: 700, color: getTextColor(), fontFamily: 'Nunito, sans-serif', textAlign: 'left' }}>{text}</span>
+      <span style={{ flex: 1, fontSize: 'clamp(16px, 4.2vw, 20px)', fontWeight: 700, color: getTextColor(), fontFamily: 'Nunito, sans-serif', textAlign: 'left' }}>{text}</span>
       {!isAnswered && (
-        <div style={{ marginLeft: 'auto', width: '24px', height: '24px', border: selected ? '2px solid #0891B2' : '2px solid #CBD5E1', borderRadius: '50%', background: selected ? 'linear-gradient(135deg, #0891B2, #0E7490)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.2s ease' }}>
-          {selected && <div style={{ width: '8px', height: '8px', background: 'white', borderRadius: '50%' }} />}
+        <div style={{ marginLeft: 'auto', width: 'clamp(16px, 4vw, 28px)', height: 'clamp(16px, 4vw, 28px)', border: selected ? '2px solid #0891B2' : '2px solid #CBD5E1', borderRadius: '50%', background: selected ? 'linear-gradient(135deg, #0891B2, #0E7490)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.2s ease' }}>
+          {selected && <div style={{ width: 'clamp(6px, 1.5vw, 10px)', height: 'clamp(6px, 1.5vw, 10px)', background: 'white', borderRadius: '50%' }} />}
         </div>
       )}
     </button>
