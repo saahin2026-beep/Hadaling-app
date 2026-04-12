@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Fire, Star, Heart, Play, Target, Check, Lock, Lightning, Gift, ArrowRight, ChatCircleDots, Barbell, Sparkle, CurrencyCircleDollar, HandWaving, Lightbulb } from '@phosphor-icons/react';
+import { Fire, Star, Trophy, Play, Target, Check, Lock, Lightning, Gift, ArrowRight, ChatCircleDots, Barbell, Sparkle, CurrencyCircleDollar, HandWaving, Lightbulb } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
 import { useData } from '../utils/DataContext';
 import { useLanguage } from '../utils/useLanguage';
@@ -119,7 +119,7 @@ export default function GeelWorld() {
           <StatPill icon={<Fire size={14} weight="fill" color="white" />} gradient="linear-gradient(135deg, #F97316, #FB923C)" value={streak} />
           <StatPill icon={<Star size={14} weight="fill" color="white" />} gradient="linear-gradient(135deg, #FFCA28, #FFD54F)" value={xp} />
           <StatPill icon={<CurrencyCircleDollar size={14} weight="fill" color="white" />} gradient="linear-gradient(135deg, #F59E0B, #FBBF24)" value={dahab} />
-          <StatPill icon={<Heart size={14} weight="fill" color="white" />} gradient="linear-gradient(135deg, #EF4444, #F87171)" value={5} />
+          <StatPill icon={<Trophy size={14} weight="fill" color="white" />} gradient="linear-gradient(135deg, #8B5CF6, #A78BFA)" value="#42" />
         </div>
 
         {/* Greeting */}
@@ -197,13 +197,6 @@ export default function GeelWorld() {
               <Play size={24} weight="fill" color="white" />
             </button>
           </div>
-        </div>
-
-        {/* ═══ 3. QUICK STATS ROW ═══ */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'clamp(6px, 1.2vh, 10px)', marginTop: 'clamp(6px, 1.2vh, 10px)' }}>
-          <MiniStatCard label="TODAY" value="0" sublabel="lessons" />
-          <MiniStatCard label="GOAL" value="3" sublabel="weekly" />
-          <MiniStatCard label="RANK" value="#42" sublabel="global" />
         </div>
 
         {/* ═══ 4. TODAY'S MISSION — WHITE HERO CARD ═══ */}

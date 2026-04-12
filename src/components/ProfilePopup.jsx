@@ -66,7 +66,7 @@ export default function ProfilePopup({ onClose }) {
           <StatBox value={streak} label="Streak" emoji="🔥" bg="#FFFBEB" border="rgba(245,158,11,0.15)" color="#B45309" />
           <StatBox value={xp >= 1000 ? `${(xp/1000).toFixed(1)}k` : xp} label="XP" emoji="⭐" bg="#ECFEFF" border="rgba(8,145,178,0.15)" color="#0E7490" />
           <StatBox value={dahab} label="Dahab" emoji="🪙" bg="#FEF3C7" border="rgba(245,158,11,0.15)" color="#B45309" />
-          <StatBox value={hearts} label="Hearts" emoji="❤️" bg="#FEF2F2" border="rgba(239,68,68,0.15)" color="#DC2626" />
+          <StatBox value="#42" label="Rank" emoji="🏆" bg="#F5F3FF" border="rgba(139,92,246,0.15)" color="#7C3AED" />
         </div>
 
         {/* Badges */}
