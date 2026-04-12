@@ -41,9 +41,10 @@ export default function LessonIntro() {
       {/* Content */}
       <div style={{
         flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
-        padding: '0 clamp(12px, 2.5vh, 20px)', position: 'relative', zIndex: 1,
+        padding: '0 clamp(12px, 2.5vh, 20px) max(20px, env(safe-area-inset-bottom))',
+        position: 'relative', zIndex: 1,
         opacity: showContent ? 1 : 0, transition: 'opacity 0.5s ease-out',
-        gap: 'clamp(6px, 1.5vh, 14px)',
+        gap: 'clamp(4px, 1vh, 10px)', minHeight: 0, overflow: 'hidden',
       }}>
         {/* Geel */}
         <Geel size={Math.round(Math.min(90, window.innerHeight * 0.13))} expression="excited" />
@@ -79,12 +80,12 @@ export default function LessonIntro() {
         </div>
 
         {/* Chunks */}
-        <div style={{ width: '100%', flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(3px, 0.8vh, 6px)', marginBottom: 'clamp(4px, 1vh, 8px)', flexShrink: 0 }}>
+        <div style={{ width: '100%', flex: '1 1 0', minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(3px, 0.8vh, 6px)', marginBottom: 'clamp(3px, 0.6vh, 6px)', flexShrink: 0 }}>
             <Lightning size={14} weight="fill" color="#F59E0B" />
-            <span style={{ fontSize: 'clamp(12px, 3vw, 14px)', fontWeight: 700, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{t('lesson.chunks_title')}</span>
+            <span style={{ fontSize: 'clamp(11px, 2.5vw, 13px)', fontWeight: 700, color: 'white', fontFamily: 'Nunito, sans-serif' }}>{t('lesson.chunks_title')}</span>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(4px, 0.8vh, 6px)', flex: 1, minHeight: 0 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(3px, 0.6vh, 5px)', flex: '1 1 0', minHeight: 0, overflow: 'hidden' }}>
             {data.chunks.map((chunk, i) => (
               <div key={i} style={{
                 background: 'rgba(255,255,255,0.08)', borderRadius: 'clamp(8px, 2vw, 12px)',
@@ -109,7 +110,6 @@ export default function LessonIntro() {
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(6px, 1.2vh, 10px)',
           boxShadow: '0 6px 24px rgba(245,158,11,0.4)', position: 'relative', overflow: 'hidden',
           animation: 'pulse 2s ease-in-out infinite', flexShrink: 0,
-          marginBottom: 'max(24px, env(safe-area-inset-bottom))',
         }}>
           <div style={{ position: 'absolute', top: 0, left: '-100%', width: '100%', height: '100%', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)', animation: 'shimmer 2s infinite', pointerEvents: 'none' }} />
           <Play size={18} weight="fill" color="white" />
