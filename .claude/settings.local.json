@@ -12,7 +12,16 @@
       "Bash(xargs kill:*)",
       "Bash(pip3 install:*)",
       "Bash(python3:*)",
-      "Bash(xargs cat *)"
+      "Bash(xargs cat *)",
+      "Bash(git check-ignore *)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(awk '/^function Screen6/,/^}/' src/pages/Onboarding.jsx)",
+      "Bash(grep -n \"^function\\\\|^}$\" src/pages/Onboarding.jsx)",
+      "Bash(git remote *)",
+      "Bash(git fetch *)"
     ]
   }
 }
