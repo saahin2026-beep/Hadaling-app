@@ -78,6 +78,11 @@ const translations = {
     'auth.login': 'SOO GAL',
     'auth.continue_learning': 'Ku sii wad barashada',
 
+    // iOS install prompt
+    'install.ios_title': 'Ku dar Hadaling shaashaddaada',
+    'install.ios_body': 'Si aad u hesho Hadaling sida app caadi ah, ka dib riix:',
+    'install.ios_action': 'Add to Home Screen',
+
     // Signup
     'signup.title': 'Samee akoon cusub',
     'signup.have_account': 'Horey u leedahay akoon?',
@@ -296,6 +301,11 @@ const translations = {
     'auth.signup': 'SIGN UP',
     'auth.login': 'LOG IN',
     'auth.continue_learning': 'Continue learning',
+
+    // iOS install prompt
+    'install.ios_title': 'Add Hadaling to your home screen',
+    'install.ios_body': 'To use Hadaling like a normal app, tap:',
+    'install.ios_action': 'Add to Home Screen',
 
     // Signup
     'signup.title': 'Create new account',

@@ -4,6 +4,7 @@ import { storage } from '../utils/storage';
 import { purchaseStreakFreeze } from '../utils/streak';
 import StreakBrokenModal from './StreakBrokenModal';
 import StreakFreezeUsedModal from './StreakFreezeUsedModal';
+import IOSInstallPrompt from './IOSInstallPrompt';
 
 export default function AppShell({ children }) {
   const [streakModal, setStreakModal] = useState(null);
@@ -30,6 +31,8 @@ export default function AppShell({ children }) {
   return (
     <div className="app-shell">
       {children}
+
+      <IOSInstallPrompt />
 
       {streakModal?.type === 'broken' && (
         <StreakBrokenModal
