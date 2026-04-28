@@ -10,6 +10,7 @@ import OrderExercise from '../exercises/OrderExercise';
 import ListenChooseExercise from '../exercises/ListenChooseExercise';
 import ScenarioExercise from '../exercises/ScenarioExercise';
 import ExerciseLayout from '../components/ExerciseLayout';
+import { trackEvent } from '../utils/observability';
 
 export default function LessonPlay() {
   const { id } = useParams();
@@ -28,6 +29,9 @@ export default function LessonPlay() {
   }, [data]);
 
   useEffect(() => { if (!data) navigate('/home'); }, [data, navigate]);
+  useEffect(() => {
+    if (data) trackEvent('lesson_started', { lessonId: Number(id), exerciseCount: data.exercises?.length || 0 });
+  }, [data, id]);
   if (!data) return null;
 
   const totalExercises = shuffledExercises.length;

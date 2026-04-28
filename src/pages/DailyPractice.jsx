@@ -4,6 +4,7 @@ import { Fire, Confetti as ConfettiIcon, CurrencyCircleDollar, Timer } from '@ph
 import { storage } from '../utils/storage';
 import { calculateDahabTimed } from '../utils/speedScore';
 import { generateDailyMix, saveChunkStats } from '../utils/dailyMix';
+import { trackEvent } from '../utils/observability';
 import { shuffleOptions } from '../utils/shuffleOptions';
 import SpeedBonusPopup from '../components/SpeedBonusPopup';
 import { useLanguage } from '../utils/useLanguage';
@@ -55,6 +56,7 @@ export default function DailyPractice() {
 
     storage.update({ dailyMix: { date: today, progress: 0, completed: false, exercises: mix, correctCount: 0 } });
     setExercises(mix);
+    trackEvent('daily_practice_started', { exerciseCount: mix.length });
   }, []);
 
   useEffect(() => {
@@ -94,6 +96,7 @@ export default function DailyPractice() {
 
       setDahabResult({ ...result, dahabEarned: grandTotal });
       setShowDahabAnimation(true);
+      trackEvent('daily_practice_completed', { correct: newCorrect, total: exercises.length, dahabEarned: grandTotal, tier: result.dahabTier });
       setTimeout(() => { setShowDahabAnimation(false); setCompleted(true); }, 2000);
     } else {
       setCurrentIndex(nextIndex);

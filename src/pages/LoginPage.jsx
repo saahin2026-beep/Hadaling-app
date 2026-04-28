@@ -4,7 +4,7 @@ import { ArrowLeft, EnvelopeSimple, Lock, Eye, EyeSlash } from '@phosphor-icons/
 import { supabase } from '../utils/supabase';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
-import { trackEvent, setObservabilityUser } from '../utils/observability';
+import { trackEvent, setObservabilityUser, reportError } from '../utils/observability';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -38,20 +38,24 @@ export default function LoginPage() {
         .eq('id', data.user.id)
         .maybeSingle();
 
-      if (profileError) { setError(t('login.error_generic')); console.error('Profile fetch failed:', profileError); setLoading(false); return; }
+      if (profileError) {
+        setError(t('login.error_generic'));
+        reportError(new Error('login_profile_fetch_failed'), { code: profileError.code, message: profileError.message });
+        setLoading(false); return;
+      }
 
       if (!profile) {
         const { error: upsertError } = await supabase
           .from('profiles')
           .upsert({ id: data.user.id, profile_complete: false }, { onConflict: 'id' });
-        if (upsertError) console.warn('Profile auto-create failed:', upsertError);
+        if (upsertError) reportError(new Error('login_profile_auto_create_failed'), { code: upsertError.code, message: upsertError.message });
       }
 
       storage.update({ authComplete: true, userId: data.user.id, userName: profile?.name || '', profileComplete: profile?.profile_complete || false });
       setObservabilityUser(data.user.id);
       trackEvent('login', { profileComplete: !!profile?.profile_complete });
       navigate(profile?.profile_complete ? '/geel-world' : '/profile-setup/0');
-    } catch (e) { setError(t('login.error_generic')); console.error(e); }
+    } catch (e) { setError(t('login.error_generic')); reportError(e, { where: 'LoginPage.handleLogin' }); }
     setLoading(false);
   };
 

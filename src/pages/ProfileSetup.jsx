@@ -4,6 +4,7 @@ import { User, Phone, Calendar, MapPin, At, CheckCircle, XCircle, CircleNotch } 
 import { supabase } from '../utils/supabase';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
+import { trackEvent, reportError } from '../utils/observability';
 import somaliCities from '../data/somaliCities';
 import Geel from '../components/Geel';
 
@@ -35,6 +36,11 @@ export default function ProfileSetup() {
   useEffect(() => {
     if (!stepConfig) navigate('/home');
   }, [stepConfig, navigate]);
+
+  // Funnel tracking — see where users abandon profile setup
+  useEffect(() => {
+    if (stepConfig) trackEvent('profile_setup_step_viewed', { step: currentStep, key: stepConfig.key });
+  }, [currentStep, stepConfig]);
 
   // Live username availability (only on the username step).
   useEffect(() => {
@@ -111,7 +117,7 @@ export default function ProfileSetup() {
 
         if (updateError) {
           if (updateError.message.includes('unique')) setError(t('profile.error_username_taken'));
-          else setError(updateError.message);
+          else { setError(updateError.message); reportError(new Error('profile_setup_save_failed'), { code: updateError.code, message: updateError.message }); }
           setSaving(false); return;
         }
 
@@ -120,9 +126,11 @@ export default function ProfileSetup() {
           username: formData.username.trim().toLowerCase(),
           profileDraft: null,
         });
+        trackEvent('profile_setup_completed');
         navigate('/geel-world');
       } catch (e) {
-        setError(t('profile.error_generic')); console.error(e);
+        setError(t('profile.error_generic'));
+        reportError(e, { where: 'ProfileSetup.handleNext' });
       }
       setSaving(false);
     }

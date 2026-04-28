@@ -2,7 +2,7 @@ import { Routes, Route, Navigate, useParams, useNavigate, useLocation } from 're
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { storage } from './utils/storage';
 import { supabase } from './utils/supabase';
-import { setObservabilityUser, trackEvent } from './utils/observability';
+import { setObservabilityUser, trackEvent, reportError } from './utils/observability';
 
 // Core pages — loaded immediately
 import Home from './pages/Home';
@@ -97,7 +97,7 @@ export default function App() {
         const { error: upsertError } = await supabase
           .from('profiles')
           .upsert({ id: userId, name, profile_complete: false }, { onConflict: 'id' });
-        if (upsertError) console.warn('Profile auto-create failed:', upsertError);
+        if (upsertError) reportError(new Error('profile_auto_create_failed'), { code: upsertError.code, message: upsertError.message });
         profile = { profile_complete: false, name };
       }
 

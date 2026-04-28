@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { fetchPhrases, fetchOnboardingContent } from './dataService';
+import { reportError } from './observability';
 
 import hardcodedLessonData from '../data/lessonData';
 import { lessons as hardcodedLessonsList } from '../data/lessons';
@@ -29,7 +30,7 @@ function getInitialLessons() {
       if (parsed.lessonData && Object.keys(parsed.lessonData).length > 0) return parsed;
     }
   } catch (e) {
-    console.warn('Lesson cache read failed:', e);
+    reportError(e, { where: 'DataContext.getInitialLessons' });
   }
   return { lessonData: hardcodedLessonData, lessonsList: hardcodedLessonsList };
 }
@@ -48,7 +49,7 @@ function getInitialPhrases() {
       if (parsed.feedback && parsed.feedback.length > 0) return parsed;
     }
   } catch (e) {
-    console.warn('Phrases cache read failed:', e);
+    reportError(e, { where: 'DataContext.getInitialPhrases' });
   }
   return {
     feedback: hardcodedFeedback,
@@ -70,14 +71,14 @@ export function DataProvider({ children }) {
           setPhrases(phrasesResult);
         }
       } catch (e) {
-        console.warn('Phrases sync failed:', e);
+        reportError(e, { where: 'DataContext.syncPhrases' });
       }
 
       try {
         const onboardingResult = await fetchOnboardingContent();
         if (onboardingResult) setOnboardingContent(onboardingResult);
       } catch (e) {
-        console.warn('Onboarding sync failed:', e);
+        reportError(e, { where: 'DataContext.syncOnboarding' });
       }
     }
 

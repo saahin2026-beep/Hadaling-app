@@ -75,7 +75,10 @@ export const storage = {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (e) {
-      console.warn('Storage write failed:', e);
+      // Quota exceeded etc. Surface to error tracking via dynamic import to
+      // avoid a circular dep with observability (which doesn't import storage,
+      // but we keep it dynamic for safety + zero overhead in the happy path).
+      import('./observability').then((m) => m.reportError(e, { where: 'storage.set' })).catch(() => {});
     }
   },
 

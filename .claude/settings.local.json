@@ -37,7 +37,8 @@
       "Bash(cp /tmp/hd-icons/icon-512.png public/branding/favicon-512.png)",
       "Bash(cp /tmp/hd-icons/icon-1024.png public/branding/app-icon-1024.png)",
       "Bash(npm audit *)",
-      "Bash(sort -t: -k2 -n -r)"
+      "Bash(sort -t: -k2 -n -r)",
+      "Bash(npm test *)"
     ]
   }
 }

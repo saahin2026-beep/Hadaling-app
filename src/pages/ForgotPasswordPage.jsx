@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, EnvelopeSimple, EnvelopeOpen } from '@phosphor-icons/react';
 import { supabase } from '../utils/supabase';
 import { useLanguage } from '../utils/useLanguage';
+import { trackEvent, reportError } from '../utils/observability';
 
 export default function ForgotPasswordPage() {
   const navigate = useNavigate();
@@ -26,8 +27,9 @@ export default function ForgotPasswordPage() {
     });
     setLoading(false);
     if (resetError) {
-      console.warn('Reset password error:', resetError);
+      reportError(new Error('forgot_password_reset_failed'), { code: resetError.code, message: resetError.message });
     }
+    trackEvent('forgot_password_requested');
     // Always show "sent" — never reveal whether the email exists (account enumeration protection).
     setSent(true);
   };

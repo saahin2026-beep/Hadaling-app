@@ -4,7 +4,7 @@ import { ArrowLeft, User, EnvelopeSimple, Lock, Eye, EyeSlash, EnvelopeOpen } fr
 import { supabase } from '../utils/supabase';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
-import { trackEvent } from '../utils/observability';
+import { trackEvent, reportError } from '../utils/observability';
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ export default function SignupPage() {
 
       storage.update({ authComplete: true, userId: data.user?.id, userName: name });
       navigate('/profile-setup/0');
-    } catch (e) { setError(t('signup.error_generic')); console.error(e); }
+    } catch (e) { setError(t('signup.error_generic')); reportError(e, { where: 'SignupPage.handleSignup' }); }
     setLoading(false);
   };
 

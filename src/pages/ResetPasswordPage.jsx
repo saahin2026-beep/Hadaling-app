@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Lock, Eye, EyeSlash, CheckCircle } from '@phosphor-icons/react';
 import { supabase } from '../utils/supabase';
 import { useLanguage } from '../utils/useLanguage';
+import { trackEvent, reportError } from '../utils/observability';
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
@@ -37,8 +38,10 @@ export default function ResetPasswordPage() {
     setLoading(false);
     if (updateError) {
       setError(updateError.message);
+      reportError(new Error('password_reset_failed'), { code: updateError.code, message: updateError.message });
       return;
     }
+    trackEvent('password_reset_completed');
     setDone(true);
     setTimeout(() => navigate('/login'), 2000);
   };

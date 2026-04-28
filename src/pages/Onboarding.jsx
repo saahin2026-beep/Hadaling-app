@@ -342,6 +342,13 @@ export default function Onboarding() {
 
   const getContent = (key) => onboardingContent?.[key] || DEFAULTS[key];
 
+  // Funnel: track every screen view so we can see where users bail.
+  useEffect(() => {
+    if (Number.isFinite(currentStep)) {
+      trackEvent('onboarding_step_viewed', { step: currentStep });
+    }
+  }, [currentStep]);
+
   const goNext = () => {
     if (currentStep < 5) navigate(`/onboarding/${currentStep + 1}`);
   };

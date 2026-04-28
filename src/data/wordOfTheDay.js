@@ -26,7 +26,7 @@ export const fetchDailyWords = async () => {
       return cachedWords;
     }
   } catch (e) {
-    console.log('Failed to fetch words, using cache');
+    import('../utils/observability').then((m) => m.reportError(e, { where: 'wordOfTheDay.fetchDailyWords' })).catch(() => {});
   }
 
   const cached = localStorage.getItem('wotd_cache');

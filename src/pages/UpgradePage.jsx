@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Heart, Users, Check, Crown } from '@phosphor-icons/react';
 import { useLanguage } from '../utils/useLanguage';
+import { trackEvent } from '../utils/observability';
 import Geel from '../components/Geel';
 
 export default function UpgradePage() {
@@ -11,7 +12,18 @@ export default function UpgradePage() {
   const initialPlan = location.state?.selectedPlan || 'plus';
   const [selectedPlan, setSelectedPlan] = useState(initialPlan);
 
+  useEffect(() => {
+    trackEvent('upgrade_page_viewed', { initialPlan });
+  }, []);
+
+  const selectPlan = (plan) => {
+    if (plan === selectedPlan) return;
+    setSelectedPlan(plan);
+    trackEvent('upgrade_plan_selected', { plan });
+  };
+
   const handlePurchase = () => {
+    trackEvent('upgrade_purchase_attempted', { plan: selectedPlan });
     // TODO: payment integration
   };
 
@@ -54,8 +66,8 @@ export default function UpgradePage() {
         {/* Plans */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <FreePlanCard lang={lang} />
-          <PlanCard plan="plus" selected={selectedPlan === 'plus'} onSelect={() => setSelectedPlan('plus')} icon={<Heart size={28} weight="fill" color="white" />} iconBg="linear-gradient(135deg, #F59E0B, #D97706)" iconShadow="0 6px 16px rgba(245,158,11,0.35)" name="Plus" description={lang === 'en' ? 'Unlimited hearts, no ads' : 'Wadnaha oo dhan, xayeysiis la\'aan'} price="$5" priceColor="#B45309" badge={lang === 'en' ? 'Most Popular' : 'Ugu caanka'} badgeColor="#F59E0B" features={[lang === 'en' ? 'Unlimited hearts' : 'Wadnaha oo dhan', lang === 'en' ? 'No ads' : 'Xayeysiis la\'aan', lang === 'en' ? 'Streak freeze' : 'Streak freeze', lang === 'en' ? 'Progress insights' : 'Faahfaahin horumar']} highlight />
-          <PlanCard plan="family" selected={selectedPlan === 'family'} onSelect={() => setSelectedPlan('family')} icon={<Users size={28} weight="fill" color="white" />} iconBg="linear-gradient(135deg, #8B5CF6, #7C3AED)" iconShadow="0 6px 16px rgba(139,92,246,0.35)" name="Family" description={lang === 'en' ? 'Up to 6 accounts' : 'Ilaa 6 koonto'} price="$9" priceColor="#7C3AED" badge={lang === 'en' ? 'Save 40%' : 'Kaydi 40%'} badgeColor="#8B5CF6" features={[lang === 'en' ? 'Everything in Plus' : 'Wax kasta oo Plus', lang === 'en' ? '6 accounts' : '6 koonto', lang === 'en' ? 'Family dashboard' : 'Maaraynta qoyska']} />
+          <PlanCard plan="plus" selected={selectedPlan === 'plus'} onSelect={() => selectPlan('plus')} icon={<Heart size={28} weight="fill" color="white" />} iconBg="linear-gradient(135deg, #F59E0B, #D97706)" iconShadow="0 6px 16px rgba(245,158,11,0.35)" name="Plus" description={lang === 'en' ? 'Unlimited hearts, no ads' : 'Wadnaha oo dhan, xayeysiis la\'aan'} price="$5" priceColor="#B45309" badge={lang === 'en' ? 'Most Popular' : 'Ugu caanka'} badgeColor="#F59E0B" features={[lang === 'en' ? 'Unlimited hearts' : 'Wadnaha oo dhan', lang === 'en' ? 'No ads' : 'Xayeysiis la\'aan', lang === 'en' ? 'Streak freeze' : 'Streak freeze', lang === 'en' ? 'Progress insights' : 'Faahfaahin horumar']} highlight />
+          <PlanCard plan="family" selected={selectedPlan === 'family'} onSelect={() => selectPlan('family')} icon={<Users size={28} weight="fill" color="white" />} iconBg="linear-gradient(135deg, #8B5CF6, #7C3AED)" iconShadow="0 6px 16px rgba(139,92,246,0.35)" name="Family" description={lang === 'en' ? 'Up to 6 accounts' : 'Ilaa 6 koonto'} price="$9" priceColor="#7C3AED" badge={lang === 'en' ? 'Save 40%' : 'Kaydi 40%'} badgeColor="#8B5CF6" features={[lang === 'en' ? 'Everything in Plus' : 'Wax kasta oo Plus', lang === 'en' ? '6 accounts' : '6 koonto', lang === 'en' ? 'Family dashboard' : 'Maaraynta qoyska']} />
         </div>
 
         {selectedPlan !== 'free' && (

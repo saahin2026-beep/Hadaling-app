@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { reportError } from './observability';
 
 const CACHE_KEY = 'hadaling-data-cache';
 
@@ -12,7 +13,7 @@ function getCache() {
 function setCache(data) {
   try {
     localStorage.setItem(CACHE_KEY, JSON.stringify({ ...data, cachedAt: Date.now() }));
-  } catch (e) { console.warn('Cache write failed:', e); }
+  } catch (e) { reportError(e, { where: 'dataService.setCache' }); }
 }
 
 /**
@@ -88,7 +89,7 @@ export async function fetchLessons() {
     setCache(result);
     return result;
   } catch (err) {
-    console.warn('Failed to fetch from Supabase, using cache:', err);
+    reportError(err, { where: 'dataService.fetchLessons' });
     const cached = getCache();
     if (cached) return cached;
 
@@ -120,12 +121,12 @@ export async function fetchPhrases() {
     localStorage.setItem('hadaling-phrases-cache', JSON.stringify(phrases));
     return phrases;
   } catch (err) {
-    console.warn('Failed to fetch phrases, using cache:', err);
+    reportError(err, { where: 'dataService.fetchPhrases' });
     try {
       const cached = localStorage.getItem('hadaling-phrases-cache');
       if (cached) return JSON.parse(cached);
     } catch (e) {
-      console.warn('Phrase cache read failed:', e);
+      reportError(e, { where: 'dataService.fetchPhrases.cacheRead' });
     }
 
     // Fallback to hardcoded (import from phrases.js still works)
@@ -151,12 +152,12 @@ export async function fetchOnboardingContent() {
     localStorage.setItem('hadaling-onboarding-cache', JSON.stringify(content));
     return content;
   } catch (err) {
-    console.warn('Failed to fetch onboarding content, using cache:', err);
+    reportError(err, { where: 'dataService.fetchOnboardingContent' });
     try {
       const cached = localStorage.getItem('hadaling-onboarding-cache');
       if (cached) return JSON.parse(cached);
     } catch (e) {
-      console.warn('Onboarding cache read failed:', e);
+      reportError(e, { where: 'dataService.fetchOnboardingContent.cacheRead' });
     }
     return null;
   }

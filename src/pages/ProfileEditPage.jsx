@@ -4,6 +4,7 @@ import { ArrowLeft, User, At, Phone, Calendar, MapPin, CheckCircle, XCircle, Cir
 import { supabase } from '../utils/supabase';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
+import { trackEvent, reportError } from '../utils/observability';
 import somaliCities from '../data/somaliCities';
 import Toast from '../components/Toast';
 
@@ -133,12 +134,14 @@ export default function ProfileEditPage() {
         setError(t('profile.error_username_taken'));
       } else {
         setError(updateError.message);
+        reportError(new Error('profile_edit_save_failed'), { code: updateError.code, message: updateError.message });
       }
       return;
     }
 
     storage.update({ userName: payload.name, username: payload.username });
     setOriginal(payload);
+    trackEvent('profile_edit_saved');
     setToast({ message: t('profile_edit.saved'), type: 'success' });
   };
 

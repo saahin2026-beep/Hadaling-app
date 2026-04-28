@@ -12,6 +12,11 @@ vi.mock('../../utils/supabase', () => ({
   },
 }));
 
+vi.mock('../../utils/observability', () => ({
+  trackEvent: vi.fn(),
+  reportError: vi.fn(),
+}));
+
 function renderPage() {
   return render(
     <MemoryRouter initialEntries={['/forgot-password']}>
