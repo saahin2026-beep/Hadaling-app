@@ -8,7 +8,6 @@ const SCREENS = [
   { key: 'screen3', label: 'Screen 3 — Micro Demo' },
   { key: 'screen4', label: 'Screen 4 — Confirmation' },
   { key: 'screen5', label: 'Screen 5 — Save Progress' },
-  { key: 'screen6', label: 'Screen 6 — Enter Lesson' },
 ];
 
 export default function OnboardingManager() {

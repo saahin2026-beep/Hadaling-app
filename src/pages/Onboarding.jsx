@@ -13,7 +13,6 @@ const DEFAULTS = {
   screen3: { label: 'Ingiriis', instruction: 'Dooro micnaha saxda ah:', prompt: "Hi, I'm Ahmed.", options: ['Salaan, magacaygu waa Ahmed', 'Nabad gelyo', 'Sidee tahay?'], correctIndex: 0 },
   screen4: { title: 'Aragtay?', line1: 'Tani waa sida casharradu u shaqeeyaan.', line2: 'Waa fudud, waadna awooddaa.', buttonText: 'SII WAD' },
   screen5: { title: 'Ma rabtaa inaad kaydiso horumarkaaga?', subtitle: 'Si aadan u lumin XP-gaaga iyo streak-gaaga', primaryButton: 'KAYDI HORUMARKA', secondaryButton: 'KU SII WAD HADDA' },
-  screen6: { lessonTitle: 'Is-barasho fudud', lessonSubtitle: '(Simple introductions)', introLine: 'Casharkan waa mid fudud. Aan bilowno.', buttonText: 'BILOW CASHARKA' },
 };
 
 const COMFORT_ICONS = [Plant, Leaf, Tree];
@@ -343,8 +342,7 @@ export default function Onboarding() {
   const getContent = (key) => onboardingContent?.[key] || DEFAULTS[key];
 
   const goNext = () => {
-    if (currentStep < 6) navigate(`/onboarding/${currentStep + 1}`);
-    else { storage.update({ onboardingComplete: true }); navigate('/geel-world'); }
+    if (currentStep < 5) navigate(`/onboarding/${currentStep + 1}`);
   };
 
   return (
@@ -391,8 +389,7 @@ export default function Onboarding() {
         {currentStep === 2 && <Screen2 goNext={goNext} c={getContent('screen2')} />}
         {currentStep === 3 && <Screen3 goNext={goNext} c={getContent('screen3')} getRandomPhrase={getRandomPhrase} />}
         {currentStep === 4 && <Screen4 goNext={goNext} c={getContent('screen4')} />}
-        {currentStep === 5 && <Screen5 goNext={goNext} c={getContent('screen5')} />}
-        {currentStep === 6 && <Screen6 goNext={goNext} c={getContent('screen6')} />}
+        {currentStep === 5 && <Screen5 c={getContent('screen5')} />}
       </div>
     </div>
   );
@@ -757,7 +754,8 @@ function Screen4({ goNext, c }) {
 }
 
 // SCREEN 5: Save Progress Prompt
-function Screen5({ goNext, c }) {
+function Screen5({ c }) {
+  const navigate = useNavigate();
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 clamp(12px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px)' }}>
       <ProgressDots total={5} current={4} />
@@ -806,80 +804,13 @@ function Screen5({ goNext, c }) {
       </div>
 
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 'clamp(8px, 1.8vh, 14px)' }}>
-        <PremiumButton onClick={() => { storage.update({ guestMode: false }); goNext(); }} variant="cyan">
+        <PremiumButton onClick={() => { storage.update({ onboardingComplete: true, guestMode: false }); navigate('/auth-gate'); }} variant="cyan">
           {c.primaryButton}
         </PremiumButton>
-        <PremiumButton onClick={() => { storage.update({ guestMode: true }); goNext(); }} variant="secondary">
+        <PremiumButton onClick={() => { storage.update({ onboardingComplete: true, guestMode: true }); navigate('/home'); }} variant="secondary">
           {c.secondaryButton}
         </PremiumButton>
       </div>
-    </div>
-  );
-}
-
-// SCREEN 6: Ready to Start
-function Screen6({ goNext, c }) {
-  return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 clamp(12px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px)' }}>
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{
-          filter: 'drop-shadow(0 12px 30px rgba(0,0,0,0.25))',
-          marginBottom: 'clamp(12px, 2.5vh, 20px)',
-        }}>
-          <Geel size={140} expression="excited" />
-        </div>
-
-        <div style={{
-          width: 56,
-          height: 56,
-          borderRadius: '50%',
-          background: 'linear-gradient(135deg, #0891B2 0%, #0E7490 100%)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 8px 30px rgba(8,145,178,0.5)',
-          border: '3px solid rgba(255,255,255,0.3)',
-        }}>
-          <span style={{ fontSize: 'clamp(18px, 5vw, 24px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif' }}>1</span>
-        </div>
-
-        <h2 style={{
-          fontSize: 'clamp(28px, 7vw, 34px)',
-          fontWeight: 900,
-          color: 'white',
-          fontFamily: 'Nunito, sans-serif',
-          textAlign: 'center',
-          marginTop: 'clamp(12px, 2.5vh, 20px)',
-          textShadow: '0 3px 15px rgba(0,0,0,0.25)',
-        }}>
-          {c.lessonTitle}
-        </h2>
-
-        <p style={{
-          fontSize: 'clamp(14px, 3.8vw, 17px)',
-          color: 'rgba(255,255,255,0.65)',
-          fontFamily: 'Nunito, sans-serif',
-          textAlign: 'center',
-          marginTop: 'clamp(3px, 0.8vh, 6px)',
-          fontWeight: 600,
-        }}>
-          {c.lessonSubtitle}
-        </p>
-
-        <p style={{
-          fontSize: 'clamp(17px, 4.5vw, 20px)',
-          color: 'rgba(255,255,255,0.8)',
-          fontFamily: 'Nunito, sans-serif',
-          textAlign: 'center',
-          marginTop: 'clamp(12px, 2.5vh, 20px)',
-          lineHeight: 1.6,
-          fontWeight: 600,
-        }}>
-          {c.introLine}
-        </p>
-      </div>
-
-      <PremiumButton onClick={goNext}>{c.buttonText}</PremiumButton>
     </div>
   );
 }
