@@ -73,6 +73,7 @@ const translations = {
     // Auth gate
     'auth.completed_lessons': '3 casharro ayaad dhammaysay!',
     'auth.create_account_desc': 'Samee akoon si aad u sii wado.',
+    'auth.save_progress_desc': 'Samee akoon si aad u kaydiso horumarkaaga.',
     'auth.signup': 'SAMEE AKOON',
     'auth.login': 'SOO GAL',
     'auth.continue_learning': 'Ku sii wad barashada',
@@ -291,6 +292,7 @@ const translations = {
     // Auth gate
     'auth.completed_lessons': 'You completed 3 lessons!',
     'auth.create_account_desc': 'Create an account to continue.',
+    'auth.save_progress_desc': 'Create an account to save your progress.',
     'auth.signup': 'SIGN UP',
     'auth.login': 'LOG IN',
     'auth.continue_learning': 'Continue learning',

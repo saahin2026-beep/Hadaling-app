@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../utils/useLanguage';
+import { storage } from '../utils/storage';
 import Geel from '../components/Geel';
 
 export default function AuthGate() {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const lessonsDone = storage.get().lessonsCompleted?.length || 0;
+  const isMandatoryGate = lessonsDone >= 3;
 
   return (
     <div className="page-fixed" style={{
@@ -25,7 +28,9 @@ export default function AuthGate() {
 
       <div style={{ padding: 'clamp(16px, 4vh, 36px) clamp(16px, 3vh, 28px) max(24px, env(safe-area-inset-bottom))', display: 'flex', flexDirection: 'column', gap: 'clamp(6px, 1.2vh, 10px)', position: 'relative', zIndex: 1, flexShrink: 0 }}>
         <p style={{ fontSize: 'clamp(13px, 3.5vw, 15px)', color: 'rgba(255,255,255,0.7)', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginBottom: 'clamp(3px, 0.8vh, 6px)' }}>
-          {t('auth.completed_lessons')} {t('auth.create_account_desc')}
+          {isMandatoryGate
+            ? `${t('auth.completed_lessons')} ${t('auth.create_account_desc')}`
+            : t('auth.save_progress_desc')}
         </p>
         <button onClick={() => navigate('/signup')} style={{
           width: '100%', padding: 'clamp(12px, 3vh, 16px) 0', borderRadius: 'clamp(10px, 2.5vw, 16px)', border: 'none',
