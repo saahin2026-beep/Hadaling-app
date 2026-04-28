@@ -5,6 +5,7 @@ import {
   ShieldCheck, Crown, SignOut, CaretRight, Globe, Heart
 } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
+import { supabase } from '../utils/supabase';
 import { useLanguage } from '../utils/useLanguage';
 import Geel from '../components/Geel';
 import BottomNav from '../components/BottomNav';
@@ -20,7 +21,10 @@ export default function Astaanta() {
   const [showProfile, setShowProfile] = useState(false);
   const state = storage.get();
 
-  const handleReset = () => {
+  const handleReset = async () => {
+    if (!state.guestMode) {
+      await supabase.auth.signOut();
+    }
     storage.reset();
     setResetDone(true);
     setShowResetConfirm(false);
@@ -181,10 +185,23 @@ export default function Astaanta() {
             </div>
           </div>
           <MenuItem icon={Bell} glow="gold" label={t('astaanta.notifications')} sublabel={t('astaanta.notifications_sub')} onClick={() => setShowComingSoon(true)} />
-          <MenuItem icon={ShieldCheck} glow="green" label={t('astaanta.security')} sublabel={state.guestMode ? t('astaanta.security_guest') : t('astaanta.security_verified')} onClick={() => setShowComingSoon(true)} />
+          <MenuItem
+            icon={ShieldCheck}
+            glow="green"
+            label={t('astaanta.security')}
+            sublabel={state.guestMode ? t('astaanta.security_guest') : t('astaanta.security_verified')}
+            onClick={() => state.guestMode ? setShowComingSoon(true) : navigate('/account-security')}
+          />
           <div style={{ height: 'clamp(3px, 0.8vh, 6px)' }} />
 
-          <MenuItem icon={SignOut} glow="red" label={t('astaanta.signout')} sublabel={t('astaanta.signout_sub')} danger onClick={() => setShowResetConfirm(true)} />
+          <MenuItem
+            icon={SignOut}
+            glow="red"
+            label={state.guestMode ? t('astaanta.reset') : t('astaanta.signout')}
+            sublabel={state.guestMode ? t('astaanta.reset_sub') : t('astaanta.signout_sub')}
+            danger
+            onClick={() => setShowResetConfirm(true)}
+          />
         </div>
 
         <p style={{ fontSize: 'clamp(9px, 2.2vw, 11px)', color: 'rgba(255,255,255,0.35)', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginTop: 'clamp(8px, 1.8vh, 14px)' }}>Hadaling v1.0.0</p>

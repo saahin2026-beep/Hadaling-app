@@ -102,12 +102,18 @@ export default function LoginPage() {
           <div style={{ ...inputWrap, ...(focusedField === 'password' ? focusStyle : {}) }}>
             <div style={iconWrap}><Lock size={16} weight="fill" color="white" /></div>
             <input type={showPassword ? 'text' : 'password'} value={form.password} onChange={(e) => update('password', e.target.value)} onFocus={() => setFocusedField('password')} onBlur={() => setFocusedField(null)} placeholder={t('signup.password_placeholder')} style={inputStyle} />
-            <button onClick={() => setShowPassword(!showPassword)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 'clamp(3px, 0.8vh, 6px)' }}>
+            <button type="button" onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? 'Hide password' : 'Show password'} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 'clamp(3px, 0.8vh, 6px)' }}>
               {showPassword ? <EyeSlash size={16} color="rgba(255,255,255,0.5)" /> : <Eye size={16} color="rgba(255,255,255,0.5)" />}
             </button>
           </div>
 
-          <button onClick={handleLogin} disabled={loading} style={{
+          <p style={{ textAlign: 'right', marginTop: -2, marginBottom: 8 }}>
+            <span onClick={() => navigate('/forgot-password')} style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', color: '#22D3EE', cursor: 'pointer', fontWeight: 700, fontFamily: 'Nunito, sans-serif' }}>
+              {t('login.forgot_password')}
+            </span>
+          </p>
+
+          <button type="button" onClick={handleLogin} disabled={loading} style={{
             width: '100%', padding: 'clamp(12px, 2.5vh, 16px)', marginTop: 'clamp(3px, 0.8vh, 6px)',
             background: loading ? 'rgba(245,158,11,0.5)' : 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
             border: 'none', borderRadius: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(14px, 3.5vw, 16px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif',

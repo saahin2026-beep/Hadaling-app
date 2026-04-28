@@ -117,6 +117,29 @@ const translations = {
     'login.error_credentials': 'Email ama password-ku khalad ayay yihiin',
     'login.error_email_unconfirmed': 'Email-kaaga lama xaqiijin. Fadlan hubi inbox-kaaga.',
     'login.error_generic': 'Wax qalad ah ayaa dhacay',
+    'login.forgot_password': 'Password-ka ma ilaaway?',
+
+    // Forgot password
+    'forgot.title': 'Password-ka dib u celi',
+    'forgot.subtitle': 'Geli email-kaaga, waxaan kuu soo dirnaa link.',
+    'forgot.submit': 'DIR LINK-KA',
+    'forgot.loading': 'DIRAYA...',
+    'forgot.sent_title': 'Hubi email-kaaga',
+    'forgot.sent_body': 'Haddii akoon ku jiro email-kan, waxaan u dirnay link aad ku dib u celin karto password-ka. Hubi inbox-ka iyo galka spam.',
+    'forgot.back_to_login': 'KU LAABO',
+
+    // Reset password
+    'reset.title': 'Password cusub samee',
+    'reset.subtitle': 'Dooro password aad fudud ku xasuusan karto.',
+    'reset.new_password': 'Password cusub',
+    'reset.confirm_password': 'Mar kale gali password-ka',
+    'reset.error_mismatch': 'Password-yadu isma eka',
+    'reset.submit': 'KAYDI',
+    'reset.saving': 'KAYDINAYA...',
+    'reset.success': 'Password-ka waa la cusboonaysiiyay',
+    'reset.expired_title': 'Link-ku waa dhacay',
+    'reset.expired_body': 'Link-ku waa la fadhiyay ama mar hore ayaa la isticmaalay. Mar kale codso link cusub.',
+    'reset.try_again': 'MAR KALE ISKU DAY',
 
     // Profile setup
     'profile.username_question': 'Magacaad ku yaqaanaan?',
@@ -166,6 +189,26 @@ const translations = {
     'astaanta.signout': 'Ka bax',
     'astaanta.signout_sub': 'Ku noqo bilowga',
     'astaanta.footer': 'Loo sameeyay jacaylka barashada',
+
+    // Account & security
+    'account.title': 'Xisaabta & Amniga',
+    'account.email_title': 'Email',
+    'account.current_email': 'Email-ka hadda',
+    'account.new_email': 'Email cusub',
+    'account.update_email': 'BEDEL EMAIL-KA',
+    'account.email_help': 'Waxaan u dirnaa link xaqiijin email-kaaga cusub. Email-ka hore weli wuu shaqayn doonaa ilaa aad xaqiijiso.',
+    'account.email_change_sent': 'Hubi email-kaaga cusub si aad u xaqiijiso',
+    'account.email_same': 'Email-kani waa kii hore',
+    'account.password_title': 'Password',
+    'account.current_password': 'Password-ka hadda',
+    'account.update_password': 'BEDEL PASSWORD-KA',
+    'account.wrong_current_pw': 'Password-ka hadda khalad ayuu yahay',
+    'account.password_changed': 'Password-ka waa la beddelay',
+    'account.session_title': 'Akoonkaaga',
+    'account.signout': 'KA BAX',
+    'account.signout_help': 'Riix si aad uga baxdo Hadaling. Si aad ugu soo noqotid akoonkaaga, mar kale soo gal.',
+    'account.signing_out': 'KA BAXAYA...',
+    'account.saving': 'KAYDINAYA...',
 
     // Profile popup
     'profile_popup.name': 'Magaca',
@@ -341,6 +384,29 @@ const translations = {
     'login.error_credentials': 'Wrong email or password',
     'login.error_email_unconfirmed': 'Email not confirmed. Please check your inbox.',
     'login.error_generic': 'Something went wrong',
+    'login.forgot_password': 'Forgot password?',
+
+    // Forgot password
+    'forgot.title': 'Reset password',
+    'forgot.subtitle': 'Enter your email and we’ll send you a reset link.',
+    'forgot.submit': 'SEND LINK',
+    'forgot.loading': 'SENDING...',
+    'forgot.sent_title': 'Check your email',
+    'forgot.sent_body': 'If an account exists for that email, we’ve sent you a reset link. Check your inbox and spam folder.',
+    'forgot.back_to_login': 'BACK TO LOGIN',
+
+    // Reset password
+    'reset.title': 'Set a new password',
+    'reset.subtitle': 'Pick something you’ll remember.',
+    'reset.new_password': 'New password',
+    'reset.confirm_password': 'Confirm password',
+    'reset.error_mismatch': 'Passwords don’t match',
+    'reset.submit': 'SAVE',
+    'reset.saving': 'SAVING...',
+    'reset.success': 'Password updated',
+    'reset.expired_title': 'Link expired',
+    'reset.expired_body': 'This reset link has expired or already been used. Request a new one.',
+    'reset.try_again': 'TRY AGAIN',
 
     // Profile setup
     'profile.username_question': 'What should we call you?',
@@ -390,6 +456,26 @@ const translations = {
     'astaanta.signout': 'Sign Out',
     'astaanta.signout_sub': 'Return to start',
     'astaanta.footer': 'Made with love for learning',
+
+    // Account & security
+    'account.title': 'Account & Security',
+    'account.email_title': 'Email',
+    'account.current_email': 'Current email',
+    'account.new_email': 'New email',
+    'account.update_email': 'UPDATE EMAIL',
+    'account.email_help': 'We’ll send a confirmation link to your new email. Your old email keeps working until you confirm.',
+    'account.email_change_sent': 'Check your new email to confirm',
+    'account.email_same': 'That’s your current email',
+    'account.password_title': 'Password',
+    'account.current_password': 'Current password',
+    'account.update_password': 'UPDATE PASSWORD',
+    'account.wrong_current_pw': 'Current password is incorrect',
+    'account.password_changed': 'Password updated',
+    'account.session_title': 'Session',
+    'account.signout': 'SIGN OUT',
+    'account.signout_help': 'Tap to sign out of Hadaling. To access your account again, log in.',
+    'account.signing_out': 'SIGNING OUT...',
+    'account.saving': 'SAVING...',
 
     // Profile popup
     'profile_popup.name': 'Name',

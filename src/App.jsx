@@ -24,6 +24,9 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 const ProfileSetup = lazy(() => import('./pages/ProfileSetup'));
 const UpgradePage = lazy(() => import('./pages/UpgradePage'));
 const AdminPage = lazy(() => import('./admin/AdminPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
+const AccountSecurityPage = lazy(() => import('./pages/AccountSecurityPage'));
 
 const FREE_LESSON_LIMIT = 3;
 
@@ -69,7 +72,12 @@ export default function App() {
   // (INITIAL_SESSION on page load, or SIGNED_IN), if the awaiting flag is set
   // create the profile row if missing and route to setup or home.
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: sub } = supabase.auth.onAuthStateChange(async (event, session) => {
+      // Password recovery: route to /reset-password regardless of other state.
+      if (event === 'PASSWORD_RECOVERY') {
+        navigate('/reset-password');
+        return;
+      }
       if (!session) return;
       const state = storage.get();
       if (!state.awaitingEmailConfirmation) return;
@@ -128,6 +136,9 @@ export default function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/profile-setup/:step" element={<ProfileSetup />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/account-security" element={<AccountSecurityPage />} />
         <Route path="/astaanta" element={<Astaanta />} />
         <Route path="/progress" element={<PracticeHub />} />
         <Route path="/progress/stats" element={<Progress />} />
