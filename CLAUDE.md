@@ -3,8 +3,8 @@
 ## Project
 Hadaling — Somali-to-English language learning PWA. Confidence-first pedagogy, Somali before English throughout.
 
-**Live:** https://baro-ingiriisi.vercel.app (Vercel project name still uses old slug)
-**Admin:** https://baro-ingiriisi.vercel.app/admin (Supabase Auth — admin email in `src/admin/adminConfig.js`)
+**Live:** https://hadaling.vercel.app (legacy `baro-ingiriisi.vercel.app` redirects here)
+**Admin:** https://hadaling.vercel.app/admin (Supabase Auth — admin email in `src/admin/adminConfig.js`)
 
 ## Stack
 - React 18 + Vite + Tailwind CSS (using @tailwindcss/vite plugin)

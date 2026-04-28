@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, User, EnvelopeSimple, Lock, Eye, EyeSlash } from '@phosphor-icons/react';
+import { ArrowLeft, User, EnvelopeSimple, Lock, Eye, EyeSlash, EnvelopeOpen } from '@phosphor-icons/react';
 import { supabase } from '../utils/supabase';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
@@ -13,6 +13,7 @@ export default function SignupPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
+  const [pendingEmail, setPendingEmail] = useState(null);
 
   const update = (key, value) => setForm((f) => ({ ...f, [key]: value }));
 
@@ -28,19 +29,83 @@ export default function SignupPage() {
     if (err) { setError(err); return; }
     setLoading(true); setError('');
     try {
+      const email = form.email.trim().toLowerCase();
+      const name = form.name.trim();
       const { data, error: signupError } = await supabase.auth.signUp({
-        email: form.email.trim().toLowerCase(), password: form.password,
-        options: { data: { name: form.name.trim() } },
+        email, password: form.password,
+        options: { data: { name } },
       });
       if (signupError) {
         setError(signupError.message.includes('already registered') ? t('signup.error_exists') : signupError.message);
         setLoading(false); return;
       }
-      storage.update({ authComplete: true, userId: data.user?.id, userName: form.name.trim(), userEmail: form.email.trim().toLowerCase() });
+
+      if (!data.session) {
+        // Email confirmation required — wait for the listener in App.jsx to handle the SIGNED_IN event.
+        storage.update({ awaitingEmailConfirmation: true, pendingEmail: email, pendingName: name });
+        setPendingEmail(email);
+        setLoading(false);
+        return;
+      }
+
+      storage.update({ authComplete: true, userId: data.user?.id, userName: name, userEmail: email });
       navigate('/profile-setup/0');
     } catch (e) { setError(t('signup.error_generic')); console.error(e); }
     setLoading(false);
   };
+
+  if (pendingEmail) {
+    return (
+      <div className="page-fixed" style={{
+        background: 'linear-gradient(180deg, #064E5E 0%, #0E7490 30%, #0891B2 70%, #0E7490 100%)',
+      }}>
+        <div style={{ position: 'absolute', top: '-50px', right: '-80px', width: '220px', height: '220px', background: 'radial-gradient(circle, rgba(34,211,238,0.25) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '5%', left: '-60px', width: '180px', height: '180px', background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
+
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 clamp(20px, 5vw, 32px)', position: 'relative', zIndex: 1, textAlign: 'center' }}>
+          <div style={{
+            width: 88, height: 88, borderRadius: '50%',
+            background: 'rgba(34,211,238,0.18)', border: '1px solid rgba(34,211,238,0.3)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            marginBottom: 'clamp(16px, 3vh, 28px)', boxShadow: '0 8px 30px rgba(34,211,238,0.2)',
+          }}>
+            <EnvelopeOpen size={42} weight="fill" color="#22D3EE" />
+          </div>
+
+          <h1 style={{ fontSize: 'clamp(22px, 5.5vw, 28px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(10px, 2vh, 16px)' }}>
+            {t('signup.check_email_title')}
+          </h1>
+
+          <p style={{ fontSize: 'clamp(13px, 3.2vw, 15px)', color: 'rgba(255,255,255,0.75)', fontFamily: 'Nunito, sans-serif', lineHeight: 1.6, marginBottom: 'clamp(6px, 1.2vh, 10px)' }}>
+            {t('signup.check_email_intro')}
+          </p>
+
+          <p style={{ fontSize: 'clamp(14px, 3.5vw, 16px)', fontWeight: 800, color: '#22D3EE', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(12px, 2.5vh, 20px)', wordBreak: 'break-all' }}>
+            {pendingEmail}
+          </p>
+
+          <p style={{ fontSize: 'clamp(13px, 3.2vw, 15px)', color: 'rgba(255,255,255,0.75)', fontFamily: 'Nunito, sans-serif', lineHeight: 1.6, marginBottom: 'clamp(6px, 1.2vh, 10px)' }}>
+            {t('signup.check_email_action')}
+          </p>
+
+          <p style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', color: 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(20px, 4vh, 32px)' }}>
+            {t('signup.check_email_spam')}
+          </p>
+
+          <button onClick={() => { setPendingEmail(null); navigate('/auth-gate'); }} style={{
+            padding: 'clamp(10px, 2.2vh, 14px) clamp(24px, 6vw, 36px)', borderRadius: 'clamp(8px, 2vw, 12px)',
+            background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)',
+            fontSize: 'clamp(12px, 3vw, 14px)', fontWeight: 800, color: 'white', fontFamily: 'Nunito, sans-serif',
+            cursor: 'pointer', letterSpacing: '0.5px',
+          }}>
+            {t('signup.check_email_back')}
+          </button>
+        </div>
+
+        <div style={{ height: 'max(16px, env(safe-area-inset-bottom))', flexShrink: 0 }} />
+      </div>
+    );
+  }
 
   return (
     <div className="page-fixed" style={{

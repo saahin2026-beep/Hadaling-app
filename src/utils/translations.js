@@ -94,6 +94,11 @@ const translations = {
     'signup.error_password': 'Password-ku waa inuu ka badan yahay 8 xaraf',
     'signup.error_exists': 'Email-kan horey ayaa loo isticmaalay',
     'signup.error_generic': 'Wax qalad ah ayaa dhacay',
+    'signup.check_email_title': 'Hubi email-kaaga',
+    'signup.check_email_intro': 'Waxaan u dirnay link xaqiijin email-kan:',
+    'signup.check_email_action': 'Riix link-ka inbox-kaaga si aad u sii wadato.',
+    'signup.check_email_spam': 'Haddii aanad arag, hubi galka spam.',
+    'signup.check_email_back': 'KU LAABO',
 
     // Login
     'login.title': 'Soo gal',
@@ -104,6 +109,7 @@ const translations = {
     'login.loading': 'SUGAYA...',
     'login.error_fill': 'Fadlan buuxi dhammaan meelaha',
     'login.error_credentials': 'Email ama password-ku khalad ayay yihiin',
+    'login.error_email_unconfirmed': 'Email-kaaga lama xaqiijin. Fadlan hubi inbox-kaaga.',
     'login.error_generic': 'Wax qalad ah ayaa dhacay',
 
     // Profile setup
@@ -306,6 +312,11 @@ const translations = {
     'signup.error_password': 'Password must be at least 8 characters',
     'signup.error_exists': 'This email is already registered',
     'signup.error_generic': 'Something went wrong',
+    'signup.check_email_title': 'Check your email',
+    'signup.check_email_intro': 'We sent a confirmation link to:',
+    'signup.check_email_action': 'Click the link in your inbox to continue.',
+    'signup.check_email_spam': "If you don't see it, check your spam folder.",
+    'signup.check_email_back': 'BACK',
 
     // Login
     'login.title': 'Log in',
@@ -316,6 +327,7 @@ const translations = {
     'login.loading': 'LOADING...',
     'login.error_fill': 'Please fill in all fields',
     'login.error_credentials': 'Wrong email or password',
+    'login.error_email_unconfirmed': 'Email not confirmed. Please check your inbox.',
     'login.error_generic': 'Something went wrong',
 
     // Profile setup

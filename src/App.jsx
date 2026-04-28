@@ -1,6 +1,7 @@
-import { Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom';
 import { useEffect, lazy, Suspense } from 'react';
 import { storage } from './utils/storage';
+import { supabase } from './utils/supabase';
 
 // Core pages — loaded immediately
 import Home from './pages/Home';
@@ -37,6 +38,8 @@ function LessonGuard({ children }) {
 }
 
 export default function App() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     storage.checkStreak();
     const onVisible = () => {
@@ -45,6 +48,48 @@ export default function App() {
     document.addEventListener('visibilitychange', onVisible);
     return () => document.removeEventListener('visibilitychange', onVisible);
   }, []);
+
+  // Handle email-confirmation return: when SIGNED_IN fires and we were awaiting
+  // confirmation, create the profile row if missing and route to setup or home.
+  useEffect(() => {
+    const { data: sub } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event !== 'SIGNED_IN' || !session) return;
+      const state = storage.get();
+      if (!state.awaitingEmailConfirmation) return;
+
+      const userId = session.user.id;
+      const email = session.user.email;
+      const name = session.user.user_metadata?.name || state.pendingName || '';
+
+      let { data: profile } = await supabase
+        .from('profiles')
+        .select('profile_complete, name')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (!profile) {
+        const { error: upsertError } = await supabase
+          .from('profiles')
+          .upsert({ id: userId, name, profile_complete: false }, { onConflict: 'id' });
+        if (upsertError) console.warn('Profile auto-create failed:', upsertError);
+        profile = { profile_complete: false, name };
+      }
+
+      storage.update({
+        awaitingEmailConfirmation: false,
+        authComplete: true,
+        userId,
+        userEmail: email,
+        userName: profile.name || name,
+        profileComplete: profile.profile_complete || false,
+        pendingEmail: null,
+        pendingName: null,
+      });
+
+      navigate(profile.profile_complete ? '/home' : '/profile-setup/0');
+    });
+    return () => sub.subscription.unsubscribe();
+  }, [navigate]);
 
   const state = storage.get();
 

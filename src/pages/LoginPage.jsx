@@ -21,7 +21,15 @@ export default function LoginPage() {
     setLoading(true); setError('');
     try {
       const { data, error: loginError } = await supabase.auth.signInWithPassword({ email: form.email.trim().toLowerCase(), password: form.password });
-      if (loginError) { setError(t('login.error_credentials')); setLoading(false); return; }
+      if (loginError) {
+        const msg = (loginError.message || '').toLowerCase();
+        if (msg.includes('email not confirmed') || msg.includes('not confirmed')) {
+          setError(t('login.error_email_unconfirmed'));
+        } else {
+          setError(t('login.error_credentials'));
+        }
+        setLoading(false); return;
+      }
 
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
