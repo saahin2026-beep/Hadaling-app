@@ -19,7 +19,7 @@ export default function SignupPage() {
   const validate = () => {
     if (!form.name.trim() || form.name.trim().length < 2) return t('signup.error_name');
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return t('signup.error_email');
-    if (!form.password || form.password.length < 6) return t('signup.error_password');
+    if (!form.password || form.password.length < 8) return t('signup.error_password');
     return null;
   };
 
