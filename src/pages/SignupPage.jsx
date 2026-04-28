@@ -33,7 +33,10 @@ export default function SignupPage() {
       const name = form.name.trim();
       const { data, error: signupError } = await supabase.auth.signUp({
         email, password: form.password,
-        options: { data: { name } },
+        options: {
+          data: { name },
+          emailRedirectTo: `${window.location.origin}/profile-setup/0`,
+        },
       });
       if (signupError) {
         setError(signupError.message.includes('already registered') ? t('signup.error_exists') : signupError.message);
