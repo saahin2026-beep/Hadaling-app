@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ShareNetwork, Plus, X, ArrowRight } from '@phosphor-icons/react';
+import { Export, Plus, X, ArrowRight } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
 
@@ -79,7 +79,7 @@ export default function IOSInstallPrompt() {
         display: 'flex', alignItems: 'center', gap: 10,
         background: 'rgba(0,0,0,0.18)', borderRadius: 10, padding: '8px 12px',
       }}>
-        <ShareNetwork size={20} weight="fill" color="#22D3EE" />
+        <Export size={20} weight="bold" color="#22D3EE" />
         <ArrowRight size={12} weight="bold" color="rgba(255,255,255,0.6)" />
         <Plus size={20} weight="bold" color="#22D3EE" />
         <span style={{

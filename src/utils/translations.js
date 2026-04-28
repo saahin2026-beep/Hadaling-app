@@ -79,7 +79,7 @@ const translations = {
     'auth.continue_learning': 'Ku sii wad barashada',
 
     // iOS install prompt
-    'install.ios_title': 'Ku dar Hadaling shaashaddaada',
+    'install.ios_title': 'Ku isticmal Hadaling shaashadaada',
     'install.ios_body': 'Si aad u hesho Hadaling sida app caadi ah, ka dib riix:',
     'install.ios_action': 'Add to Home Screen',
 
@@ -303,7 +303,7 @@ const translations = {
     'auth.continue_learning': 'Continue learning',
 
     // iOS install prompt
-    'install.ios_title': 'Add Hadaling to your home screen',
+    'install.ios_title': 'Use Hadaling from your home screen',
     'install.ios_body': 'To use Hadaling like a normal app, tap:',
     'install.ios_action': 'Add to Home Screen',
 
