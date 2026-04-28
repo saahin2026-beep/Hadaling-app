@@ -1,11 +1,16 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import App from './App';
 import AppShell from './components/AppShell';
 import ErrorBoundary from './components/ErrorBoundary';
 import { DataProvider } from './utils/DataContext';
+import { initObservability } from './utils/observability';
 import './index.css';
+
+initObservability();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -14,6 +19,8 @@ createRoot(document.getElementById('root')).render(
         <ErrorBoundary>
           <DataProvider>
             <App />
+            <Analytics />
+            <SpeedInsights />
           </DataProvider>
         </ErrorBoundary>
       </AppShell>

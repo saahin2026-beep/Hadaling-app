@@ -3,6 +3,7 @@ import PrimaryButton from './PrimaryButton';
 import Geel from './Geel';
 import translations from '../utils/translations';
 import { storage } from '../utils/storage';
+import { reportError } from '../utils/observability';
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('App error:', error, errorInfo);
+    reportError(error, { componentStack: errorInfo?.componentStack });
   }
 
   render() {

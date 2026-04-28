@@ -4,6 +4,7 @@ import { ArrowLeft, EnvelopeSimple, Lock, Eye, EyeSlash } from '@phosphor-icons/
 import { supabase } from '../utils/supabase';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
+import { trackEvent, setObservabilityUser } from '../utils/observability';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -47,6 +48,8 @@ export default function LoginPage() {
       }
 
       storage.update({ authComplete: true, userId: data.user.id, userName: profile?.name || '', profileComplete: profile?.profile_complete || false });
+      setObservabilityUser(data.user.id);
+      trackEvent('login', { profileComplete: !!profile?.profile_complete });
       navigate(profile?.profile_complete ? '/geel-world' : '/profile-setup/0');
     } catch (e) { setError(t('login.error_generic')); console.error(e); }
     setLoading(false);

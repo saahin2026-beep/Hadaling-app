@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { storage } from '../utils/storage';
+import { trackEvent } from '../utils/observability';
 import { useData } from '../utils/DataContext';
 import { House, Briefcase, GraduationCap, Trophy, Plant, Leaf, Tree, Check, X, ArrowRight, Shield, Sparkle } from '@phosphor-icons/react';
 import Geel from '../components/Geel';
@@ -809,10 +810,10 @@ function Screen5({ c }) {
       </div>
 
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 'clamp(8px, 1.8vh, 14px)' }}>
-        <PremiumButton onClick={() => { storage.update({ onboardingComplete: true, guestMode: false }); navigate('/auth-gate'); }} variant="cyan">
+        <PremiumButton onClick={() => { storage.update({ onboardingComplete: true, guestMode: false }); trackEvent('onboarding_completed', { choice: 'save_progress' }); navigate('/auth-gate'); }} variant="cyan">
           {c.primaryButton}
         </PremiumButton>
-        <PremiumButton onClick={() => { storage.update({ onboardingComplete: true, guestMode: true }); navigate('/home'); }} variant="secondary">
+        <PremiumButton onClick={() => { storage.update({ onboardingComplete: true, guestMode: true }); trackEvent('onboarding_completed', { choice: 'continue_as_guest' }); navigate('/home'); }} variant="secondary">
           {c.secondaryButton}
         </PremiumButton>
       </div>

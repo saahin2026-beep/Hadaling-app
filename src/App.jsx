@@ -2,6 +2,7 @@ import { Routes, Route, Navigate, useParams, useNavigate, useLocation } from 're
 import { useEffect, useRef, lazy, Suspense } from 'react';
 import { storage } from './utils/storage';
 import { supabase } from './utils/supabase';
+import { setObservabilityUser, trackEvent } from './utils/observability';
 
 // Core pages — loaded immediately
 import Home from './pages/Home';
@@ -110,6 +111,9 @@ export default function App() {
         pendingEmail: null,
         pendingName: null,
       });
+
+      setObservabilityUser(userId);
+      trackEvent('email_confirmed', { profileComplete: !!profile.profile_complete });
 
       navigate(profile.profile_complete ? '/geel-world' : '/profile-setup/0');
     });

@@ -7,6 +7,7 @@ import { useLanguage } from '../utils/useLanguage';
 import Geel from '../components/Geel';
 import IconContainer from '../components/IconContainer';
 import { recordLessonCompletion } from '../utils/streak';
+import { trackEvent } from '../utils/observability';
 
 export default function LessonComplete() {
   const { id } = useParams();
@@ -24,7 +25,11 @@ export default function LessonComplete() {
   const nextLesson = lessonData?.[nextLessonId];
 
   useEffect(() => {
-    if (id) { storage.completeLesson(Number(id), dahabEarned); recordLessonCompletion(); }
+    if (id) {
+      storage.completeLesson(Number(id), dahabEarned);
+      recordLessonCompletion();
+      trackEvent('lesson_completed', { lessonId: Number(id), dahabEarned });
+    }
     const timer = setTimeout(() => setShowStats(true), 400);
     return () => clearTimeout(timer);
   }, [id]);

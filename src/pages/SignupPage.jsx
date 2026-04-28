@@ -4,6 +4,7 @@ import { ArrowLeft, User, EnvelopeSimple, Lock, Eye, EyeSlash, EnvelopeOpen } fr
 import { supabase } from '../utils/supabase';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
+import { trackEvent } from '../utils/observability';
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -46,10 +47,12 @@ export default function SignupPage() {
       if (!data.session) {
         // Email confirmation required — wait for the listener in App.jsx to handle the SIGNED_IN event.
         storage.update({ awaitingEmailConfirmation: true, pendingEmail: email, pendingName: name });
+        trackEvent('signup_submitted', { needsConfirmation: true });
         setPendingEmail(email);
         setLoading(false);
         return;
       }
+      trackEvent('signup_submitted', { needsConfirmation: false });
 
       storage.update({ authComplete: true, userId: data.user?.id, userName: name });
       navigate('/profile-setup/0');

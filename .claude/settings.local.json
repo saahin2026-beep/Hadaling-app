@@ -21,7 +21,23 @@
       "Bash(awk '/^function Screen6/,/^}/' src/pages/Onboarding.jsx)",
       "Bash(grep -n \"^function\\\\|^}$\" src/pages/Onboarding.jsx)",
       "Bash(git remote *)",
-      "Bash(git fetch *)"
+      "Bash(git fetch *)",
+      "Bash(mkdir -p /tmp/hd-icons)",
+      "Bash(cp public/branding/favicon-192.png /tmp/hd-icons/source.png)",
+      "Read(//tmp/**)",
+      "Bash(sips -g pixelWidth -g pixelHeight source.png)",
+      "Bash(sips -c 850 850 source.png --out cropped.png)",
+      "Bash(sips -g pixelWidth -g pixelHeight cropped.png)",
+      "Bash(sips -z 192 192 cropped.png --out icon-192.png)",
+      "Bash(sips -z 512 512 cropped.png --out icon-512.png)",
+      "Bash(sips -z 1024 1024 cropped.png --out icon-1024.png)",
+      "Read(//private/tmp/hd-icons/**)",
+      "Bash(sips -c 780 780 source.png --out cropped.png)",
+      "Bash(cp /tmp/hd-icons/icon-192.png public/branding/favicon-192.png)",
+      "Bash(cp /tmp/hd-icons/icon-512.png public/branding/favicon-512.png)",
+      "Bash(cp /tmp/hd-icons/icon-1024.png public/branding/app-icon-1024.png)",
+      "Bash(npm audit *)",
+      "Bash(sort -t: -k2 -n -r)"
     ]
   }
 }
