@@ -192,7 +192,7 @@ export default function SignupPage() {
 }
 
 const labelStyle = { fontSize: 'clamp(9px, 2.2vw, 11px)', fontWeight: 700, color: 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(3px, 0.8vh, 6px)', display: 'block', letterSpacing: '0.5px', textTransform: 'uppercase' };
-const inputWrap = { display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.2vh, 10px)', padding: '3px', borderRadius: 'clamp(8px, 2vw, 12px)', background: 'rgba(255,255,255,0.08)', border: '1.5px solid rgba(255,255,255,0.12)', marginBottom: 'clamp(6px, 1.2vh, 10px)', transition: 'all 0.2s ease' };
+const inputWrap = { display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.2vh, 10px)', padding: '3px', borderRadius: 'clamp(8px, 2vw, 12px)', background: 'rgba(255,255,255,0.08)', borderWidth: '1.5px', borderStyle: 'solid', borderColor: 'rgba(255,255,255,0.12)', marginBottom: 'clamp(6px, 1.2vh, 10px)', transition: 'all 0.2s ease' };
 const iconWrap = { width: 36, height: 36, borderRadius: 'clamp(7px, 1.5vw, 9px)', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 };
 const inputStyle = { flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: 'clamp(13px, 3.2vw, 15px)', color: 'white', fontFamily: 'Nunito, sans-serif', fontWeight: 600, padding: 'clamp(6px, 1.2vh, 10px) 0' };
 const focusStyle = { borderColor: 'rgba(34,211,238,0.5)', boxShadow: '0 0 0 3px rgba(34,211,238,0.1)' };

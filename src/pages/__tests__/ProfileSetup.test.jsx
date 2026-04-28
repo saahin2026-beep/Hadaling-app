@@ -140,14 +140,16 @@ describe('ProfileSetup — username live availability', () => {
     const input = screen.getByRole('textbox');
     await user.type(input, 'ahmed99');
 
-    // Wait for the 500ms debounce + RPC.
-    await vi.waitFor(
-      () => expect(screen.getByRole('status').textContent).toMatch(/taken|hore/i),
-      { timeout: 2000 },
-    );
+    // findByRole wraps in act and polls until the status appears, draining
+    // the 500ms debounce + the RPC promise without leaking updates.
+    const statusEl = await screen.findByRole('status', {}, { timeout: 2000 });
+    expect(statusEl.textContent).toMatch(/taken|hore/i);
 
-    const continueBtn = screen.getByRole('button', { name: /continue|sii|finish/i });
-    expect(continueBtn).toBeDisabled();
+    // Same here — wait for the disabled state to settle in act-aware fashion.
+    await vi.waitFor(() => {
+      const continueBtn = screen.getByRole('button', { name: /continue|sii|finish/i });
+      expect(continueBtn).toBeDisabled();
+    });
   });
 
   it('lowercases the username on input so case can\'t bypass the unique check', async () => {

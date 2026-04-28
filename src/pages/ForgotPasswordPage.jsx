@@ -133,7 +133,7 @@ export default function ForgotPasswordPage() {
 }
 
 const labelStyle = { fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.5)', fontFamily: 'Nunito, sans-serif', marginBottom: 6, display: 'block', letterSpacing: '0.5px', textTransform: 'uppercase' };
-const inputWrap = { display: 'flex', alignItems: 'center', gap: 10, padding: 3, borderRadius: 12, background: 'rgba(255,255,255,0.08)', border: '1.5px solid rgba(255,255,255,0.12)', marginBottom: 10, transition: 'all 0.2s ease' };
+const inputWrap = { display: 'flex', alignItems: 'center', gap: 10, padding: 3, borderRadius: 12, background: 'rgba(255,255,255,0.08)', borderWidth: '1.5px', borderStyle: 'solid', borderColor: 'rgba(255,255,255,0.12)', marginBottom: 10, transition: 'all 0.2s ease' };
 const iconWrap = { width: 36, height: 36, borderRadius: 9, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 };
 const inputStyle = { flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: 15, color: 'white', fontFamily: 'Nunito, sans-serif', fontWeight: 600, padding: '8px 0' };
 const focusStyle = { borderColor: 'rgba(34,211,238,0.5)', boxShadow: '0 0 0 3px rgba(34,211,238,0.1)' };
