@@ -12,7 +12,7 @@ export default function UpgradePage() {
   const [selectedPlan, setSelectedPlan] = useState(initialPlan);
 
   const handlePurchase = () => {
-    console.log('Purchase:', selectedPlan);
+    // TODO: payment integration
   };
 
   return (

@@ -13,8 +13,12 @@ export default function LessonIntro() {
   const data = lessonData?.[id];
   const [showContent, setShowContent] = useState(false);
 
-  useEffect(() => { setTimeout(() => setShowContent(true), 200); }, []);
-  if (!data) { navigate('/home'); return null; }
+  useEffect(() => {
+    const timer = setTimeout(() => setShowContent(true), 200);
+    return () => clearTimeout(timer);
+  }, []);
+  useEffect(() => { if (!data) navigate('/home'); }, [data, navigate]);
+  if (!data) return null;
 
   return (
     <div className="page-fixed" style={{

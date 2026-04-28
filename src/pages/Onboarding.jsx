@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { storage } from '../utils/storage';
 import { useData } from '../utils/DataContext';
@@ -400,7 +400,8 @@ function Screen0({ goNext, c }) {
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setShowContent(true), 300);
+    const t = setTimeout(() => setShowContent(true), 300);
+    return () => clearTimeout(t);
   }, []);
 
   return (
@@ -496,12 +497,14 @@ const COMFORT_GLOWS = [
 function Screen1({ goNext, c }) {
   const [selected, setSelected] = useState(null);
   const iconMap = { House, Briefcase, GraduationCap, Trophy };
+  const timerRef = useRef(null);
 
   const handleTap = (value) => {
     setSelected(value);
     storage.update({ intent: value });
-    setTimeout(goNext, 600);
+    timerRef.current = setTimeout(goNext, 600);
   };
+  useEffect(() => () => clearTimeout(timerRef.current), []);
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 clamp(12px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px)' }}>
@@ -544,12 +547,14 @@ function Screen1({ goNext, c }) {
 // SCREEN 2: Comfort Level
 function Screen2({ goNext, c }) {
   const [selected, setSelected] = useState(null);
+  const timerRef = useRef(null);
 
   const handleTap = (value) => {
     setSelected(value);
     storage.update({ comfort: value });
-    setTimeout(goNext, 600);
+    timerRef.current = setTimeout(goNext, 600);
   };
+  useEffect(() => () => clearTimeout(timerRef.current), []);
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 clamp(12px, 2.5vh, 20px) clamp(12px, 2.5vh, 20px)' }}>

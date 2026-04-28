@@ -84,11 +84,15 @@ export default function DailyPractice() {
       if (exercise.chunkId) finalResults.push({ chunkId: exercise.chunkId, correct: wasCorrect });
       saveChunkStats(finalResults);
 
-      const totalDahab = sessionDahab + reward.total;
+      const sessionTotal = sessionDahab + reward.total;
       const result = storage.completeDailyPractice(newCorrect);
-      storage.update({ dahab: (storage.get().dahab || 0) + totalDahab, dailyMix: { ...storage.get().dailyMix, completed: true, dahabEarned: totalDahab } });
+      const grandTotal = sessionTotal + result.dahabEarned;
+      storage.update({
+        dahab: (storage.get().dahab || 0) + sessionTotal,
+        dailyMix: { ...storage.get().dailyMix, completed: true, dahabEarned: grandTotal },
+      });
 
-      setDahabResult({ ...result, dahabEarned: totalDahab });
+      setDahabResult({ ...result, dahabEarned: grandTotal });
       setShowDahabAnimation(true);
       setTimeout(() => { setShowDahabAnimation(false); setCompleted(true); }, 2000);
     } else {
