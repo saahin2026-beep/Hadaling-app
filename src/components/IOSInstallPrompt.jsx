@@ -9,7 +9,7 @@ export default function IOSInstallPrompt() {
 
   useEffect(() => {
     const state = storage.get();
-    if (!state.onboardingComplete || state.iosInstallDismissed) return;
+    if (!state.onboardingComplete) return;
 
     const ua = navigator.userAgent;
     const isIOS = /iPad|iPhone|iPod/.test(ua);
@@ -24,7 +24,6 @@ export default function IOSInstallPrompt() {
   }, []);
 
   const dismiss = () => {
-    storage.update({ iosInstallDismissed: true });
     setShow(false);
   };
 
