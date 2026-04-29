@@ -4,21 +4,34 @@ import { User, Phone, Calendar, MapPin, At, CheckCircle, XCircle, CircleNotch } 
 import { supabase } from '../utils/supabase';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
+import { useData } from '../utils/DataContext';
 import { trackEvent, reportError } from '../utils/observability';
 import somaliCities from '../data/somaliCities';
 import Geel from '../components/Geel';
 
+// STRUCTURAL config — order, field key, icon, validation rules. NOT editable
+// from admin. Admin controls only the visible content (titles, subtitles,
+// placeholders), seeded into Supabase profile_setup_content table.
 const STEP_CONFIGS = [
-  { key: 'username', icon: At, labelKey: 'profile.username_label', placeholderKey: 'profile.username_placeholder', questionKey: 'profile.username_question' },
-  { key: 'phone', icon: Phone, labelKey: 'profile.phone_label', placeholderKey: 'profile.phone_placeholder', questionKey: 'profile.phone_question' },
-  { key: 'birthday', icon: Calendar, labelKey: 'profile.birthday_label', placeholderKey: '', questionKey: 'profile.birthday_question' },
-  { key: 'city', icon: MapPin, labelKey: 'profile.city_label', placeholderKey: '', questionKey: 'profile.city_question' },
+  { key: 'username', icon: At },
+  { key: 'phone', icon: Phone },
+  { key: 'birthday', icon: Calendar },
+  { key: 'city', icon: MapPin },
 ];
+
+// Hardcoded fallback content used until Supabase responds (or if it fails).
+const FALLBACK_CONTENT = {
+  username: { questionKey: 'profile.username_question', labelKey: 'profile.username_label', placeholderKey: 'profile.username_placeholder' },
+  phone: { questionKey: 'profile.phone_question', labelKey: 'profile.phone_label', placeholderKey: 'profile.phone_placeholder' },
+  birthday: { questionKey: 'profile.birthday_question', labelKey: 'profile.birthday_label', placeholderKey: '' },
+  city: { questionKey: 'profile.city_question', labelKey: 'profile.city_label', placeholderKey: '' },
+};
 
 export default function ProfileSetup() {
   const { step } = useParams();
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const { profileSetupContent } = useData();
   const currentStep = parseInt(step, 10);
   const [formData, setFormData] = useState(() => ({
     username: '', phone: '', birthday: '', city: '',
@@ -32,6 +45,20 @@ export default function ProfileSetup() {
   const checkTimerRef = useRef(null);
 
   const stepConfig = STEP_CONFIGS[currentStep];
+
+  // Content for this step: prefer admin-managed content from Supabase,
+  // fall back to translation keys if Supabase hasn't responded yet.
+  const dbContent = profileSetupContent?.[currentStep];
+  const fallback = stepConfig ? FALLBACK_CONTENT[stepConfig.key] : null;
+  const title = dbContent
+    ? (lang === 'en' ? (dbContent.titleEn || dbContent.titleSo) : (dbContent.titleSo || dbContent.titleEn))
+    : (fallback ? t(fallback.questionKey) : '');
+  const subtitle = dbContent
+    ? (lang === 'en' ? (dbContent.subtitleEn || dbContent.subtitleSo) : (dbContent.subtitleSo || dbContent.subtitleEn))
+    : (fallback ? t(fallback.labelKey) : '');
+  const placeholder = dbContent
+    ? (lang === 'en' ? (dbContent.placeholderEn || dbContent.placeholderSo) : (dbContent.placeholderSo || dbContent.placeholderEn))
+    : (fallback?.placeholderKey ? t(fallback.placeholderKey) : '');
 
   useEffect(() => {
     if (!stepConfig) navigate('/home');
@@ -185,10 +212,10 @@ export default function ProfileSetup() {
 
         {/* Question */}
         <h2 style={{ fontSize: 'clamp(18px, 5vw, 24px)', fontWeight: 900, color: 'white', fontFamily: 'Nunito, sans-serif', textAlign: 'center', marginBottom: 'clamp(6px, 1.2vh, 10px)', textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
-          {t(stepConfig.questionKey)}
+          {title}
         </h2>
         <p style={{ fontSize: 'clamp(11px, 2.8vw, 13px)', color: 'rgba(255,255,255,0.6)', fontFamily: 'Nunito, sans-serif', marginBottom: 'clamp(16px, 3vh, 28px)' }}>
-          {t(stepConfig.labelKey)}
+          {subtitle}
         </p>
 
         {error && (
@@ -256,7 +283,7 @@ export default function ProfileSetup() {
                 onChange={(e) => updateField(stepConfig.key === 'username' ? e.target.value.toLowerCase() : e.target.value)}
                 onFocus={() => setFocusedField(true)}
                 onBlur={() => setFocusedField(false)}
-                placeholder={t(stepConfig.placeholderKey)}
+                placeholder={placeholder}
                 aria-describedby={stepConfig.key === 'username' ? 'username-status' : undefined}
                 style={{
                   flex: 1, background: 'none', border: 'none', outline: 'none',

@@ -215,6 +215,48 @@ export async function fetchPracticeFeatures() {
 }
 
 /**
+ * Fetch profile setup screen content from Supabase.
+ * Returns an object keyed by step number (0-3).
+ * Each value contains the content fields (title/subtitle/placeholder in
+ * Somali and English). Structural fields (field_key, icon, validation
+ * rules) are mapped in code, not here.
+ */
+export async function fetchProfileSetupContent() {
+  try {
+    const { data, error } = await supabase
+      .from('profile_setup_content')
+      .select('*')
+      .order('step', { ascending: true });
+    if (error) throw error;
+
+    const result = {};
+    data.forEach((row) => {
+      result[row.step] = {
+        fieldKey: row.field_key,
+        titleSo: row.title_so || '',
+        titleEn: row.title_en || '',
+        subtitleSo: row.subtitle_so || '',
+        subtitleEn: row.subtitle_en || '',
+        placeholderSo: row.placeholder_so || '',
+        placeholderEn: row.placeholder_en || '',
+      };
+    });
+
+    localStorage.setItem('hadaling-profile-setup-cache', JSON.stringify(result));
+    return result;
+  } catch (err) {
+    reportError(err, { where: 'dataService.fetchProfileSetupContent' });
+    try {
+      const cached = localStorage.getItem('hadaling-profile-setup-cache');
+      if (cached) return JSON.parse(cached);
+    } catch (e) {
+      reportError(e, { where: 'dataService.fetchProfileSetupContent.cacheRead' });
+    }
+    return null;
+  }
+}
+
+/**
  * Fetch onboarding content from Supabase.
  * Returns an object keyed by screen_key.
  */

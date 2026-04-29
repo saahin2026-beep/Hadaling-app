@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { fetchLessons, fetchPhrases, fetchOnboardingContent, fetchPracticeFeatures } from './dataService';
+import { fetchLessons, fetchPhrases, fetchOnboardingContent, fetchPracticeFeatures, fetchProfileSetupContent } from './dataService';
 import { reportError } from './observability';
 
 import hardcodedLessonData from '../data/lessonData';
@@ -90,6 +90,7 @@ export function DataProvider({ children }) {
   const [phrases, setPhrases] = useState(() => getInitialPhrases());
   const [practiceFeatures, setPracticeFeatures] = useState(() => getInitialPracticeFeatures());
   const [onboardingContent, setOnboardingContent] = useState(null);
+  const [profileSetupContent, setProfileSetupContent] = useState(null);
 
   useEffect(() => {
     async function syncFromSupabase() {
@@ -126,6 +127,15 @@ export function DataProvider({ children }) {
       } catch (e) {
         reportError(e, { where: 'DataContext.syncOnboarding' });
       }
+
+      try {
+        const profileSetupResult = await fetchProfileSetupContent();
+        if (profileSetupResult && Object.keys(profileSetupResult).length > 0) {
+          setProfileSetupContent(profileSetupResult);
+        }
+      } catch (e) {
+        reportError(e, { where: 'DataContext.syncProfileSetup' });
+      }
     }
 
     syncFromSupabase();
@@ -146,6 +156,7 @@ export function DataProvider({ children }) {
       loading: false,
       getRandomPhrase,
       onboardingContent,
+      profileSetupContent,
     }}>
       {children}
     </DataContext.Provider>

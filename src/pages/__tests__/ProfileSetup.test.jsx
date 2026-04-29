@@ -33,6 +33,10 @@ vi.mock('../../utils/observability', () => ({
   setObservabilityUser: vi.fn(),
 }));
 
+vi.mock('../../utils/DataContext', () => ({
+  useData: () => ({ profileSetupContent: null }),
+}));
+
 function renderAtStep(step) {
   return render(
     <MemoryRouter initialEntries={[`/profile-setup/${step}`]}>
