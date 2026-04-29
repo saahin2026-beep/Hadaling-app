@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Confetti as ConfettiIcon } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
-import practiceFeatures from '../data/practiceFeatures';
+import { useData } from '../utils/DataContext';
 import ChooseExercise from '../exercises/ChooseExercise';
 import FillGapExercise from '../exercises/FillGapExercise';
 import ScenarioExercise from '../exercises/ScenarioExercise';
@@ -16,7 +16,8 @@ import { shuffleOptions } from '../utils/shuffleOptions';
 export default function PracticeSession() {
   const { featureKey } = useParams();
   const navigate = useNavigate();
-  const feature = practiceFeatures[featureKey];
+  const { practiceFeatures } = useData();
+  const feature = practiceFeatures?.[featureKey];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [completed, setCompleted] = useState(false);

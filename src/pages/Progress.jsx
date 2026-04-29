@@ -2,15 +2,15 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star, Fire, Trophy, CheckCircle } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
-import practiceFeatures from '../data/practiceFeatures';
+import { useData } from '../utils/DataContext';
 import Geel from '../components/Geel';
 import IconContainer from '../components/IconContainer';
-
-const FEATURE_KEYS = Object.keys(practiceFeatures);
 
 export default function Progress() {
   const navigate = useNavigate();
   const { t, lang } = useLanguage();
+  const { practiceFeatures } = useData();
+  const FEATURE_KEYS = Object.keys(practiceFeatures || {});
   const state = storage.get();
   const { xp = 0, streak = 0, longestStreak = 0, lessonsCompleted = [] } = state;
   const completedFeatures = state.practiceCompleted || {};

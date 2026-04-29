@@ -1,11 +1,15 @@
-import lessonData from '../data/lessonData';
+import hardcodedLessonData from '../data/lessonData';
 import { storage } from './storage';
 
 /**
  * Generate weighted Daily Mix exercises
  * 40% weak (wrong answers), 40% recent (last 3 days), 20% decay (not seen 3+ days)
+ *
+ * Pass `lessonData` (from useData()) to use live Supabase content. Falls back
+ * to hardcoded if not provided — kept for backwards compatibility / utilities
+ * that aren't React components.
  */
-export function generateDailyMix() {
+export function generateDailyMix(lessonData = hardcodedLessonData) {
   const state = storage.get();
   const completedIds = (state.lessonsCompleted || []).map(Number);
 

@@ -1,9 +1,10 @@
-import { createContext, useContext, useState, useEffect, useMemo } from 'react';
-import { fetchPhrases, fetchOnboardingContent } from './dataService';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { fetchLessons, fetchPhrases, fetchOnboardingContent, fetchPracticeFeatures } from './dataService';
 import { reportError } from './observability';
 
 import hardcodedLessonData from '../data/lessonData';
 import { lessons as hardcodedLessonsList } from '../data/lessons';
+import hardcodedPracticeFeatures from '../data/practiceFeatures';
 import {
   feedbackPhrases as hardcodedFeedback,
   encouragementPhrases as hardcodedEncouragement,
@@ -11,8 +12,12 @@ import {
 } from '../data/phrases';
 
 const DataContext = createContext(null);
-const CACHE_VERSION = 'v5'; // Increment when curriculum changes
-const PHRASES_CACHE_VERSION = 'v1'; // Increment when phrase content changes
+
+// Bump these when the underlying schema/content shape changes — that
+// invalidates stale localStorage caches and forces a re-fetch.
+const CACHE_VERSION = 'v5';
+const PHRASES_CACHE_VERSION = 'v1';
+const PRACTICE_FEATURES_CACHE_VERSION = 'v1';
 
 function getInitialLessons() {
   try {
@@ -58,13 +63,45 @@ function getInitialPhrases() {
   };
 }
 
+function getInitialPracticeFeatures() {
+  try {
+    const version = localStorage.getItem('hadaling-practice-features-cache-version');
+    if (version !== PRACTICE_FEATURES_CACHE_VERSION) {
+      localStorage.removeItem('hadaling-practice-features-cache');
+      localStorage.setItem('hadaling-practice-features-cache-version', PRACTICE_FEATURES_CACHE_VERSION);
+      return hardcodedPracticeFeatures;
+    }
+    const cached = localStorage.getItem('hadaling-practice-features-cache');
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (parsed && Object.keys(parsed).length > 0) return parsed;
+    }
+  } catch (e) {
+    reportError(e, { where: 'DataContext.getInitialPracticeFeatures' });
+  }
+  return hardcodedPracticeFeatures;
+}
+
 export function DataProvider({ children }) {
-  const lessons = useMemo(() => getInitialLessons(), []);
+  // Initial state seeds from cache (or hardcoded fallback) so the app
+  // renders instantly. Then we sync from Supabase in useEffect and the
+  // state replaces the seed once fresh data arrives.
+  const [lessons, setLessons] = useState(() => getInitialLessons());
   const [phrases, setPhrases] = useState(() => getInitialPhrases());
+  const [practiceFeatures, setPracticeFeatures] = useState(() => getInitialPracticeFeatures());
   const [onboardingContent, setOnboardingContent] = useState(null);
 
   useEffect(() => {
     async function syncFromSupabase() {
+      try {
+        const lessonsResult = await fetchLessons();
+        if (lessonsResult?.lessonData && Object.keys(lessonsResult.lessonData).length > 0) {
+          setLessons(lessonsResult);
+        }
+      } catch (e) {
+        reportError(e, { where: 'DataContext.syncLessons' });
+      }
+
       try {
         const phrasesResult = await fetchPhrases();
         if (phrasesResult?.feedback?.length > 0) {
@@ -72,6 +109,15 @@ export function DataProvider({ children }) {
         }
       } catch (e) {
         reportError(e, { where: 'DataContext.syncPhrases' });
+      }
+
+      try {
+        const practiceResult = await fetchPracticeFeatures();
+        if (practiceResult && Object.keys(practiceResult).length > 0) {
+          setPracticeFeatures(practiceResult);
+        }
+      } catch (e) {
+        reportError(e, { where: 'DataContext.syncPracticeFeatures' });
       }
 
       try {
@@ -96,6 +142,7 @@ export function DataProvider({ children }) {
       lessonData: lessons.lessonData,
       lessonsList: lessons.lessonsList,
       phrases,
+      practiceFeatures,
       loading: false,
       getRandomPhrase,
       onboardingContent,

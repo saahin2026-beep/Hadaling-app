@@ -55,6 +55,11 @@ export async function fetchLessons() {
             const exercise = {
               type: ex.type,
               instruction: ex.instruction,
+              // Optional metadata used elsewhere (dailyMix, listen, hint UI)
+              chunkId: ex.chunk_id || undefined,
+              direction: ex.direction || undefined,
+              hint: ex.hint || undefined,
+              audioText: ex.audio_text || undefined,
             };
             if (ex.type === 'choose' || ex.type === 'listen') {
               exercise.prompt = ex.prompt;
@@ -130,6 +135,68 @@ export async function fetchPhrases() {
     }
 
     // Fallback to hardcoded (import from phrases.js still works)
+    return null;
+  }
+}
+
+/**
+ * Fetch practice features + their exercises from Supabase.
+ * Returns the same shape as src/data/practiceFeatures.js (keyed by feature.key)
+ * so the app can use it as a drop-in replacement.
+ */
+export async function fetchPracticeFeatures() {
+  try {
+    const { data: features, error: featuresError } = await supabase
+      .from('practice_features')
+      .select('*')
+      .order('sort_order', { ascending: true });
+    if (featuresError) throw featuresError;
+
+    const { data: exercises, error: exercisesError } = await supabase
+      .from('practice_exercises')
+      .select('*')
+      .order('sort_order', { ascending: true });
+    if (exercisesError) throw exercisesError;
+
+    const result = {};
+    features.forEach((f) => {
+      result[f.key] = {
+        title: f.title,
+        titleEn: f.title_en,
+        description: f.description || '',
+        descriptionEn: f.description_en || '',
+        icon: f.icon || 'Book',
+        color: f.color || '#0891B2',
+        bg: f.bg || '#ECFEFF',
+        exercises: exercises
+          .filter((ex) => ex.feature_key === f.key)
+          .map((ex) => {
+            const out = { type: ex.type, instruction: ex.instruction || undefined };
+            if (ex.prompt != null) out.prompt = ex.prompt;
+            if (ex.options != null) out.options = ex.options;
+            if (ex.correct_index != null) out.correctIndex = ex.correct_index;
+            if (ex.correct_answer != null) out.correctAnswer = ex.correct_answer;
+            if (ex.correct_sentence != null) out.correctSentence = ex.correct_sentence;
+            if (ex.scenario != null) out.scenario = ex.scenario;
+            if (ex.sentence != null) out.sentence = ex.sentence;
+            if (ex.blank_index != null) out.blankIndex = ex.blank_index;
+            if (ex.letters != null) out.letters = ex.letters;
+            if (ex.words != null) out.words = ex.words;
+            return out;
+          }),
+      };
+    });
+
+    localStorage.setItem('hadaling-practice-features-cache', JSON.stringify(result));
+    return result;
+  } catch (err) {
+    reportError(err, { where: 'dataService.fetchPracticeFeatures' });
+    try {
+      const cached = localStorage.getItem('hadaling-practice-features-cache');
+      if (cached) return JSON.parse(cached);
+    } catch (e) {
+      reportError(e, { where: 'dataService.fetchPracticeFeatures.cacheRead' });
+    }
     return null;
   }
 }

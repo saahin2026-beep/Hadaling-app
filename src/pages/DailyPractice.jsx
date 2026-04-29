@@ -6,6 +6,7 @@ import { calculateDahabTimed } from '../utils/speedScore';
 import { generateDailyMix, saveChunkStats } from '../utils/dailyMix';
 import { trackEvent } from '../utils/observability';
 import { shuffleOptions } from '../utils/shuffleOptions';
+import { useData } from '../utils/DataContext';
 import SpeedBonusPopup from '../components/SpeedBonusPopup';
 import { useLanguage } from '../utils/useLanguage';
 import ChooseExercise from '../exercises/ChooseExercise';
@@ -20,6 +21,7 @@ import ExerciseLayout from '../components/ExerciseLayout';
 export default function DailyPractice() {
   const navigate = useNavigate();
   const { lang } = useLanguage();
+  const { lessonData } = useData();
   const [exercises, setExercises] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
@@ -51,7 +53,7 @@ export default function DailyPractice() {
       return;
     }
 
-    const mix = generateDailyMix().map(ex => shuffleOptions(ex));
+    const mix = generateDailyMix(lessonData).map(ex => shuffleOptions(ex));
     if (mix.length === 0) { setNoLessons(true); return; }
 
     storage.update({ dailyMix: { date: today, progress: 0, completed: false, exercises: mix, correctCount: 0 } });

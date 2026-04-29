@@ -3,17 +3,18 @@ import { useEffect } from 'react';
 import { BookOpen, ListNumbers, ArrowsLeftRight, PuzzlePiece, Shuffle, Stack, CheckCircle, CaretRight, Calendar, Fire } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
 import { useLanguage } from '../utils/useLanguage';
-import practiceFeatures from '../data/practiceFeatures';
+import { useData } from '../utils/DataContext';
 import Geel from '../components/Geel';
 import BottomNav from '../components/BottomNav';
 import IconContainer from '../components/IconContainer';
 
 const ICON_MAP = { BookOpen, ListNumbers, ArrowsLeftRight, PuzzlePiece, Shuffle, Stack };
-const FEATURE_KEYS = Object.keys(practiceFeatures);
 
 export default function PracticeHub() {
   const navigate = useNavigate();
   const { lang } = useLanguage();
+  const { practiceFeatures } = useData();
+  const FEATURE_KEYS = Object.keys(practiceFeatures || {});
   const state = storage.get();
   const completedFeatures = state.practiceCompleted || {};
 
