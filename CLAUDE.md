@@ -130,32 +130,44 @@ onboardingComplete, intent, comfort, guestMode, currentLesson, lessonsCompleted,
 
 ## Documentation maintenance (READ BEFORE EVERY CHANGE)
 
-`docs/ARCHITECTURE.md` is the source of truth for how this system works. It must stay current. Two rules — one proactive, one reactive — keep it that way.
+Two docs are the source of truth and must stay current:
+
+- **`docs/ARCHITECTURE.md`** — *what / why*. How the system works.
+- **`docs/CONTRIBUTING.md`** — *how*. How engineers do work in this repo.
+
+Both follow the same hybrid maintenance rule: **proactive verification before editing, reactive update in the same commit when something changes**. The cost is low because both rules are *targeted* — only the sections that touch the file you're working in, not the whole doc.
 
 ### Rule 1 (proactive — before editing)
 
-Before you edit a file that ARCHITECTURE.md references, **briefly verify the relevant section still matches the code**. If you find drift, fix the doc *before* you make the new change so the diff is clean. This is a targeted check — only the section(s) related to the file you're about to touch, not the whole doc.
+Before you edit a file that the docs reference, briefly verify the relevant section still matches the code. If you find drift, fix the doc *before* you make the new change so the diff is clean. ≤2 minutes per affected section.
 
-The mapping below tells you which doc section each kind of file relates to. If the file you're editing isn't in this table, the doc probably doesn't reference it and no proactive check is needed.
+The mapping below tells you which doc section each kind of file relates to. If the file you're editing isn't in this table, the docs probably don't reference it and no proactive check is needed.
 
 | You're editing… | Verify these sections first |
 |---|---|
-| `src/App.jsx` | §3 Data flow, §4 Authentication flow |
-| `src/utils/DataContext.jsx` | §3 Data flow, §5 Storage layer, §6 Caching |
-| `src/utils/dataService.js` | §3 Data flow, §7 Exercise system |
-| `src/utils/storage.js` | §5 Storage layer |
-| `src/utils/streak.js`, `speedScore.js`, `dailyMix.js` | §8 Gamification |
-| `src/utils/observability.js`, `ErrorBoundary.jsx` | §10 Observability |
-| `src/admin/*Manager.jsx`, `AdminDashboard.jsx`, `adminConfig.js` | §11 Admin panel scope |
-| `src/exercises/*Exercise.jsx`, `LessonPlay.jsx`, `PracticeSession.jsx` | §7 Exercise system |
-| `src/pages/SignupPage.jsx`, `LoginPage.jsx`, `ProfileSetup.jsx`, `AuthGate.jsx`, `*PasswordPage.jsx`, `AccountSecurityPage.jsx` | §4 Authentication flow |
-| `public/sw.js`, `public/manifest.json`, `vite.config.js` | §9 Service worker / PWA |
-| `supabase/migrations/*` | §3 Data flow, §5 Storage layer |
-| `vitest.setup.js`, `src/**/__tests__/*` | §12 Testing strategy |
+| `src/App.jsx` | ARCHITECTURE §3 Data flow, §4 Authentication flow |
+| `src/utils/DataContext.jsx` | ARCHITECTURE §3 Data flow, §5 Storage layer, §6 Caching |
+| `src/utils/dataService.js` | ARCHITECTURE §3 Data flow, §7 Exercise system |
+| `src/utils/storage.js` | ARCHITECTURE §5 Storage layer; CONTRIBUTING §3 (storage wrapper rule) |
+| `src/utils/streak.js`, `speedScore.js`, `dailyMix.js` | ARCHITECTURE §8 Gamification |
+| `src/utils/observability.js`, `ErrorBoundary.jsx` | ARCHITECTURE §10 Observability; CONTRIBUTING §3 (reportError rule), §4.5 |
+| `src/admin/*Manager.jsx`, `AdminDashboard.jsx`, `adminConfig.js` | ARCHITECTURE §11 Admin panel scope; CONTRIBUTING §4.2, §4.3, §4.8 |
+| `src/exercises/*Exercise.jsx`, `LessonPlay.jsx`, `PracticeSession.jsx` | ARCHITECTURE §7 Exercise system; CONTRIBUTING §4.4 |
+| `src/pages/SignupPage.jsx`, `LoginPage.jsx`, `ProfileSetup.jsx`, `AuthGate.jsx`, `*PasswordPage.jsx`, `AccountSecurityPage.jsx` | ARCHITECTURE §4 Authentication flow |
+| `src/utils/translations.js` | CONTRIBUTING §3 (t() rule), §4.1 |
+| `src/utils/useLanguage.js` | CONTRIBUTING §3 (t() rule) |
+| `public/sw.js`, `public/manifest.json`, `vite.config.js` | ARCHITECTURE §9 Service worker / PWA; CONTRIBUTING §3 (Vite drops console) |
+| `supabase/migrations/*` | ARCHITECTURE §3 Data flow, §5 Storage layer; CONTRIBUTING §4.6 |
+| `vitest.setup.js`, `src/**/__tests__/*` | ARCHITECTURE §12 Testing strategy; CONTRIBUTING §4.7 |
+| `package.json` (scripts or deps) | CONTRIBUTING §1 Setup, §2 Daily workflow |
+| `.env.example` | CONTRIBUTING §1 Setup |
+| `eslint.config.js`, `vite.config.js` (style/build rules) | CONTRIBUTING §3 Code conventions |
 
 ### Rule 2 (reactive — same commit)
 
-When you make a change that affects architecture, update the relevant section of ARCHITECTURE.md **in the same commit**. Not as a follow-up. Not as a TODO. Same commit.
+When you make a change of the kinds below, update the relevant doc section **in the same commit**. Not as a follow-up. Not as a TODO. Same commit.
+
+#### ARCHITECTURE.md triggers
 
 | Change | Update section |
 |---|---|
@@ -172,13 +184,25 @@ When you make a change that affects architecture, update the relevant section of
 | New gotcha discovered (especially silent footguns) | §13 Common pitfalls |
 | New common task that isn't obvious | "Where to make changes" table at the bottom |
 
-If a change spans multiple sections, update all of them. If in doubt, update — a slightly-stale doc is better than a doc that's lost trust.
+#### CONTRIBUTING.md triggers
 
-When you write a commit message for an architectural change, mention the doc update in the body so reviewers can confirm.
+| Change | Update section |
+|---|---|
+| New / changed `package.json` script | §2 Daily workflow |
+| New env var added to `.env.example` | §1 Setup |
+| New project-wide convention or style rule | §3 Code conventions |
+| New common multi-step task an engineer would do | §4 (add a new walkthrough) |
+| New silent footgun discovered (Vite drop, hardcoded duplication, etc.) | §5 Things you must not do |
+| Top-level directory renamed or restructured | §7 File structure quick-ref |
+| New onboarding doc, runbook, or external reference added | §6 Where to find help |
+
+If a change spans multiple sections (or both docs), update all of them. If in doubt, update — a slightly-stale doc is better than a doc that's lost trust.
+
+When you write a commit message for a doc-affecting change, mention the doc update in the body so reviewers can confirm.
 
 ### What "verify" means in Rule 1 (concretely)
 
-Open ARCHITECTURE.md, jump to the relevant section, scan it (≤2 minutes), ask: "is anything here outdated or contradicted by the current state of the code I'm about to edit?" If yes, fix the doc. If no, proceed with the edit.
+Open the doc, jump to the relevant section, scan it, ask: "is anything here outdated or contradicted by the current state of the code I'm about to edit?" If yes, fix the doc. If no, proceed with the edit.
 
 This is not "re-read the whole doc every session" — that's overkill. It's a 30-second check on the 1–2 sections that touch the file you're working in.
 
