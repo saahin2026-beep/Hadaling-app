@@ -135,6 +135,8 @@ Two docs are the source of truth and must stay current:
 - **`docs/ARCHITECTURE.md`** — *what / why*. How the system works.
 - **`docs/CONTRIBUTING.md`** — *how*. How engineers do work in this repo.
 
+A third doc, **`docs/RELAUNCH_KIT.md`**, is the punch-list of work knowingly deferred when the app was shelved. Read it on the first session back, then again before pressing relaunch. Keep it updated when items get done or new gaps are found.
+
 Both follow the same hybrid maintenance rule: **proactive verification before editing, reactive update in the same commit when something changes**. The cost is low because both rules are *targeted* — only the sections that touch the file you're working in, not the whole doc.
 
 ### Rule 1 (proactive — before editing)

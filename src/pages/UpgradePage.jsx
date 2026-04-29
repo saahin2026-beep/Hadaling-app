@@ -4,6 +4,7 @@ import { ArrowLeft, Heart, Users, Check, Crown } from '@phosphor-icons/react';
 import { useLanguage } from '../utils/useLanguage';
 import { trackEvent } from '../utils/observability';
 import Geel from '../components/Geel';
+import Toast from '../components/Toast';
 
 export default function UpgradePage() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function UpgradePage() {
   const { lang } = useLanguage();
   const initialPlan = location.state?.selectedPlan || 'plus';
   const [selectedPlan, setSelectedPlan] = useState(initialPlan);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     trackEvent('upgrade_page_viewed', { initialPlan });
@@ -24,7 +26,7 @@ export default function UpgradePage() {
 
   const handlePurchase = () => {
     trackEvent('upgrade_purchase_attempted', { plan: selectedPlan });
-    // TODO: payment integration
+    setToast({ message: lang === 'en' ? 'Payments coming soon' : 'Lacag-bixintu way soo socotaa' });
   };
 
   return (
@@ -85,6 +87,7 @@ export default function UpgradePage() {
           </p>
         </div>
       </div>
+      <Toast message={toast?.message} type={toast?.type || 'info'} onDismiss={() => setToast(null)} />
     </div>
   );
 }
