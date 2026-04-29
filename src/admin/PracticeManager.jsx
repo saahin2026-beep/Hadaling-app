@@ -171,30 +171,64 @@ export default function PracticeManager() {
 }
 
 function FeatureEditor({ feature, onSave }) {
+  // Edit content only (titles, descriptions, ordering). Visual fields
+  // (color, bg, icon) intentionally stay locked — design is uniform.
   const [title, setTitle] = useState(feature.title);
   const [titleEn, setTitleEn] = useState(feature.title_en || '');
-  const [color, setColor] = useState(feature.color || '#0891B2');
+  const [description, setDescription] = useState(feature.description || '');
+  const [descriptionEn, setDescriptionEn] = useState(feature.description_en || '');
+  const [sortOrder, setSortOrder] = useState(feature.sort_order ?? 0);
   const [saving, setSaving] = useState(false);
 
   const handleSave = async () => {
     setSaving(true);
-    await onSave({ ...feature, title, title_en: titleEn, color });
+    await onSave({
+      ...feature,
+      title,
+      title_en: titleEn,
+      description,
+      description_en: descriptionEn,
+      sort_order: sortOrder,
+    });
     setSaving(false);
   };
 
+  const inputStyle = { width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'Nunito, sans-serif', boxSizing: 'border-box' };
+  const labelStyle = { fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4, display: 'block' };
+
   return (
     <div style={{ background: '#F9F9F9', borderRadius: 12, padding: 14, marginBottom: 8 }}>
-      <p style={{ fontSize: 12, fontWeight: 800, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 8 }}>FEATURE SETTINGS</p>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Somali title"
-          style={{ flex: 1, padding: '8px 12px', borderRadius: 8, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'Nunito, sans-serif' }} />
-        <input value={titleEn} onChange={(e) => setTitleEn(e.target.value)} placeholder="English title"
-          style={{ flex: 1, padding: '8px 12px', borderRadius: 8, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'Nunito, sans-serif' }} />
+      <p style={{ fontSize: 12, fontWeight: 800, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 12 }}>FEATURE CONTENT</p>
+
+      <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+        <div style={{ flex: 1 }}>
+          <label style={labelStyle}>SOMALI TITLE</label>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Erayada" style={inputStyle} />
+        </div>
+        <div style={{ flex: 1 }}>
+          <label style={labelStyle}>ENGLISH TITLE</label>
+          <input value={titleEn} onChange={(e) => setTitleEn(e.target.value)} placeholder="e.g. Vocabulary" style={inputStyle} />
+        </div>
       </div>
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-        <input type="color" value={color} onChange={(e) => setColor(e.target.value)} style={{ width: 40, height: 32, border: 'none', borderRadius: 6, cursor: 'pointer' }} />
+
+      <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+        <div style={{ flex: 1 }}>
+          <label style={labelStyle}>SOMALI DESCRIPTION</label>
+          <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Card subtitle in Somali" style={inputStyle} />
+        </div>
+        <div style={{ flex: 1 }}>
+          <label style={labelStyle}>ENGLISH DESCRIPTION</label>
+          <input value={descriptionEn} onChange={(e) => setDescriptionEn(e.target.value)} placeholder="Card subtitle in English" style={inputStyle} />
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end' }}>
+        <div>
+          <label style={labelStyle}>SORT ORDER</label>
+          <input type="number" value={sortOrder} onChange={(e) => setSortOrder(parseInt(e.target.value) || 0)} style={{ ...inputStyle, width: 80 }} />
+        </div>
         <button type="button" onClick={handleSave} disabled={saving} style={{
-          background: '#0891B2', color: 'white', border: 'none', borderRadius: 8, padding: '8px 16px',
+          background: '#0891B2', color: 'white', border: 'none', borderRadius: 8, padding: '10px 20px',
           fontSize: 12, fontWeight: 800, cursor: 'pointer', fontFamily: 'Nunito, sans-serif', opacity: saving ? 0.6 : 1,
         }}>
           {saving ? 'SAVING...' : 'SAVE'}

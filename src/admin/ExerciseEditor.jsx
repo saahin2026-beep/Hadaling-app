@@ -32,6 +32,11 @@ export default function ExerciseEditor({ lessonId }) {
       correct_sentence: exercise.correct_sentence || null,
       words: exercise.words || null,
       scenario: exercise.scenario || null,
+      // Educational metadata (read by dailyMix, ListenChooseExercise, PremiumChooseExercise)
+      chunk_id: exercise.chunk_id || null,
+      direction: exercise.direction || null,
+      hint: exercise.hint || null,
+      audio_text: exercise.audio_text || null,
       sort_order: exercise.sort_order,
       is_active: exercise.is_active,
     };
@@ -149,6 +154,11 @@ function ExerciseEditModal({ exercise, onSave, onClose }) {
       instruction: form.instruction,
       sort_order: form.sort_order,
       is_active: form.is_active,
+      // Educational metadata — empty strings normalize to null in handleSave
+      chunk_id: form.chunk_id || null,
+      direction: form.direction || null,
+      hint: form.hint || null,
+      audio_text: form.audio_text || null,
     };
 
     if (form.type === 'choose' || form.type === 'listen') {
@@ -250,6 +260,31 @@ function ExerciseEditModal({ exercise, onSave, onClose }) {
               <input type="number" value={form.correct_index ?? 0} onChange={(e) => setForm({ ...form, correct_index: e.target.value })} style={{ ...fieldStyle, marginBottom: 10 }} />
             </>
           )}
+
+          {/* Educational metadata — visible for all exercise types */}
+          <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid #EEE' }}>
+            <p style={{ fontSize: 11, fontWeight: 800, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 8, letterSpacing: 0.5 }}>METADATA (OPTIONAL)</p>
+            <Label text="Chunk ID (e.g. greeting,intro — for weak-chunk tracking)" />
+            <input value={form.chunk_id || ''} onChange={(e) => setForm({ ...form, chunk_id: e.target.value })} placeholder="greeting" style={{ ...fieldStyle, marginBottom: 10 }} />
+            {(form.type === 'listen' || form.type === 'choose') && (
+              <>
+                <Label text="Direction (translation flow)" />
+                <select value={form.direction || ''} onChange={(e) => setForm({ ...form, direction: e.target.value })} style={{ ...fieldStyle, marginBottom: 10 }}>
+                  <option value="">— none —</option>
+                  <option value="so-en">Somali → English</option>
+                  <option value="en-so">English → Somali</option>
+                </select>
+              </>
+            )}
+            {form.type === 'listen' && (
+              <>
+                <Label text="Audio Text (the phrase being played)" />
+                <input value={form.audio_text || ''} onChange={(e) => setForm({ ...form, audio_text: e.target.value })} placeholder="Salaan" style={{ ...fieldStyle, marginBottom: 10 }} />
+              </>
+            )}
+            <Label text="Hint (shown to user, optional)" />
+            <input value={form.hint || ''} onChange={(e) => setForm({ ...form, hint: e.target.value })} placeholder="Optional hint" style={{ ...fieldStyle, marginBottom: 10 }} />
+          </div>
 
           <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
             <button type="button" onClick={onClose} style={{
