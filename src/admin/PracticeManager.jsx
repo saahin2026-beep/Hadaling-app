@@ -205,11 +205,12 @@ function FeatureEditor({ feature, onSave }) {
 }
 
 function PracticeExerciseEditor({ exercise, featureColor, onSave, onCancel }) {
-  const [form, setForm] = useState({ ...exercise });
+  const [form, setForm] = useState({ is_active: true, ...exercise });
   const [rawJson, setRawJson] = useState({
     options: JSON.stringify(exercise.options || []),
-    letters: JSON.stringify(exercise.letters || []),
+    pieces: JSON.stringify(exercise.pieces || exercise.letters || []),
     words: JSON.stringify(exercise.words || []),
+    distractors: JSON.stringify(exercise.distractors || []),
   });
   const [jsonError, setJsonError] = useState({});
   const [saving, setSaving] = useState(false);
@@ -223,9 +224,11 @@ function PracticeExerciseEditor({ exercise, featureColor, onSave, onCancel }) {
   const handleSave = async () => {
     const errors = {};
     const parsed = {};
-    const validate = (key, label) => {
+    const validate = (key, label, { allowEmpty = false } = {}) => {
+      const raw = (rawJson[key] || '').trim();
+      if (allowEmpty && !raw) { parsed[key] = []; return; }
       try {
-        const v = JSON.parse(rawJson[key] || '[]');
+        const v = JSON.parse(raw || '[]');
         if (!Array.isArray(v) || !v.every((x) => typeof x === 'string')) {
           errors[key] = `${label}: must be a JSON array of strings`;
         } else {
@@ -237,8 +240,11 @@ function PracticeExerciseEditor({ exercise, featureColor, onSave, onCancel }) {
     };
 
     if (form.type === 'choose' || form.type === 'fillgap' || form.type === 'scenario') validate('options', 'Options');
-    if (form.type === 'scramble') validate('letters', 'Letters');
-    if (form.type === 'sentenceBuilder') validate('words', 'Words');
+    if (form.type === 'scramble') validate('pieces', 'Pieces');
+    if (form.type === 'sentenceBuilder') {
+      validate('words', 'Words');
+      validate('distractors', 'Distractors', { allowEmpty: true });
+    }
 
     if (Object.keys(errors).length > 0) { setJsonError(errors); return; }
 
@@ -315,14 +321,24 @@ function PracticeExerciseEditor({ exercise, featureColor, onSave, onCancel }) {
       {/* Scramble fields */}
       {form.type === 'scramble' && (
         <>
-          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>LETTERS (JSON array)</p>
-          <input value={rawJson.letters} onChange={(e) => updateRaw('letters', e.target.value)}
-            placeholder='["H","E","L","L","O"]'
-            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: jsonError.letters ? '1px solid #E53935' : '1px solid #E0E0E0', fontSize: 13, fontFamily: 'monospace', marginBottom: 4, boxSizing: 'border-box' }} />
-          {jsonError.letters && <p style={{ fontSize: 11, color: '#E53935', fontFamily: 'Nunito, sans-serif', marginBottom: 8 }}>{jsonError.letters}</p>}
-          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>CORRECT ANSWER</p>
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>HINT (Somali word, e.g. "Hooyo")</p>
+          <input value={form.hint || ''} onChange={(e) => update('hint', e.target.value)}
+            placeholder="Hooyo"
+            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'Nunito, sans-serif', marginBottom: 12, boxSizing: 'border-box' }} />
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>MODE</p>
+          <select value={form.mode || 'letters'} onChange={(e) => update('mode', e.target.value)}
+            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'Nunito, sans-serif', marginBottom: 12, boxSizing: 'border-box', background: 'white' }}>
+            <option value="letters">letters (e.g. ["m","o","t","h","e","r"])</option>
+            <option value="syllables">syllables (e.g. ["tea","cher"])</option>
+          </select>
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>PIECES (JSON array)</p>
+          <input value={rawJson.pieces} onChange={(e) => updateRaw('pieces', e.target.value)}
+            placeholder='["m","o","t","h","e","r"]'
+            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: jsonError.pieces ? '1px solid #E53935' : '1px solid #E0E0E0', fontSize: 13, fontFamily: 'monospace', marginBottom: 4, boxSizing: 'border-box' }} />
+          {jsonError.pieces && <p style={{ fontSize: 11, color: '#E53935', fontFamily: 'Nunito, sans-serif', marginBottom: 8 }}>{jsonError.pieces}</p>}
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>CORRECT ANSWER (English)</p>
           <input value={form.correct_answer || ''} onChange={(e) => update('correct_answer', e.target.value)}
-            placeholder="HELLO"
+            placeholder="mother"
             style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'Nunito, sans-serif', marginBottom: 12, boxSizing: 'border-box' }} />
         </>
       )}
@@ -330,11 +346,20 @@ function PracticeExerciseEditor({ exercise, featureColor, onSave, onCancel }) {
       {/* Sentence builder fields */}
       {form.type === 'sentenceBuilder' && (
         <>
-          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>WORDS (JSON array)</p>
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>SOMALI PROMPT (optional — shows above the words)</p>
+          <input value={form.somali_full || ''} onChange={(e) => update('somali_full', e.target.value)}
+            placeholder="Subax wanaagsan"
+            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'Nunito, sans-serif', marginBottom: 12, boxSizing: 'border-box' }} />
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>WORDS (JSON array — the correct ones)</p>
           <input value={rawJson.words} onChange={(e) => updateRaw('words', e.target.value)}
             placeholder='["I","am","fine"]'
             style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: jsonError.words ? '1px solid #E53935' : '1px solid #E0E0E0', fontSize: 13, fontFamily: 'monospace', marginBottom: 4, boxSizing: 'border-box' }} />
           {jsonError.words && <p style={{ fontSize: 11, color: '#E53935', fontFamily: 'Nunito, sans-serif', marginBottom: 8 }}>{jsonError.words}</p>}
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>DISTRACTORS (optional, JSON array)</p>
+          <input value={rawJson.distractors} onChange={(e) => updateRaw('distractors', e.target.value)}
+            placeholder='["is","a","the"]'
+            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: jsonError.distractors ? '1px solid #E53935' : '1px solid #E0E0E0', fontSize: 13, fontFamily: 'monospace', marginBottom: 4, boxSizing: 'border-box' }} />
+          {jsonError.distractors && <p style={{ fontSize: 11, color: '#E53935', fontFamily: 'Nunito, sans-serif', marginBottom: 8 }}>{jsonError.distractors}</p>}
           <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>CORRECT SENTENCE</p>
           <input value={form.correct_sentence || ''} onChange={(e) => update('correct_sentence', e.target.value)}
             placeholder="I am fine"
@@ -342,10 +367,18 @@ function PracticeExerciseEditor({ exercise, featureColor, onSave, onCancel }) {
         </>
       )}
 
-      {/* Sort order */}
-      <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>SORT ORDER</p>
-      <input type="number" value={form.sort_order ?? 0} onChange={(e) => update('sort_order', parseInt(e.target.value))}
-        style={{ width: 80, padding: '8px 12px', borderRadius: 8, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'Nunito, sans-serif', marginBottom: 16 }} />
+      {/* Sort order + Active */}
+      <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 16 }}>
+        <div>
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#9E9E9E', fontFamily: 'Nunito, sans-serif', marginBottom: 4 }}>SORT ORDER</p>
+          <input type="number" value={form.sort_order ?? 0} onChange={(e) => update('sort_order', parseInt(e.target.value))}
+            style={{ width: 80, padding: '8px 12px', borderRadius: 8, border: '1px solid #E0E0E0', fontSize: 13, fontFamily: 'Nunito, sans-serif' }} />
+        </div>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: '#666', fontFamily: 'Nunito, sans-serif', cursor: 'pointer' }}>
+          <input type="checkbox" checked={form.is_active !== false} onChange={(e) => update('is_active', e.target.checked)} />
+          ACTIVE (shown to users)
+        </label>
+      </div>
 
       {/* Actions */}
       <div style={{ display: 'flex', gap: 8 }}>

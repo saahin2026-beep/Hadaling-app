@@ -54,15 +54,23 @@ export default function SentenceBuilderExercise({ data, featureColor, onComplete
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-      {/* Somali reference */}
-      <div style={{
-        background: dark ? '#1E293B' : '#FFF8E1',
-        border: dark ? '1px solid #334155' : '1px solid #FFE082',
-        borderRadius: 12, padding: '10px 14px', marginBottom: 14, textAlign: 'center',
-      }}>
-        <p style={{ fontSize: 12, color: dark ? '#64748B' : '#999', fontFamily: 'Nunito, sans-serif', margin: 0 }}>Soomaaliga:</p>
-        <p style={{ fontSize: 17, fontWeight: 800, color: dark ? '#F1F5F9' : '#333', fontFamily: 'Nunito, sans-serif', margin: '4px 0 0' }}>{data.somaliFull}</p>
-      </div>
+      {/* Prompt — show somaliFull when present (English-arrangement variant),
+          fall back to instruction (Somali-arrangement variant where users
+          arrange Somali words to form a Somali sentence). */}
+      {(data.somaliFull || data.instruction) && (
+        <div style={{
+          background: dark ? '#1E293B' : '#FFF8E1',
+          border: dark ? '1px solid #334155' : '1px solid #FFE082',
+          borderRadius: 12, padding: '10px 14px', marginBottom: 14, textAlign: 'center',
+        }}>
+          {data.somaliFull && (
+            <p style={{ fontSize: 12, color: dark ? '#64748B' : '#999', fontFamily: 'Nunito, sans-serif', margin: 0 }}>Soomaaliga:</p>
+          )}
+          <p style={{ fontSize: 17, fontWeight: 800, color: dark ? '#F1F5F9' : '#333', fontFamily: 'Nunito, sans-serif', margin: data.somaliFull ? '4px 0 0' : 0 }}>
+            {data.somaliFull || data.instruction}
+          </p>
+        </div>
+      )}
 
       {/* Drop zone */}
       <div style={{

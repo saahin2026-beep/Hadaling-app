@@ -171,19 +171,32 @@ export async function fetchPracticeFeatures() {
         exercises: exercises
           .filter((ex) => ex.feature_key === f.key)
           .map((ex) => {
+            // Filter out admin-disabled exercises (column added in migration).
+            // For backwards compat: rows pre-migration have no is_active and pass through.
+            if (ex.is_active === false) return null;
             const out = { type: ex.type, instruction: ex.instruction || undefined };
             if (ex.prompt != null) out.prompt = ex.prompt;
             if (ex.options != null) out.options = ex.options;
             if (ex.correct_index != null) out.correctIndex = ex.correct_index;
-            if (ex.correct_answer != null) out.correctAnswer = ex.correct_answer;
+            // Scramble: component reads `data.answer`, DB column is `correct_answer`
+            if (ex.correct_answer != null) out.answer = ex.correct_answer;
             if (ex.correct_sentence != null) out.correctSentence = ex.correct_sentence;
             if (ex.scenario != null) out.scenario = ex.scenario;
             if (ex.sentence != null) out.sentence = ex.sentence;
             if (ex.blank_index != null) out.blankIndex = ex.blank_index;
-            if (ex.letters != null) out.letters = ex.letters;
+            // Scramble: component reads `data.pieces`. Column may be named
+            // `pieces` (post-migration) or `letters` (pre-migration).
+            if (ex.pieces != null) out.pieces = ex.pieces;
+            else if (ex.letters != null) out.pieces = ex.letters;
             if (ex.words != null) out.words = ex.words;
+            // Optional fields for advanced variants
+            if (ex.somali_full != null) out.somaliFull = ex.somali_full;
+            if (ex.distractors != null) out.distractors = ex.distractors;
+            if (ex.hint != null) out.hint = ex.hint;
+            if (ex.mode != null) out.mode = ex.mode;
             return out;
-          }),
+          })
+          .filter(Boolean),
       };
     });
 
