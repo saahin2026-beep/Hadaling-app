@@ -11,13 +11,26 @@ Read top-to-bottom before reopening the codebase. Anything not on this list is e
 These three are the launch blockers. Nothing else in this doc gates the launch.
 
 ### 1.1 Legal pages
-- **Privacy Policy** — required by GDPR, CCPA, COPPA, the App Store, Google Play, and Supabase ToS. Cover: what's collected (email, name, phone, birthday, city, lesson progress), where it's stored (Supabase EU region — confirm), retention, third parties (Supabase, Vercel, Sentry if enabled).
-- **Terms of Service** — covers acceptable use, account termination, IP ownership of lesson content.
+
+**Deliberately deferred to relaunch.** The shelf window is ~30 days; in that time GDPR guidance, App Store §5.1, Google Play data-safety rules, and CCPA amendments can all shift. Doing it now means a rewrite at launch. Doing it at launch means writing against current rules once.
+
+When you reopen, before drafting anything, re-check:
+- **GDPR / EU AI Act** — gdpr.eu and edpb.europa.eu for any new guidance affecting language-learning apps with audio.
+- **Apple App Review Guidelines §5.1 (Privacy)** — developer.apple.com/app-store/review/guidelines/#privacy. The data-collection disclosure ("nutrition label") format changes regularly.
+- **Google Play Data safety** — support.google.com/googleplay/android-developer/answer/10787469.
+- **CCPA / CPRA** — California rules now apply at much lower revenue thresholds than they used to.
+- **COPPA** — under-13 rules. Decide explicitly whether you allow under-13s; if yes, the bar is much higher.
+- **Supabase Terms of Service** — supabase.com/terms. Their DPA may have changed; re-sign if needed.
+
+Then build:
+- **Privacy Policy** — what's collected (email, name, phone, birthday, city, lesson progress), where it's stored (confirm Supabase region), retention, third parties (Supabase, Vercel, Sentry if enabled). Generate a first draft with a current tool (Termly, iubenda, Vercel's policy generator) — do NOT reuse a template more than ~6 months old.
+- **Terms of Service** — acceptable use, account termination, IP ownership of lesson content, governing law.
 - **Cookie / storage notice** — auth tokens and PII live in `localStorage`. EU users need a banner or in-app disclosure.
 - **GDPR Article 17 — Right to erasure** — a "Delete my account" button in `/account-security`. Must delete the `auth.users` row (cascades to `profiles`) and clear `localStorage`.
 - **GDPR Article 20 — Right to portability** — a "Download my data" button that exports the `profiles` row + `lessonsCompleted`/`xp`/`dahab`/`streak` from `localStorage` as JSON.
+- **Contact email** for privacy requests — set up `privacy@hadaling.com` (or use existing `hadaling.ing@gmail.com`) and put it in the policy.
 
-Stub routes can be `/privacy`, `/terms`. Hardcoded markdown is fine — these don't need to live in the admin panel.
+Stub routes can be `/privacy`, `/terms`. Hardcoded markdown is fine — these don't need to live in the admin panel. Link both from `/astaanta` and from the signup flow.
 
 ### 1.2 iPhone PWA audio smoke test
 You haven't validated audio on a real iPhone home-screen install. Howler handles most of it, but iOS Safari has known traps:
