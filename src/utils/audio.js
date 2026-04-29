@@ -77,15 +77,6 @@ export function getListenAudioPath(lessonId, exerciseIndex = 5) {
   return `/audio/lessons/lesson-${lessonId}/listen-${exerciseIndex}.mp3`;
 }
 
-export function getWotdAudioPath(englishWord) {
-  const slug = englishWord
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-  return `/audio/wotd/${slug}.mp3`;
-}
-
 export function getPracticeAudioPath(module, text) {
   const slug = text
     .toLowerCase()

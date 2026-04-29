@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
+import { hasWordAudio } from '../data/wordOfTheDay';
 
 const CATEGORIES = ['greetings', 'emotions', 'school', 'transport'];
 
@@ -149,6 +150,15 @@ export default function WordOfDayManager() {
           }}>
             {word.category}
           </span>
+          {!hasWordAudio(word.english) && (
+            <span title="No audio file matches this word — it will be skipped by the daily picker." style={{
+              fontSize: 10, fontWeight: 700, color: '#B45309', background: '#FEF3C7',
+              padding: '3px 8px', borderRadius: 6, fontFamily: 'Nunito, sans-serif',
+              whiteSpace: 'nowrap',
+            }}>
+              🔇 No audio
+            </span>
+          )}
           <button type="button" onClick={() => setEditing({ ...word })} style={miniBtn('#1E88E5')}>Edit</button>
           <button type="button" onClick={() => toggleActive(word)} style={miniBtn(word.is_active ? '#FF9800' : '#0891B2')}>
             {word.is_active ? 'Hide' : 'Show'}
@@ -230,9 +240,18 @@ function WordEditModal({ word, onSave, onClose }) {
           <input
             value={form.english}
             onChange={(e) => setForm({ ...form, english: e.target.value })}
-            style={{ ...fieldStyle, marginBottom: 12 }}
+            style={{ ...fieldStyle, marginBottom: form.english.trim() && !hasWordAudio(form.english) ? 6 : 12 }}
             placeholder="e.g. Hello"
           />
+          {form.english.trim() && !hasWordAudio(form.english) && (
+            <div style={{
+              fontSize: 11, fontWeight: 700, color: '#B45309', background: '#FEF3C7',
+              padding: '6px 10px', borderRadius: 6, marginBottom: 12,
+              fontFamily: 'Nunito, sans-serif',
+            }}>
+              🔇 No audio file for this word — it will be saved but skipped by the daily picker.
+            </div>
+          )}
 
           <label style={{ fontSize: 12, fontWeight: 700, color: '#666', fontFamily: 'Nunito, sans-serif', display: 'block', marginBottom: 4 }}>
             Somali
